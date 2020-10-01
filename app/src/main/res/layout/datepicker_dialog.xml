@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+    <DatePicker
+        android:id="@+id/date_choose"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:calendarViewShown="false"
+        android:layout_weight="1" />
+
+    <TimePicker
+        android:id="@+id/time_choose"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+</LinearLayout>
