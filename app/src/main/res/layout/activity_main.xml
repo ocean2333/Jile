@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1.0"
-            android:text="9月"
             android:textSize="30sp"
             android:gravity="center_vertical"
             android:paddingLeft="20dp"/>
@@ -63,7 +62,7 @@
                 android:gravity="center_vertical"
                 android:textSize="50dp"/>
             <TextView
-                android:id="@+id/tvEarn"
+                android:id="@+id/tvIncome"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -94,7 +93,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="1000"
-                android:textSize="20sp"/>
+                android:textSize="18sp"/>
         </LinearLayout>
         <Button
             android:id="@+id/btnModifyBudget"
@@ -125,7 +124,7 @@
             android:gravity="center_vertical|start"
             android:textSize="25sp"/>
         <TextView
-            android:id="@+id/tvEarnToday"
+            android:id="@+id/tvIncomeToday"
             android:layout_width="0dp"
             android:layout_weight="1.0"
             android:layout_height="match_parent"
@@ -153,7 +152,11 @@
         android:layout_height="0dp"
         android:layout_weight="340"
         android:orientation="vertical">
-        // TODO 添加可下拉地查看最近记账的功能
+        <!--// TODO 添加可下拉地查看最近记账的功能 alpha版 只能显示5条-->
+        <ListView
+            android:id="@+id/lvRecent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/bottomButton"

@@ -15,6 +15,7 @@
         android:orientation="horizontal"
         android:background="@drawable/top_and_bottom_edge">
         <Button
+            android:id="@+id/btnBack"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.11"
@@ -55,6 +56,7 @@
             android:gravity="center_vertical"
             android:textSize="45sp"/>
         <TextView
+            android:id="@+id/tvCompareToLastMonth"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -67,110 +69,141 @@
         android:id="@+id/ll_3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.75"
         android:layout_below="@id/ll_2"
-        android:orientation="vertical"
+        android:layout_weight="0.75"
         android:background="@drawable/top_and_bottom_edge"
-        android:paddingLeft="10dp">
+        android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/llCashTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/top_and_bottom_edge">
+            android:background="@drawable/top_and_bottom_edge"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
-                    android:paddingVertical="5dp"
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
                     android:layout_height="wrap_content"
-                    android:text="现金账户"/>
+                    android:layout_weight="0.2"
+                    android:paddingVertical="5dp"
+                    android:text="现金账户" />
+
                 <TextView
                     android:id="@+id/tvCashNum"
-                    android:paddingVertical="5dp"
                     android:layout_width="0dp"
-                    android:layout_weight="0.6"
                     android:layout_height="wrap_content"
-                    android:text="资产"/>
+                    android:layout_weight="0.6"
+                    android:paddingVertical="5dp"
+                    android:text="资产" />
             </LinearLayout>
+            <ListView
+                android:id="@+id/lvCash"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/llWealthTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/top_and_bottom_edge">
+            android:background="@drawable/top_and_bottom_edge"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
-                    android:paddingVertical="5dp"
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
                     android:layout_height="wrap_content"
-                    android:text="金融账户"/>
+                    android:layout_weight="0.2"
+                    android:paddingVertical="5dp"
+                    android:text="金融账户" />
+
                 <TextView
                     android:id="@+id/tvWealthNum"
-                    android:paddingVertical="5dp"
                     android:layout_width="0dp"
-                    android:layout_weight="0.6"
                     android:layout_height="wrap_content"
-                    android:text="资产"/>
+                    android:layout_weight="0.6"
+                    android:paddingVertical="5dp"
+                    android:text="资产" />
             </LinearLayout>
+            <ListView
+                android:id="@+id/lvWealth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/llVirtualTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/top_and_bottom_edge">
+            android:background="@drawable/top_and_bottom_edge"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
-                    android:paddingVertical="5dp"
                     android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.2"
-                    android:layout_height="wrap_content"
-                    android:text="虚拟账户"/>
+                    android:paddingVertical="5dp"
+                    android:text="虚拟账户" />
+
                 <TextView
                     android:id="@+id/tvVirtualNum"
-                    android:paddingVertical="5dp"
                     android:layout_width="0dp"
-                    android:layout_weight="0.6"
                     android:layout_height="wrap_content"
-                    android:text="资产"/>
+                    android:layout_weight="0.6"
+                    android:paddingVertical="5dp"
+                    android:text="资产" />
             </LinearLayout>
+            <ListView
+                android:id="@+id/lvVirtual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/llCardTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/top_and_bottom_edge">
+            android:background="@drawable/top_and_bottom_edge"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
-                    android:paddingVertical="5dp"
                     android:layout_width="0dp"
-                    android:layout_weight="0.2"
                     android:layout_height="wrap_content"
-                    android:text="信用卡账户"/>
+                    android:layout_weight="0.2"
+                    android:paddingVertical="5dp"
+                    android:text="信用卡账户" />
+
                 <TextView
                     android:id="@+id/tvCardNum"
-                    android:paddingVertical="5dp"
                     android:layout_width="0dp"
-                    android:layout_weight="0.6"
                     android:layout_height="wrap_content"
-                    android:text="资产"/>
+                    android:layout_weight="0.6"
+                    android:paddingVertical="5dp"
+                    android:text="资产" />
             </LinearLayout>
+            <ListView
+                android:id="@+id/lvCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </LinearLayout>
 

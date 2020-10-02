@@ -36,6 +36,7 @@
                 android:id="@+id/rbExpenses"
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                android:checked="true"
                 android:layout_height="match_parent"
                 android:text="支出"/>
             <RadioButton
@@ -111,7 +112,8 @@
             android:text="账户"
             android:gravity="center"
             android:textSize="20sp"/>
-        <TextView
+        <Button
+            android:id="@+id/btnSelectAccount"
             android:layout_width="0dp"
             android:layout_weight="0.70"
             android:layout_height="match_parent"/>
@@ -127,28 +129,13 @@
             android:text="成员"
             android:gravity="center"
             android:textSize="20sp"/>
-        <TextView
+        <Button
+            android:id="@+id/btnSelectMember"
             android:layout_width="0dp"
             android:layout_weight="0.70"
             android:layout_height="match_parent"/>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/top_and_bottom_edge">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="0.30"
-            android:layout_height="match_parent"
-            android:text="商家"
-            android:gravity="center"
-            android:textSize="20sp"/>
-        <EditText
-            android:layout_width="0dp"
-            android:layout_weight="0.70"
-            android:singleLine="true"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -179,5 +166,16 @@
             android:layout_width="wrap_content"
             android:id="@+id/btnSetDate"/>
     </LinearLayout>
-    <!-- TODO 添加更好的日期选择器-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/top_and_bottom_edge"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp">
+        <Button
+            android:layout_gravity="center_vertical|start"
+            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:id="@+id/btnSetStore"/>
+    </LinearLayout>
 </LinearLayout>
