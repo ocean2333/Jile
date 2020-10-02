@@ -4,14 +4,14 @@ import java.math.BigDecimal;
 
 public class Account {
     private String name;
-    private String icon;
+    private int iconId;
     private BigDecimal money;
     private String typeOfMoney;
     private String note;
     private int accountType;
-    public Account(String name,String icon,BigDecimal money,String typeOfMoney,String note,int accountType){
+    public Account(String name,int iconId,BigDecimal money,String typeOfMoney,String note,int accountType){
         this.name = name;
-        this.icon = icon;
+        this.iconId = iconId;
         this.money = money;
         this.typeOfMoney = typeOfMoney;
         this.note = note;
@@ -42,12 +42,12 @@ public class Account {
         this.money = money;
     }
 
-    public String getIcon() {
-        return icon;
+    public int getIconId() {
+        return iconId;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setIconId(int icon) {
+        this.iconId = icon;
     }
 
     public String getName() {

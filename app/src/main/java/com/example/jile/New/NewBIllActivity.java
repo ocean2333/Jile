@@ -29,8 +29,8 @@ import java.util.Date;
 import java.util.List;
 
 public class NewBIllActivity extends AppCompatActivity {
-    private Button btnFirstClass,btnSecondClass,btnSetDate,btnBack,btnSave;
-    private List<String> firstClassItems;
+    private Button btnFirstClass,btnSecondClass,btnSetDate,btnBack,btnSave,btnSelectAccount,btnSelectMember,btnSetStore;
+    private List<String> firstClassItems,accountItems,memberItems,storeItems;
     private List<List<String>> secondClassItems;
     private int type=0;
     private OnClick onClick = new OnClick();
@@ -39,7 +39,6 @@ public class NewBIllActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_bill);
         init();
-
     }
 
     private void getBtns(){
@@ -48,6 +47,9 @@ public class NewBIllActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSave);
         btnFirstClass = findViewById(R.id.btnFirstClass);
         btnSecondClass = findViewById(R.id.btnSecondClass);
+        btnSelectAccount = findViewById(R.id.btnSelectAccount);
+        btnSelectMember = findViewById(R.id.btnSelectMember);
+        btnSetStore = findViewById(R.id.btnSetStore);
     }
 
     private class OnClick implements View.OnClickListener{
@@ -69,7 +71,7 @@ public class NewBIllActivity extends AppCompatActivity {
                     finish();
                     break;
                 case R.id.btnSave:
-
+                    addNewBillToDB(createNewBill());
                     break;
                 case R.id.btnFirstClass:
                     OptionsPickerView pvOptions = new OptionsPickerBuilder(NewBIllActivity.this, new OnOptionsSelectListener() {
@@ -84,16 +86,46 @@ public class NewBIllActivity extends AppCompatActivity {
                     }).build();
                     pvOptions.setPicker(firstClassItems,secondClassItems);
                     pvOptions.show();
+                    break;
+                case R.id.btnSelectAccount:
+                    OptionsPickerView pvOptions2 = new OptionsPickerBuilder(NewBIllActivity.this, new OnOptionsSelectListener() {
+                        @Override
+                        public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
+                            //返回的分别是三个级别的选中位置
+                            String ftx = accountItems.get(options1);
+                            btnSelectAccount.setText(ftx);
+                        }
+                    }).build();
+                    pvOptions2.setPicker(accountItems);
+                    pvOptions2.show();
+                    break;
+                case R.id.btnSelectMember:
+                    OptionsPickerView pvOptions3 = new OptionsPickerBuilder(NewBIllActivity.this, new OnOptionsSelectListener() {
+                        @Override
+                        public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
+                            //返回的分别是三个级别的选中位置
+                            String ftx = memberItems.get(options1);
+                            btnSelectMember.setText(ftx);
+                        }
+                    }).build();
+                    pvOptions3.setPicker(memberItems);
+                    pvOptions3.show();
+                    break;
+                case R.id.btnSetStore:
+                    OptionsPickerView pvOptions4 = new OptionsPickerBuilder(NewBIllActivity.this, new OnOptionsSelectListener() {
+                        @Override
+                        public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
+                            //返回的分别是三个级别的选中位置
+                            String ftx = storeItems.get(options1);
+                            btnSetStore.setText(ftx);
+                        }
+                    }).build();
+                    pvOptions4.setPicker(storeItems);
+                    pvOptions4.show();
+                    break;
             }
         }
     }
-
-    // TODO 获得各级分类数据
-    private void getItems(){
-        firstClassItems = Arrays.asList("a", "b", "ccccccc");
-        secondClassItems = Arrays.asList(Arrays.asList("0","asdasd","nmsl"),Arrays.asList("1","asdasd","nmsl"),Arrays.asList("2","asdasd","nmsl"));
-    }
-
 
     private void setListener(OnClick onClick){
         btnFirstClass.setOnClickListener(onClick);
@@ -101,15 +133,39 @@ public class NewBIllActivity extends AppCompatActivity {
         btnSave.setOnClickListener(onClick);
         btnBack.setOnClickListener(onClick);
         btnSecondClass.setOnClickListener(onClick);
+        btnSelectMember.setOnClickListener(onClick);
+        btnSelectAccount.setOnClickListener(onClick);
+        btnSetStore.setOnClickListener(onClick);
     }
+    // TODO 实现下列接口
+    // TODO 获得各级分类数据
+    private void getItems(){
+        firstClassItems = Arrays.asList("a", "b", "ccccccc");
+        secondClassItems = Arrays.asList(Arrays.asList("0","asdasd","nmsl"),Arrays.asList("1","asdasd","nmsl"),Arrays.asList("2","asdasd","nmsl"));
+        accountItems = Arrays.asList("支付宝","微信","现金");
+        memberItems = Arrays.asList("自己","lzy","zyh");
+        storeItems = Arrays.asList("home","school","mall");
+    }
+
+    // TODO 添加bill到数据库
+    private void addNewBillToDB(Bill bill){
+
+    }
+
+    // TODO 获得最近用过的店
+    private String getMostRecentStore(){
+        return "home";
+    }
+    // TODO 更新最近用过的店
+    private void modifyMostRecentStore(String s){
+
+    }
+
+    // TODO 实现以上接口
 
     // TODO 构造BILL
     private Bill createNewBill(){
         return null;
-    }
-
-    private void addNewBillToDB(Bill bill){
-        // TODO 添加与数据库的对接
     }
 
     private String getNowTime(){
@@ -126,8 +182,8 @@ public class NewBIllActivity extends AppCompatActivity {
     }
 
     private void setRadioGroupListener(){
-        RadioGroup rb = findViewById(R.id.rgType);
-        rb.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        RadioGroup rg = findViewById(R.id.rgType);
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (group.getCheckedRadioButtonId()) {
@@ -145,7 +201,6 @@ public class NewBIllActivity extends AppCompatActivity {
         });
     }
 
-    // TODO 把所有初始化操作放进init
     private void init(){
         getItems();
         getBtns();
@@ -153,6 +208,9 @@ public class NewBIllActivity extends AppCompatActivity {
         setRadioGroupListener();
         btnFirstClass.setText(firstClassItems.get(0));
         btnSecondClass.setText(secondClassItems.get(0).get(0));
+        btnSelectAccount.setText(accountItems.get(0));
+        btnSelectMember.setText(memberItems.get(0));
+        btnSetStore.setText(getMostRecentStore());
         btnSetDate.setText(getNowTime());
     }
 }

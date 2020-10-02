@@ -36,7 +36,7 @@ public class LogoActivity extends AppCompatActivity {
 
     }
 
-    //判断是否已登录
+    // TODO 判断是否已登录
     private boolean isLogin(){
         return true;
     }

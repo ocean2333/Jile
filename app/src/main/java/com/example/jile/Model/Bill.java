@@ -11,8 +11,10 @@ public class Bill {
     private String member;
     private String store;
     private String note;
+    private String time;
+    private int iconId;
 
-    public Bill(int type, BigDecimal money, String firstClass, String secondClass, String account, String member, String store, String note) {
+    public Bill(int type, BigDecimal money, String firstClass, String secondClass, String account, String member, String store, String note,int iconId,String time) {
         this.type = type;
         this.money = money;
         this.firstClass = firstClass;
@@ -21,6 +23,8 @@ public class Bill {
         this.member = member;
         this.store = store;
         this.note = note;
+        this.iconId = iconId;
+        this.time = time;
     }
 
     public int getType() {
@@ -85,5 +89,21 @@ public class Bill {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public int getIconId() {
+        return iconId;
+    }
+
+    public void setIconId(int iconId) {
+        this.iconId = iconId;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }
