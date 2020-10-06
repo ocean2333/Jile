@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
 
-import com.example.jile.data.LoginDataSource;
-import com.example.jile.data.LoginRepository;
+import com.example.jile.ui.login.data.LoginDataSource;
+import com.example.jile.ui.login.data.LoginRepository;
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.

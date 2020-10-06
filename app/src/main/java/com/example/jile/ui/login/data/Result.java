@@ -1,4 +1,4 @@
-package com.example.jile.data;
+package com.example.jile.ui.login.data;
 
 /**
  * A generic class that holds a result success w/ data or an error exception.
@@ -43,6 +43,18 @@ public class Result<T> {
 
         public Exception getError() {
             return this.error;
+        }
+    }
+
+    public final static class Failed extends Result {
+        private String failure;
+
+        public Failed(String failure) {
+            this.failure = failure;
+        }
+
+        public String getError() {
+            return this.failure;
         }
     }
 }

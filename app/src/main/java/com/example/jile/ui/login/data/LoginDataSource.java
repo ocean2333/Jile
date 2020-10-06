@@ -1,6 +1,6 @@
-package com.example.jile.data;
+package com.example.jile.ui.login.data;
 
-import com.example.jile.data.model.LoggedInUser;
+import com.example.jile.Model.LoggedInUser;
 
 import java.io.IOException;
 
@@ -8,11 +8,10 @@ import java.io.IOException;
  * Class that handles authentication w/ login credentials and retrieves user information.
  */
 public class LoginDataSource {
-
+    //TODO 实现以下接口
     public Result<LoggedInUser> login(String username, String password) {
-
         try {
-            // TODO: handle loggedInUser authentication
+            // TODO: 认证用户是否成功登录，并创建一个LoggedInUser 失败则返回
             LoggedInUser fakeUser =
                     new LoggedInUser(
                             java.util.UUID.randomUUID().toString(),
@@ -23,7 +22,13 @@ public class LoginDataSource {
         }
     }
 
+    //TODO 记录登陆状态
+    private void rememberLogin(){
+
+    }
+
+    // TODO 去除登陆状态，使得打开应用时需要重新认证
     public void logout() {
-        // TODO: revoke authentication
+
     }
 }

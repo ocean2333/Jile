@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel;
 
 import android.util.Patterns;
 
-import com.example.jile.data.LoginRepository;
-import com.example.jile.data.Result;
-import com.example.jile.data.model.LoggedInUser;
+import com.example.jile.ui.login.data.LoginRepository;
+import com.example.jile.ui.login.data.Result;
+import com.example.jile.Model.LoggedInUser;
 import com.example.jile.R;
 
 public class LoginViewModel extends ViewModel {
@@ -50,17 +50,13 @@ public class LoginViewModel extends ViewModel {
             loginFormState.setValue(new LoginFormState(true));
         }
     }
-
+    // TODO 检查账户和密码是否合法
     // A placeholder username validation check
     private boolean isUserNameValid(String username) {
         if (username == null) {
             return false;
         }
-        if (username.contains("@")) {
-            return Patterns.EMAIL_ADDRESS.matcher(username).matches();
-        } else {
-            return !username.trim().isEmpty();
-        }
+        return !username.trim().isEmpty();
     }
 
     // A placeholder password validation check

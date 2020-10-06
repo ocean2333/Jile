@@ -1,6 +1,6 @@
-package com.example.jile.data;
+package com.example.jile.ui.login.data;
 
-import com.example.jile.data.model.LoggedInUser;
+import com.example.jile.Model.LoggedInUser;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -48,6 +48,8 @@ public class LoginRepository {
         Result<LoggedInUser> result = dataSource.login(username, password);
         if (result instanceof Result.Success) {
             setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
+        }else if(result instanceof Result.Failed){
+
         }
         return result;
     }

@@ -1,4 +1,4 @@
-package com.example.jile.data.model;
+package com.example.jile.Model;
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
