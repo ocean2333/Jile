@@ -14,8 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.jile.LogoActivity;
-import com.example.jile.Model.User;
+import com.example.jile.Bean.User;
 import com.example.jile.R;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -145,12 +144,12 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private User createNewUser(){
-        return new User(etUsername.getText().toString(),etPassword.getText().toString(),
-                "",etQuestion.getText().toString(),etAns.getText().toString(),false,"");
+        return new User("567",etUsername.getText().toString(),etPassword.getText().toString(),
+                etQuestion.getText().toString(),etAns.getText().toString(),"?",R.drawable.icon_dollar,"hhh","");
     }
 
     // TODO 实现以下接口
     private void addNewUserToDB(User user){
-        Toast.makeText(SignUpActivity.this,"got"+user.getUserName(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(SignUpActivity.this,"got"+user.getName(),Toast.LENGTH_SHORT).show();
     }
 }

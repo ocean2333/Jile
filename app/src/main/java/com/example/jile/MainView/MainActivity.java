@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.example.jile.Account.AccountActivity;
 import com.example.jile.Detail.DeatilActivity;
 import com.example.jile.Graph.GraphActivity;
-import com.example.jile.Model.Bill;
+import com.example.jile.Bean.Bill;
 import com.example.jile.New.NewBIllActivity;
 import com.example.jile.R;
 import com.example.jile.Setting.SettingActivity;
@@ -165,8 +165,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getFiveMostRecentBill(){
-        Bill b = new Bill(0,new BigDecimal("666.321"),"t1","t2",
-                "zhi","we","qwe","hahaha",R.drawable.icon_dollar,"2020年10月02日 23:24");
+        Bill b = new Bill("0",new BigDecimal("666.321"),"an","t1","t2",
+                "zhi","we","2020年10月02日 23:24",R.drawable.icon_dollar,"qwe");
         bills = new Bill[]{b,b,b,b,b};
     }
     // TODO 实现以上接口

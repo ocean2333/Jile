@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.example.jile.Model.Account;
+import com.example.jile.Bean.Account;
 import com.example.jile.R;
 
 import java.util.List;
@@ -32,8 +32,8 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         TextView tv1 = view.findViewById(R.id.tvName);
         TextView tv2 = view.findViewById(R.id.tvMoney);
         im.setImageResource(account.getIconId());
-        tv1.setText(account.getName());
-        tv2.setText(account.getMoney().toString());
+        tv1.setText(account.getSelfname());
+        tv2.setText(account.getBalance().toString());
         return view;
     }
 

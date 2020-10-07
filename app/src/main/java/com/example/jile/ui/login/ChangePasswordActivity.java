@@ -86,6 +86,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 }else{
                     btnComplete.setEnabled(false);
                 }
+                if(!pwd1.equals(pwd2)&&b2){
+                    etRepeatPassword.setError("两次密码不一致");
+                }
             }
         });
     }

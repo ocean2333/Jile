@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jile.MainView.MainActivity;
-import com.example.jile.Model.Account;
+import com.example.jile.Bean.Account;
 import com.example.jile.R;
 
 import java.math.BigDecimal;
@@ -35,7 +35,7 @@ public class AccountActivity extends AppCompatActivity {
         cardAccount=null;
         cashAccount=null;
         virtualAccount=null;
-        Account sampleAccount = new Account("shili",R.drawable.icon_dollar,new BigDecimal("12346.654321"),"CNY","nothing",4);
+        Account sampleAccount = new Account("uuid","1","nothing",new BigDecimal("12346.654321"),"CNY",R.drawable.icon_dollar,"?");
         wealthAccount= new Account[]{sampleAccount, sampleAccount};
     }
     private void getMoneys(){
