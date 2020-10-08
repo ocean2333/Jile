@@ -16,6 +16,8 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.example.jile.Bean.Bill;
+import com.example.jile.Database.Dao.BillDao;
+import com.example.jile.LogoActivity;
 import com.example.jile.R;
 
 import java.util.Arrays;
@@ -143,7 +145,7 @@ public class NewBIllActivity extends AppCompatActivity {
 
     // TODO 添加bill到数据库
     private void addNewBillToDB(Bill bill){
-
+        LogoActivity.billDao.insert(bill);
     }
 
     // TODO 获得最近用过的店
@@ -170,8 +172,8 @@ public class NewBIllActivity extends AppCompatActivity {
     }
 
     private String getTime(Date date){
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");// HH:mm:ss
-        //获取当前时间
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");// HH:mm:ss
+        //获取时间
         return simpleDateFormat.format(date);
     }
 

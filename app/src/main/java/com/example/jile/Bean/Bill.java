@@ -2,7 +2,7 @@ package com.example.jile.Bean;
 
 import java.math.BigDecimal;
 
-public class Bill {
+public class Bill{
     public String getUuid() {
         return uuid;
     }

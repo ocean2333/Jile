@@ -37,8 +37,8 @@ public class BillAdapter extends ArrayAdapter<Bill> {
         TextView tvStore = view.findViewById(R.id.tvStore);
         TextView tvMoney = view.findViewById(R.id.tvMoney);
         im.setImageResource(bill.getIconId());
-        tvTime.setText(getShortDate(bill.getDate()));
-        tvDay.setText(getWeek(bill.getDate()));
+        tvTime.setText(getShortDate(bill.getDate().toString()));
+        tvDay.setText(getWeek(bill.getDate().toString()));
         tvSecondClass.setText(bill.getFirst());
         tvMoney.setText(bill.getNum().toString());
         tvStore.setText(bill.getStore());

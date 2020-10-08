@@ -8,6 +8,8 @@ import com.example.jile.Bean.Bill;
 import com.example.jile.Database.DatabaseHelper;
 
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,6 +45,7 @@ public class BillDao {
         delete(bill);
         insert(bill);
     }
+
     public List<Bill> query(){
         SQLiteDatabase db = mHelper.getWritableDatabase();
         String sql = "select * from "+ mUsername +"_Bill";
@@ -67,12 +70,14 @@ public class BillDao {
         int memberindex = cursor.getColumnIndex("member");
         int storeindex = cursor.getColumnIndex("store");
         int dateindex = cursor.getColumnIndex("date");
+        int timeindex = cursor.getColumnIndex("time");
         int iconidindex = cursor.getColumnIndex("iconId");
         int otherindex = cursor.getColumnIndex("other");
 
         while(cursor.moveToNext()){
 
-            Bill m = new Bill(cursor.getString(uuidindex),new BigDecimal(cursor.getDouble(numindex)),cursor.getString(accountnameindex),cursor.getString(firstindex),cursor.getString(secondindex),cursor.getString(memberindex),cursor.getString(storeindex),cursor.getString(dateindex),cursor.getInt(iconidindex),cursor.getString(otherindex));
+            Bill m = new Bill(cursor.getString(uuidindex),new BigDecimal(cursor.getDouble(numindex)),cursor.getString(accountnameindex),cursor.getString(firstindex),cursor.getString(secondindex),cursor.getString(memberindex),cursor.getString(storeindex),
+                    cursor.getString(dateindex),cursor.getInt(iconidindex),cursor.getString(otherindex));
             re.add(m);
         }
         db.close();
@@ -84,17 +89,6 @@ public class BillDao {
         String sql = "select * from "+ mUsername +"_Bill where "+keyname+" = "+"'"+value+"'";
         Cursor cursor = db.rawQuery(sql,null);
         List<Bill> re = new LinkedList<Bill>();
-        /**
-         *     private BigDecimal num;
-         *     private String accountname;
-         *     private String first;
-         *     private String second;
-         *     private String member;
-         *     private String store;
-         *     private String date;
-         *     private int iconId;
-         *     private String other;
-         */
         int uuidindex = cursor.getColumnIndex("uuid");
         int numindex = cursor.getColumnIndex("num");
         int accountnameindex = cursor.getColumnIndex("accountname");
@@ -103,16 +97,18 @@ public class BillDao {
         int memberindex = cursor.getColumnIndex("member");
         int storeindex = cursor.getColumnIndex("store");
         int dateindex = cursor.getColumnIndex("date");
+        int timeindex = cursor.getColumnIndex("time");
         int iconidindex = cursor.getColumnIndex("iconId");
         int otherindex = cursor.getColumnIndex("other");
-
         while(cursor.moveToNext()){
 
-            Bill m = new Bill(cursor.getString(uuidindex),new BigDecimal(cursor.getDouble(numindex)),cursor.getString(accountnameindex),cursor.getString(firstindex),cursor.getString(secondindex),cursor.getString(memberindex),cursor.getString(storeindex),cursor.getString(dateindex),cursor.getInt(iconidindex),cursor.getString(otherindex));
+            Bill m = new Bill(cursor.getString(uuidindex),new BigDecimal(cursor.getDouble(numindex)),cursor.getString(accountnameindex),cursor.getString(firstindex),cursor.getString(secondindex),cursor.getString(memberindex),
+                    cursor.getString(storeindex),cursor.getString(dateindex),cursor.getInt(iconidindex),cursor.getString(otherindex));
             re.add(m);
         }
         db.close();
         return re;
     }
+
 }
 

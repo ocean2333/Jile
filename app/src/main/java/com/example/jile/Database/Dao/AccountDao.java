@@ -72,7 +72,6 @@ public class AccountDao {
         int iconIdindex = cursor.getColumnIndex("iconId");
         int otherindex = cursor.getColumnIndex("other");
         while(cursor.moveToNext()){
-
             Account m = new Account(cursor.getString(uuidindex),cursor.getString(typeindex),cursor.getString(selfnameindex),new BigDecimal(cursor.getDouble(balanceindex)),cursor.getString(currencyindex),cursor.getInt(iconIdindex),cursor.getString(otherindex));
             re.add(m);
         }
@@ -109,6 +108,4 @@ public class AccountDao {
         db.close();
         return re;
     }
-
-
 }

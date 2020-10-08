@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.icu.text.DateFormat;
+import android.icu.text.Edits;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.text.InputType;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jile.Account.AccountActivity;
+import com.example.jile.Bean.Account;
 import com.example.jile.Database.Dao.AccountDao;
 import com.example.jile.Database.Dao.BillDao;
 import com.example.jile.Database.Dao.MemDao;
@@ -32,7 +35,13 @@ import com.example.jile.R;
 import com.example.jile.Setting.SettingActivity;
 
 import java.math.BigDecimal;
+import java.sql.Time;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnToDetail,btnAccount,btnDetail,btnNew,btnGraph,btnSetting,btnModifyBudget;
@@ -53,7 +62,15 @@ public class MainActivity extends AppCompatActivity {
         }
         init();
     }
-
+    private void getBill(){
+        bills= LogoActivity.billDao.query().toArray(new Bill[LogoActivity.billDao.query().size()]);
+        Arrays.sort(bills, new Comparator<Bill>() {
+            @Override
+            public int compare(Bill o1, Bill o2) {
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
+    }
     private void getBtns(){
         btnToDetail = findViewById(R.id.btnToDetail);
         btnDetail = findViewById(R.id.btnDetail);
@@ -113,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
     //禁止使用返回键返回并替换为再按一次退出
     private long exitTime = 0;
     @Override
@@ -157,10 +173,24 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    // TODO 实现下列获取信息的接口
+    // TODO 实现下列获取信息的接口（待测试
     private void getCostAndIncome() {
-        cost = "-1000";
-        income = "10000";
+        int i = 0;
+        BigDecimal tempcost=new BigDecimal("0");
+        BigDecimal tempincome=new BigDecimal("0");
+        BigDecimal zerocost=new BigDecimal("0");
+        String nowday =DateFormat.getDateTimeInstance(2, 2, Locale.CHINESE).format(new java.util.Date());
+        while(i >bills.length||bills[i].getDate().compareTo(nowday)>0){
+            if(bills[i].getNum().compareTo(zerocost)==-1){
+                tempcost=tempcost.add(bills[i].getNum());
+            }
+            else{
+                tempincome=tempincome.add(bills[i].getNum());
+            }
+            i++;
+        }
+        cost = tempcost.toString();
+        income = tempincome.toString();
     }
 
     private void getbudgetThisMonth(){
@@ -176,20 +206,34 @@ public class MainActivity extends AppCompatActivity {
         todayCost = "-100";
         todayIncome = "1234";
     }
-
-    private void getFiveMostRecentBill(){
+    private Bill[] getFiveMostRecentBill(){
+        Bill[] fiveMostRecentBill = new Bill[4];
+        int i=0;
+        for(Bill temp:bills){
+            fiveMostRecentBill[i]=temp;
+            i++;
+            if(i==5){
+                break;
+            }
+        }
+        return fiveMostRecentBill;
+    /**样例
         Bill b = new Bill("0",new BigDecimal("666.321"),"an","t1","t2",
-                "zhi","we","2020年10月02日 23:24",R.drawable.icon_dollar,"qwe");
+                "zhi","we", new java.sql.Date(2020,10,02)，R.drawable.icon_dollar,"qwe");
         bills = new Bill[]{b,b,b,b,b};
+     */
+
     }
     // TODO 实现以上接口
-
     private void init(){
         getBtns();
+        getBill();
         getbudgetThisMonth();
         getCostAndIncome();
         getMonth();
         getTodayCostAndIncome();
+
+
         OnClick onClick = new OnClick();
         setBtnListener(onClick);
         TextView tvMonth = findViewById(R.id.tvMonth);
@@ -206,9 +250,10 @@ public class MainActivity extends AppCompatActivity {
         tvMonth.setText(month);
         getFiveMostRecentBill();
         ListView listView = findViewById(R.id.lvRecent);
-        ArrayAdapter<Bill> arrayAdapter = new BillAdapter(MainActivity.this,R.layout.adapter_bill,bills);
+        ArrayAdapter<Bill> arrayAdapter = new BillAdapter(MainActivity.this,R.layout.adapter_bill,getFiveMostRecentBill());
         listView.setAdapter(arrayAdapter);
     }
+
 }
 
 

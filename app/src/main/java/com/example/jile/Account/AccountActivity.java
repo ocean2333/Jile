@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.jile.Bean.User;
 import com.example.jile.Database.Dao.AccountDao;
+import com.example.jile.LogoActivity;
 import com.example.jile.MainView.MainActivity;
 import com.example.jile.Bean.Account;
 import com.example.jile.R;
@@ -35,20 +36,29 @@ public class AccountActivity extends AppCompatActivity {
     // TODO 实现以下接口(测
     // TODO 获取所有账户信息 没有则返回null（测
     private void getAccounts(){
-        AccountDao accountDao= new AccountDao(this,"");
-        cardAccount=accountDao.queryoffactor("type","cardAccount").toArray(new Account[accountDao.query().size()]);
-        cashAccount=accountDao.queryoffactor("type","cashAccount").toArray(new Account[accountDao.query().size()]);
-        virtualAccount=accountDao.queryoffactor("type","virtualAccount").toArray(new Account[accountDao.query().size()]);
-        wealthAccount= accountDao.queryoffactor("type","wealthAccount").toArray(new Account[accountDao.query().size()]);
+        cardAccount= LogoActivity.accountDao.querybyskey("type","cardAccount").toArray(new Account[LogoActivity.accountDao.query().size()]);
+        cashAccount=LogoActivity.accountDao.querybyskey("type","cashAccount").toArray(new Account[LogoActivity.accountDao.query().size()]);
+        virtualAccount=LogoActivity.accountDao.querybyskey("type","virtualAccount").toArray(new Account[LogoActivity.accountDao.query().size()]);
+        wealthAccount= LogoActivity.accountDao.querybyskey("type","wealthAccount").toArray(new Account[LogoActivity.accountDao.query().size()]);
+    }
+    private BigDecimal getMoneysofAccount(Account[] account){
+        BigDecimal sumMoney=new BigDecimal("0");
+        for(Account money:account){
+            sumMoney=sumMoney.add(money.getBalance());
+        }
+        return sumMoney;
     }
     private void getMoneys(){
-
-        cashMoney = "12.34";
-        wealthMoney = "56.78";
-        virtualMoney = "12341.32";
-        cardMoney = "2647.34";
-        totalMoney = "123456.78";
-        deltaMoney = "-9990.12";
+        BigDecimal cashMoneyTemp,wealthMoneyTemp,virtualMoneyTemp,cardMoneyTemp;
+        cardMoneyTemp=getMoneysofAccount(cardAccount);
+        cashMoneyTemp=getMoneysofAccount(cashAccount);
+        virtualMoneyTemp=getMoneysofAccount(virtualAccount);
+        wealthMoneyTemp=getMoneysofAccount(wealthAccount);
+        cardMoney=cardMoneyTemp.toString();
+        cashMoney=cashMoneyTemp.toString();
+        virtualMoney=virtualMoneyTemp.toString();
+        wealthMoney=wealthMoneyTemp.toString();
+        totalMoney=cardMoneyTemp.add(cashMoneyTemp.add(virtualMoneyTemp.add(wealthMoneyTemp))).toString();
     }
     // TODO 实现以上接口
 

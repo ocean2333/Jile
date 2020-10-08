@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.jile.Bean.Account;
+import com.example.jile.LogoActivity;
 import com.example.jile.R;
 
 public class CreateNewAccountActivity extends AppCompatActivity {
@@ -39,6 +40,6 @@ public class CreateNewAccountActivity extends AppCompatActivity {
 
     // TODO 实现以下接口
     private void addNewAccountToDB(Account account){
-
+        LogoActivity.accountDao.insert(account);
     }
 }
