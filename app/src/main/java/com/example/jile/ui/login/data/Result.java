@@ -16,6 +16,9 @@ public class Result<T> {
         } else if (this instanceof Result.Error) {
             Result.Error error = (Result.Error) this;
             return "Error[exception=" + error.getError().toString() + "]";
+        } else if (this instanceof Result.Failed){
+            Result.Failed failed = (Result.Failed) this;
+            return "Failed[failure="+failed.getFailure() +"]";
         }
         return "!";
     }
@@ -53,7 +56,7 @@ public class Result<T> {
             this.failure = failure;
         }
 
-        public String getError() {
+        public String getFailure() {
             return this.failure;
         }
     }

@@ -24,12 +24,16 @@
         android:layout_marginTop="100dp"
         android:text="用户名"
         android:textSize="20sp"
+        android:maxWidth="100dp"
         android:gravity="center_vertical|start"
         android:layout_marginLeft="50dp"/>
     <EditText
+        android:textSize="15sp"
         android:id="@+id/etUserName"
         android:layout_width="200dp"
         android:layout_height="50dp"
+        android:lines="1"
+        android:inputType="text"
         android:layout_toEndOf="@+id/tvUserName"
         android:layout_below="@+id/ll_top"
         android:layout_marginTop="100dp"
@@ -44,6 +48,9 @@
         android:gravity="center_vertical|start"
         android:layout_marginLeft="50dp"/>
     <EditText
+        android:maxWidth="100dp"
+        android:textSize="15sp"
+        android:lines="1"
         android:id="@+id/etPassword"
         android:inputType="textPassword"
         android:layout_width="200dp"
@@ -61,10 +68,13 @@
         android:gravity="center_vertical|start"
         android:layout_marginLeft="50dp"/>
     <EditText
+        android:maxWidth="100dp"
+        android:lines="1"
         android:inputType="textPassword"
         android:id="@+id/etRepeatPassword"
         android:layout_width="200dp"
         android:layout_height="50dp"
+        android:textSize="15sp"
         android:layout_toEndOf="@+id/tvRepeatPassword"
         android:layout_below="@+id/tvPassword"
         android:hint="请再次输入密码"/>
@@ -79,6 +89,8 @@
         android:gravity="bottom"
         android:textSize="20sp"/>
     <EditText
+        android:singleLine="true"
+        android:lines="1"
         android:id="@+id/etQuestion"
         android:layout_width="300dp"
         android:layout_height="50dp"
@@ -95,6 +107,8 @@
         android:gravity="bottom"
         android:textSize="20sp"/>
     <EditText
+        android:lines="1"
+        android:singleLine="true"
         android:id="@+id/etAns"
         android:layout_width="300dp"
         android:layout_height="50dp"

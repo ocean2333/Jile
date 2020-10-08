@@ -33,4 +33,7 @@ class LoginResult {
     Integer getError() {
         return error;
     }
+
+    @Nullable
+    String getFailure(){return failure;}
 }
