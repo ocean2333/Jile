@@ -31,11 +31,17 @@ public class MemDao {
         /**
          * todo
          */
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        String sql = "delete from "+mUsername+"_Mem"+" where uuid = "+"'"+mem.getUuid()+"'";
+        db.execSQL(sql);
+        db.close();
     }
-    public  void update(){
+    public  void update(Mem mem){
         /**
          * todo
          */
+        delete(mem);
+        insert(mem);
     }
     public List<Mem> query(){
         SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -56,4 +62,24 @@ public class MemDao {
         db.close();
         return re;
     }
+    public List<Mem> querybyskey(String keyname,String value){
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        String sql = "select * from "+mUsername+"_Mem  where "+keyname+" = "+"'"+value+"'";
+        Cursor cursor = db.rawQuery(sql,null);
+        List<Mem> re = new LinkedList<Mem>();
+        /**
+         *         private String name;
+         */
+        int uuidindex = cursor.getColumnIndex("uuid");
+        int nameindex = cursor.getColumnIndex("name");
+
+        while(cursor.moveToNext()){
+
+            Mem m = new Mem(cursor.getString(uuidindex),cursor.getString(nameindex));
+            re.add(m);
+        }
+        db.close();
+        return re;
+    }
 }
+

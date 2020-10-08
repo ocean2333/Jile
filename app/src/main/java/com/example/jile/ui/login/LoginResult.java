@@ -10,9 +10,14 @@ class LoginResult {
     private LoggedInUserView success;
     @Nullable
     private Integer error;
-
+    @Nullable
+    private String failure;
     LoginResult(@Nullable Integer error) {
         this.error = error;
+    }
+
+    LoginResult(String failure){
+        this.failure=failure;
     }
 
     LoginResult(@Nullable LoggedInUserView success) {

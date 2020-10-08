@@ -12,7 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.jile.Bean.User;
+import com.example.jile.LogoActivity;
 import com.example.jile.R;
+
+import java.util.List;
 
 public class ChangePasswordActivity extends AppCompatActivity {
     private String newPassword,pwd1,pwd2;
@@ -93,8 +97,21 @@ public class ChangePasswordActivity extends AppCompatActivity {
         });
     }
 
-    // TODO 实现该接口 修改数据库中的密码
+    // TODO 实现该接口 修改数据库中的密码(待测试)
     private void resetPassword(String username,String newPassword){
+        List<User> userList = LogoActivity.userDao.query();
+        User user = null;
+        for(User u:userList){
+            if(u.getName().equals(username)){
+                user = u;
+            }
+        }
+        if(user==null){
+            Toast.makeText(ChangePasswordActivity.this,"error in ChangePasswordActivity",Toast.LENGTH_SHORT).show();
+        }else{
+            user.setPassword(newPassword);
+            LogoActivity.userDao.insert(user);
+        }
         Toast.makeText(ChangePasswordActivity.this,username+"修改密码为"+pwd1,Toast.LENGTH_SHORT).show();
     }
 }

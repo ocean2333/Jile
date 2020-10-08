@@ -17,7 +17,7 @@ public class Result<T> {
             Result.Error error = (Result.Error) this;
             return "Error[exception=" + error.getError().toString() + "]";
         }
-        return "";
+        return "!";
     }
 
     // Success sub-class

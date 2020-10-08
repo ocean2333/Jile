@@ -13,7 +13,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.jile.Bean.User;
+import com.example.jile.LogoActivity;
 import com.example.jile.R;
+
+import java.util.List;
 
 public class AnsQuestionActivity extends AppCompatActivity {
     private String ans;
@@ -26,7 +30,8 @@ public class AnsQuestionActivity extends AppCompatActivity {
         final EditText etAns = findViewById(R.id.etAns);
         final TextView tvQuestion = findViewById(R.id.tvQuestion);
         final Bundle bundle = getIntent().getExtras();    //得到传过来的bundle
-        tvQuestion.setText(getQuestion(bundle.getString("username")));
+        final String username = bundle.getString("username");
+        tvQuestion.setText(getQuestion(username));
         btnNext.setEnabled(false);
         etAns.addTextChangedListener(new TextWatcher() {
             @Override
@@ -60,7 +65,7 @@ public class AnsQuestionActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isAnsCorrect(ans)){
+                if(isAnsCorrect(ans,username)){
                     startActivity(new Intent(AnsQuestionActivity.this,ChangePasswordActivity.class).putExtras(bundle));
                 }else{
                     Toast.makeText(AnsQuestionActivity.this,"答案错误",Toast.LENGTH_SHORT).show();
@@ -69,14 +74,38 @@ public class AnsQuestionActivity extends AppCompatActivity {
         });
     }
 
-    // TODO 实现以下接口
-    // TODO 检验答案是否正确
-    private boolean isAnsCorrect(String s){
-        return true;
+    // TODO 检验答案是否正确（待测试）
+    private boolean isAnsCorrect(String s,String username){
+        List<User> userList = LogoActivity.userDao.query();
+        User user = null;
+        for(User u:userList){
+            if(u.getName().equals(username)){
+                user = u;
+            }
+        }
+        if(user==null){
+            Toast.makeText(AnsQuestionActivity.this,"error in AnsQuestionActivity",Toast.LENGTH_SHORT).show();
+            return false;
+        }else{
+            return user.getAns().equals(s);
+        }
     }
 
-    // TODO 获得密保问题
-    private String getQuestion(String user){
-        return user+"这是一个密保问题的测试？";
+
+    // TODO 获得密保问题(待测试)
+    private String getQuestion(String username){
+        List<User> userList = LogoActivity.userDao.query();
+        User user = null;
+        for(User u:userList){
+            if(u.getName().equals(username)){
+                user = u;
+            }
+        }
+        if(user==null){
+            Toast.makeText(AnsQuestionActivity.this,"error in AnsQuestionActivity",Toast.LENGTH_SHORT).show();
+            return user+"这是一个密保问题的测试？";
+        }else{
+            return user.getSecurequestion();
+        }
     }
 }

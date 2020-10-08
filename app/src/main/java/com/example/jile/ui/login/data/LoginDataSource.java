@@ -1,34 +1,63 @@
 package com.example.jile.ui.login.data;
 
+import android.widget.Toast;
+
 import com.example.jile.Bean.Mem;
+import com.example.jile.Bean.User;
+import com.example.jile.LogoActivity;
+import com.example.jile.MainView.MainActivity;
+import com.example.jile.ui.login.LoginActivity;
+import com.example.jile.ui.login.SetGestureLockActivity;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
  */
 public class LoginDataSource {
-    //TODO 实现以下接口
     public Result<Mem> login(String username, String password) {
         try {
-            // TODO: 认证用户是否成功登录，并创建一个LoggedInUser 失败则返回
-            Mem fakeUser =
-                    new Mem(
-                            java.util.UUID.randomUUID().toString(),
-                            "Jane Doe");
-            return new Result.Success<>(fakeUser);
+            if(authenticate(username,password)){
+                Mem User = userInfo(username);
+                saveLoginUser(username);
+                return new Result.Success<>(User);
+            }else{
+                return new Result.Failed("Wrong Password or User is not EXIST!!!");
+            }
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));
         }
     }
 
-    //TODO 记录登陆状态
-    private void rememberLogin(){
-        
+    // TODO 验证登录(待测试)
+    private boolean authenticate(String username,String password){
+        List<User> userList = LogoActivity.userDao.query();
+        User user = null;
+        for(User u:userList){
+            if(u.getName().equals(username)){
+                user = u;
+            }
+        }
+        if(user==null){
+            return false;
+        }else{
+            return user.getPassword().equals(password);
+        }
     }
 
-    // TODO 去除登陆状态，使得打开应用时需要重新认证
-    public void logout() {
+    // TODO 返回登录成功的用户信息(待测试)
+    private Mem userInfo(String username){
+        return new Mem(java.util.UUID.randomUUID().toString(),
+                username);
+    }
 
+    // 往sharedpreference里存当前user
+    private void saveLoginUser(String username){
+        LogoActivity.sp.edit().putString("loginUser",username).apply();
+    }
+
+    // 暂不实现
+    public void logout() {
     }
 }

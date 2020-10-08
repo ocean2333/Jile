@@ -20,9 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jile.Account.AccountActivity;
+import com.example.jile.Database.Dao.AccountDao;
+import com.example.jile.Database.Dao.BillDao;
+import com.example.jile.Database.Dao.MemDao;
 import com.example.jile.Detail.DeatilActivity;
 import com.example.jile.Graph.GraphActivity;
 import com.example.jile.Bean.Bill;
+import com.example.jile.LogoActivity;
 import com.example.jile.New.NewBIllActivity;
 import com.example.jile.R;
 import com.example.jile.Setting.SettingActivity;
@@ -39,6 +43,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        String user = LogoActivity.sp.getString("loginUser",null);
+        if(user!=null){
+            LogoActivity.accountDao = new AccountDao(this,user);
+            LogoActivity.billDao = new BillDao(this,user);
+            LogoActivity.memDao = new MemDao(this,user);
+        }else{
+            Toast.makeText(this,"error in getLoginUser",Toast.LENGTH_SHORT).show();
+        }
         init();
     }
 
@@ -84,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     break;
                 case R.id.btnSetting:
+                    LogoActivity.sp.edit().putString("loginUser",null).apply();
                     intent = new Intent(MainActivity.this, SettingActivity.class);
                     startActivity(intent);
                     break;

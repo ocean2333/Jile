@@ -34,7 +34,10 @@ public class LoginViewModel extends ViewModel {
         if (result instanceof Result.Success) {
             Mem data = ((Result.Success<Mem>) result).getData();
             loginResult.setValue(new LoginResult(new LoggedInUserView(data.getName())));
-        } else {
+        } else if(result instanceof Result.Failed) {
+            //奇怪的问题
+            loginResult.setValue(new LoginResult("登陆失败，密码错误"));
+        }else{
             loginResult.setValue(new LoginResult(R.string.login_failed));
         }
     }

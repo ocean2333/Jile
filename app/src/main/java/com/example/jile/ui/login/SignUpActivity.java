@@ -15,7 +15,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.jile.Bean.User;
+import com.example.jile.Database.NewTableHelper;
+import com.example.jile.LogoActivity;
 import com.example.jile.R;
+
+import java.util.List;
+import java.util.UUID;
 
 public class SignUpActivity extends AppCompatActivity {
     private EditText etUsername,etPassword,etRepeatPassword,etQuestion,etAns;
@@ -25,6 +30,27 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         init();
+        etUsername.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(hasSameNameUser(s.toString())){
+                    etUsername.setError("用户名已存在");
+                    btnNext.setEnabled(false);
+                }else{
+                    btnNext.setEnabled(true);
+                }
+            }
+        });
         etQuestion.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -107,7 +133,6 @@ public class SignUpActivity extends AppCompatActivity {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
             if (isShouldHideInput(v, ev)) {
-
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
@@ -143,13 +168,31 @@ public class SignUpActivity extends AppCompatActivity {
         return false;
     }
 
-    private User createNewUser(){
-        return new User("567",etUsername.getText().toString(),etPassword.getText().toString(),
-                etQuestion.getText().toString(),etAns.getText().toString(),"?",R.drawable.icon_dollar,"hhh","");
+    private boolean hasSameNameUser(String username){
+        List<User> userList = LogoActivity.userDao.query();
+        User user = null;
+        for(User u:userList){
+            if(u.getName().equals(username)){
+                user = u;
+            }
+        }
+        if(user==null){
+            return false;
+        }else{
+            return true;
+        }
     }
 
-    // TODO 实现以下接口
+    private User createNewUser(){
+        return new User(UUID.randomUUID().toString(),etUsername.getText().toString(),etPassword.getText().toString(),
+                etQuestion.getText().toString(),etAns.getText().toString(),"暂无",R.drawable.icon_dollar,"","fku");
+    }
+
+    // TODO 实现以下接口(待测试)
     private void addNewUserToDB(User user){
+        LogoActivity.userDao.insert(user);
+        NewTableHelper newTableHelper = new NewTableHelper(this,user.getName());
+        newTableHelper.create();
         Toast.makeText(SignUpActivity.this,"got"+user.getName(),Toast.LENGTH_SHORT).show();
     }
 }

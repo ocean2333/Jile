@@ -12,12 +12,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.jile.Bean.Bill;
 import com.example.jile.MainView.MainActivity;
 import com.example.jile.Bean.Account;
 import com.example.jile.R;
 
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class AccountActivity extends AppCompatActivity {
     private Button btnBack,btnCreateNewAccount;

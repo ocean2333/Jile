@@ -26,8 +26,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.jile.Bean.Mem;
 import com.example.jile.MainView.MainActivity;
 import com.example.jile.R;
+import com.example.jile.ui.login.data.Result;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -96,13 +98,13 @@ public class LoginActivity extends AppCompatActivity {
                     showLoginFailed(loginResult.getError());
                 }
                 if (loginResult.getSuccess() != null) {
+                    //Complete and destroy login activity once successful
                     updateUiWithUser(loginResult.getSuccess());
+                    setResult(Activity.RESULT_OK);
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 }
-                setResult(Activity.RESULT_OK);
-
-                //Complete and destroy login activity once successful
+                Toast.makeText(LoginActivity.this,"登陆失败,密码错误或用户不存在",Toast.LENGTH_SHORT).show();
                 //finish();
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }
         });
 

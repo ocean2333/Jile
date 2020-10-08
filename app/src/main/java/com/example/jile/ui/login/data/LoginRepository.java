@@ -11,11 +11,10 @@ public class LoginRepository {
     private static volatile LoginRepository instance;
 
     private LoginDataSource dataSource;
-
     // If user credentials will be cached in local storage, it is recommended it be encrypted
     // @see https://developer.android.com/training/articles/keystore
     private Mem user = null;
-
+    private String errorMessage = null;
     // private constructor : singleton access
     private LoginRepository(LoginDataSource dataSource) {
         this.dataSource = dataSource;
@@ -43,13 +42,17 @@ public class LoginRepository {
         // @see https://developer.android.com/training/articles/keystore
     }
 
+    private void setErrorMessage(String errorMessage){
+        this.errorMessage = errorMessage;
+    }
+
     public Result<Mem> login(String username, String password) {
         // handle login
         Result<Mem> result = dataSource.login(username, password);
         if (result instanceof Result.Success) {
             setLoggedInUser(((Result.Success<Mem>) result).getData());
         }else if(result instanceof Result.Failed){
-
+            setErrorMessage(((Result.Failed)result).getError());
         }
         return result;
     }

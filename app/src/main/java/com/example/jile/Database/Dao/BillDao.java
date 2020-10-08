@@ -31,11 +31,17 @@ public class BillDao {
         /**
          * todo
          */
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        String sql = "delete from "+mUsername+"_Bill"+" where uuid = "+"'"+bill.getUuid()+"'";
+        db.execSQL(sql);
+        db.close();
     }
-    public  void update(){
+    public  void update(Bill bill){
         /**
          * todo
          */
+        delete(bill);
+        insert(bill);
     }
     public List<Bill> query(){
         SQLiteDatabase db = mHelper.getWritableDatabase();
@@ -72,4 +78,41 @@ public class BillDao {
         db.close();
         return re;
     }
+
+    public List<Bill> querybyskey(String keyname,String value){
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        String sql = "select * from "+ mUsername +"_Bill where "+keyname+" = "+"'"+value+"'";
+        Cursor cursor = db.rawQuery(sql,null);
+        List<Bill> re = new LinkedList<Bill>();
+        /**
+         *     private BigDecimal num;
+         *     private String accountname;
+         *     private String first;
+         *     private String second;
+         *     private String member;
+         *     private String store;
+         *     private String date;
+         *     private int iconId;
+         *     private String other;
+         */
+        int uuidindex = cursor.getColumnIndex("uuid");
+        int numindex = cursor.getColumnIndex("num");
+        int accountnameindex = cursor.getColumnIndex("accountname");
+        int firstindex = cursor.getColumnIndex("first");
+        int secondindex = cursor.getColumnIndex("second");
+        int memberindex = cursor.getColumnIndex("member");
+        int storeindex = cursor.getColumnIndex("store");
+        int dateindex = cursor.getColumnIndex("date");
+        int iconidindex = cursor.getColumnIndex("iconId");
+        int otherindex = cursor.getColumnIndex("other");
+
+        while(cursor.moveToNext()){
+
+            Bill m = new Bill(cursor.getString(uuidindex),new BigDecimal(cursor.getDouble(numindex)),cursor.getString(accountnameindex),cursor.getString(firstindex),cursor.getString(secondindex),cursor.getString(memberindex),cursor.getString(storeindex),cursor.getString(dateindex),cursor.getInt(iconidindex),cursor.getString(otherindex));
+            re.add(m);
+        }
+        db.close();
+        return re;
+    }
 }
+

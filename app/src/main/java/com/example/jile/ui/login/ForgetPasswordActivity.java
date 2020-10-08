@@ -14,7 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.jile.Bean.User;
+import com.example.jile.LogoActivity;
 import com.example.jile.R;
+
+import java.util.List;
 
 public class ForgetPasswordActivity extends AppCompatActivity {
     private String username;
@@ -110,8 +114,21 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         return false;
     }
 
-    // TODO 实现该接口 检查用户是否存在
+    // TODO 实现该接口 检查用户是否存在（待测试）
     private boolean checkIsUserExists(String username){
-        return true;
+        List<User> userList = LogoActivity.userDao.query();
+        User user = null;
+        for(User u:userList){
+            if(u.getName().equals(username)){
+                user = u;
+            }
+        }
+        if(user==null){
+            Toast.makeText(ForgetPasswordActivity.this,"用户不存在",Toast.LENGTH_SHORT).show();
+            return false;
+        }else{
+            return true;
+        }
+
     }
 }
