@@ -15,6 +15,7 @@ public class LoginRepository {
     // @see https://developer.android.com/training/articles/keystore
     private Mem user = null;
     private String errorMessage = null;
+    private String failure = null;
     // private constructor : singleton access
     private LoginRepository(LoginDataSource dataSource) {
         this.dataSource = dataSource;
@@ -52,8 +53,14 @@ public class LoginRepository {
         if (result instanceof Result.Success) {
             setLoggedInUser(((Result.Success<Mem>) result).getData());
         }else if(result instanceof Result.Failed){
-            setErrorMessage(((Result.Failed)result).getError());
+            setFailure(((Result.Failed) result).getFailure());
+        }else if(result instanceof Result.Error){
+            setErrorMessage(((Result.Error) result).getError().toString());
         }
         return result;
+    }
+
+    public void setFailure(String failure) {
+        this.failure = failure;
     }
 }

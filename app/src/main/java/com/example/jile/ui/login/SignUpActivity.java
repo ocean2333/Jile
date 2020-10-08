@@ -25,11 +25,21 @@ import java.util.UUID;
 public class SignUpActivity extends AppCompatActivity {
     private EditText etUsername,etPassword,etRepeatPassword,etQuestion,etAns;
     private Button btnBack,btnNext;
+    private boolean b1=false,b2=false,b3=false,b4=false,b5=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         init();
+        btnNext.setEnabled(false);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(b1&&b2&&b3&&b4&&b5){
+                    btnNext.setEnabled(true);
+                }
+            }
+        }).start();
         etUsername.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -46,8 +56,59 @@ public class SignUpActivity extends AppCompatActivity {
                 if(hasSameNameUser(s.toString())){
                     etUsername.setError("用户名已存在");
                     btnNext.setEnabled(false);
+                }else if(s.toString().matches("[0-9]+")){
+                    btnNext.setEnabled(false);
+                    etUsername.setError("用户名不能为纯数字");
+                }else if(s.length()>20){
+                    btnNext.setEnabled(false);
+                    etUsername.setError("用户名过长，应小于20个字符");
                 }else{
-                    btnNext.setEnabled(true);
+                    b1=true;
+                }
+            }
+        });
+        etPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()<5){
+                    etPassword.setError("密码过短，应大于5个字符");
+                    btnNext.setEnabled(false);
+                }else if(s.length()>20){
+                    btnNext.setEnabled(false);
+                    etPassword.setError("密码过长，应小于20个字符");
+                }else{
+                    b2=true;
+                }
+            }
+        });
+        etRepeatPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(etPassword.getText().toString().equals(etRepeatPassword.getText().toString())){
+                    b3=true;
+                }else{
+                    etRepeatPassword.setError("两次密码不相同");
+                    btnNext.setEnabled(false);
                 }
             }
         });
@@ -66,6 +127,9 @@ public class SignUpActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if (s.length() > 20){
                     etQuestion.setError("问题过长（应小于20个字符）");
+                    btnNext.setEnabled(false);
+                }else{
+                    b4=true;
                 }
             }
         });
@@ -83,7 +147,10 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() > 10){
+                    btnNext.setEnabled(false);
                     etAns.setError("输入超长（应小于10个字符）");
+                }else{
+                    b5=true;
                 }
             }
         });

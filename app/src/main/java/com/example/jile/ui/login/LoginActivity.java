@@ -102,9 +102,11 @@ public class LoginActivity extends AppCompatActivity {
                     updateUiWithUser(loginResult.getSuccess());
                     setResult(Activity.RESULT_OK);
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
                 }
-                Toast.makeText(LoginActivity.this,"登陆失败,密码错误或用户不存在",Toast.LENGTH_SHORT).show();
-                //finish();
+                if(loginResult.getFailure()!=null){
+                    Toast.makeText(LoginActivity.this,"登陆失败,密码错误或用户不存在",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
