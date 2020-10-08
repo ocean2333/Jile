@@ -12,20 +12,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.jile.Bean.Bill;
+import com.example.jile.Bean.User;
+import com.example.jile.Database.Dao.AccountDao;
 import com.example.jile.MainView.MainActivity;
 import com.example.jile.Bean.Account;
 import com.example.jile.R;
 
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class AccountActivity extends AppCompatActivity {
     private Button btnBack,btnCreateNewAccount;
-    private Account[] cashAccount,wealthAccount,virtualAccount,cardAccount;
+    private Account[] cashAccount,virtualAccount,cardAccount,wealthAccount;
     private String totalMoney,deltaMoney,cashMoney,wealthMoney,virtualMoney,cardMoney;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,22 +32,23 @@ public class AccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account);
         init();
     }
-    // TODO 实现以下接口
-    // TODO 获取所有账户信息 没有则返回null
+    // TODO 实现以下接口(测
+    // TODO 获取所有账户信息 没有则返回null（测
     private void getAccounts(){
-        cardAccount=null;
-        cashAccount=null;
-        virtualAccount=null;
-        Account sampleAccount = new Account("uuid","1","nothing",new BigDecimal("12346.654321"),"CNY",R.drawable.icon_dollar,"?");
-        wealthAccount= new Account[]{sampleAccount, sampleAccount};
+        AccountDao accountDao= new AccountDao(this,"");
+        cardAccount=accountDao.queryoffactor("type","cardAccount").toArray(new Account[accountDao.query().size()]);
+        cashAccount=accountDao.queryoffactor("type","cashAccount").toArray(new Account[accountDao.query().size()]);
+        virtualAccount=accountDao.queryoffactor("type","virtualAccount").toArray(new Account[accountDao.query().size()]);
+        wealthAccount= accountDao.queryoffactor("type","wealthAccount").toArray(new Account[accountDao.query().size()]);
     }
     private void getMoneys(){
-        totalMoney = "123456.78";
-        deltaMoney = "-9990.12";
+
         cashMoney = "12.34";
         wealthMoney = "56.78";
         virtualMoney = "12341.32";
         cardMoney = "2647.34";
+        totalMoney = "123456.78";
+        deltaMoney = "-9990.12";
     }
     // TODO 实现以上接口
 
