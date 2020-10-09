@@ -15,6 +15,7 @@ import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.example.jile.Bean.Account;
 import com.example.jile.Bean.Bill;
 import com.example.jile.Database.Dao.BillDao;
 import com.example.jile.LogoActivity;
@@ -146,6 +147,9 @@ public class NewBIllActivity extends AppCompatActivity {
     // TODO 添加bill到数据库
     private void addNewBillToDB(Bill bill){
         LogoActivity.billDao.insert(bill);
+        Account[] tempaccount =LogoActivity.accountDao.querybyskey("selfname","accountname").toArray(new Account[0]);
+        tempaccount[0].setBalance(tempaccount[0].getBalance().add(bill.getNum()));
+        LogoActivity.accountDao.update(tempaccount[0]);
     }
 
     // TODO 获得最近用过的店
