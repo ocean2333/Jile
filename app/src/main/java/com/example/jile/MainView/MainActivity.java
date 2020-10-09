@@ -36,7 +36,9 @@ import com.example.jile.Setting.SettingActivity;
 
 import java.math.BigDecimal;
 import java.sql.Time;
+import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnToDetail,btnAccount,btnDetail,btnNew,btnGraph,btnSetting,btnModifyBudget;
     private String month,cost,income,budget,todayCost,todayIncome;
     private BigDecimal budgetInput;
-    private Bill[] bills;
+    private static Bill[] bills;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +62,11 @@ public class MainActivity extends AppCompatActivity {
         }else{
             Toast.makeText(this,"error in getLoginUser",Toast.LENGTH_SHORT).show();
         }
-        init();
+        try {
+            init();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
     private void getBill(){
         bills= LogoActivity.billDao.query().toArray(new Bill[LogoActivity.billDao.query().size()]);
@@ -91,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         btnModifyBudget.setOnClickListener(onClick);
     }
 
-    private class OnClick implements View.OnClickListener{
+    private class OnClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             Intent intent;
@@ -172,22 +178,43 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton("取消", null)
                 .show();
     }
+//todo
+    private static Bill[] getbillbytime(Date startDate,Date endDate) throws ParseException {
+        Bill[] tempBill=new Bill[bills.length];
+        int i=0;
+        for(Bill temp:bills){
+            java.text.SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd-hh-mm");
+            Date date = simpleDateFormat.parse(temp.getDate());
+            if (date.before(endDate) && date.after(startDate)){
+                tempBill[i]=temp;
+                i++;
+            }
+        }
+        return tempBill;
+    }
 
     // TODO 实现下列获取信息的接口（待测试
-    private void getCostAndIncome() {
-        int i = 0;
+    private void getCostAndIncome(String type) throws ParseException {
         BigDecimal tempcost=new BigDecimal("0");
         BigDecimal tempincome=new BigDecimal("0");
         BigDecimal zerocost=new BigDecimal("0");
-        String nowday =DateFormat.getDateTimeInstance(2, 2, Locale.CHINESE).format(new java.util.Date());
-        while(i >bills.length||bills[i].getDate().compareTo(nowday)>0){
-            if(bills[i].getNum().compareTo(zerocost)==-1){
-                tempcost=tempcost.add(bills[i].getNum());
+        Calendar rightNow = Calendar.getInstance();
+        Date endtime = rightNow.getTime();
+        if(type.equals("month")){
+            rightNow.add(Calendar.MONTH,-1);
+        }
+        else if(type.equals("day")){
+            rightNow.add(Calendar.DAY_OF_YEAR,-1);
+        }
+        Date starttime = rightNow.getTime();
+        Bill[] tempBill = getbillbytime(starttime,endtime);
+        for(Bill i:tempBill){
+            if (i.getNum().compareTo(zerocost)==-1){
+                tempcost=tempcost.add(i.getNum());
             }
-            else{
-                tempincome=tempincome.add(bills[i].getNum());
+            else {
+                tempincome=tempincome.add(i.getNum());
             }
-            i++;
         }
         cost = tempcost.toString();
         income = tempincome.toString();
@@ -200,11 +227,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setBudgetThisMonth(BigDecimal budget){
 
-    }
-
-    private void getTodayCostAndIncome(){
-        todayCost = "-100";
-        todayIncome = "1234";
     }
     private Bill[] getFiveMostRecentBill(){
         Bill[] fiveMostRecentBill = new Bill[4];
@@ -225,15 +247,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
     // TODO 实现以上接口
-    private void init(){
+    private void init() throws ParseException {
         getBtns();
         getBill();
         getbudgetThisMonth();
-        getCostAndIncome();
+        getCostAndIncome("month");
         getMonth();
-        getTodayCostAndIncome();
-
-
+        getCostAndIncome("day");
         OnClick onClick = new OnClick();
         setBtnListener(onClick);
         TextView tvMonth = findViewById(R.id.tvMonth);
