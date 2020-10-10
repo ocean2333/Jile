@@ -13,10 +13,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.example.jile.Bean.Bill;
+import com.example.jile.Constant.Constants;
 import com.example.jile.R;
 
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Date;
 
 public class BillAdapter extends ArrayAdapter<Bill> {
     private int resourceId;
@@ -29,20 +31,29 @@ public class BillAdapter extends ArrayAdapter<Bill> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
         Bill bill = getItem(position);
-        View view = LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
-        ImageView im = view.findViewById(R.id.ivIcon);
-        TextView tvTime = view.findViewById(R.id.tvTime);
-        TextView tvDay = view.findViewById(R.id.tvDay);
-        TextView tvSecondClass = view.findViewById(R.id.tvSecondClass);
-        TextView tvStore = view.findViewById(R.id.tvStore);
-        TextView tvMoney = view.findViewById(R.id.tvMoney);
-        im.setImageResource(bill.getIconId());
-        tvTime.setText(getShortDate(bill.getDate().toString()));
-        tvDay.setText(getWeek(bill.getDate().toString()));
-        tvSecondClass.setText(bill.getFirst());
-        tvMoney.setText(bill.getNum().toString());
-        tvStore.setText(bill.getStore());
-        return view;
+        if(bill==null){
+            return null;
+        }else{
+            View view = LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
+            ImageView im = view.findViewById(R.id.ivIcon);
+            TextView tvTime = view.findViewById(R.id.tvTime);
+            TextView tvDay = view.findViewById(R.id.tvDay);
+            TextView tvSecondClass = view.findViewById(R.id.tvSecondClass);
+            TextView tvStore = view.findViewById(R.id.tvStore);
+            TextView tvMoney = view.findViewById(R.id.tvMoney);
+            im.setImageResource(bill.getIconId());
+            try {
+                tvTime.setText(getShortDate(bill.getDate().toString()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            tvDay.setText(getWeek(bill.getDate().toString()));
+            tvSecondClass.setText(bill.getFirst());
+            tvMoney.setText(bill.getNum().toString());
+            tvStore.setText(bill.getStore());
+            return view;
+        }
+
     }
 
     /**
@@ -69,7 +80,6 @@ public class BillAdapter extends ArrayAdapter<Bill> {
             c.setTime(format.parse(pTime));
 
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         if (c.get(Calendar.DAY_OF_WEEK) == 1) {
@@ -96,8 +106,8 @@ public class BillAdapter extends ArrayAdapter<Bill> {
         return Week;
     }
 
-    private String getShortDate(String date){
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
-        return date.split("年")[1].split(" ")[0];
+    private String getShortDate(String date) throws ParseException {
+        Date d =  Constants.DATE_FORMAT_SIMPLE.parse(date);
+        return Constants.DATE_FORMAT_MONTH_DAY.format(d);
     }
 }

@@ -14,11 +14,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.jile.Bean.Account;
 import com.example.jile.Bean.User;
 import com.example.jile.Database.NewTableHelper;
 import com.example.jile.LogoActivity;
 import com.example.jile.R;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,15 +33,7 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         init();
-        btnNext.setEnabled(false);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if(b1&&b2&&b3&&b4&&b5){
-                    btnNext.setEnabled(true);
-                }
-            }
-        }).start();
+        btnNext.setEnabled(true);
         etUsername.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -53,6 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+
                 if(hasSameNameUser(s.toString())){
                     etUsername.setError("用户名已存在");
                     btnNext.setEnabled(false);
@@ -64,6 +59,9 @@ public class SignUpActivity extends AppCompatActivity {
                     etUsername.setError("用户名过长，应小于20个字符");
                 }else{
                     b1=true;
+                }
+                if(b1&&b2&&b3&&b4&&b5){
+                    btnNext.setEnabled(true);
                 }
             }
         });
@@ -89,6 +87,9 @@ public class SignUpActivity extends AppCompatActivity {
                 }else{
                     b2=true;
                 }
+                if(b1&&b2&&b3&&b4&&b5){
+                    btnNext.setEnabled(true);
+                }
             }
         });
         etRepeatPassword.addTextChangedListener(new TextWatcher() {
@@ -109,6 +110,9 @@ public class SignUpActivity extends AppCompatActivity {
                 }else{
                     etRepeatPassword.setError("两次密码不相同");
                     btnNext.setEnabled(false);
+                }
+                if(b1&&b2&&b3&&b4&&b5){
+                    btnNext.setEnabled(true);
                 }
             }
         });
@@ -131,6 +135,9 @@ public class SignUpActivity extends AppCompatActivity {
                 }else{
                     b4=true;
                 }
+                if(b1&&b2&&b3&&b4&&b5){
+                    btnNext.setEnabled(true);
+                }
             }
         });
         etAns.addTextChangedListener(new TextWatcher() {
@@ -152,6 +159,9 @@ public class SignUpActivity extends AppCompatActivity {
                 }else{
                     b5=true;
                 }
+                if(b1&&b2&&b3&&b4&&b5){
+                    btnNext.setEnabled(true);
+                }
             }
         });
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -167,10 +177,10 @@ public class SignUpActivity extends AppCompatActivity {
                     Intent intent = new Intent(SignUpActivity.this,SetGestureLockActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("username",etUsername.getText().toString());
-                    /*bundle.putString("password",etPassword.getText().toString());
+                    bundle.putString("password",etPassword.getText().toString());
                     bundle.putString("question",etQuestion.getText().toString());
-                    bundle.putString("ans",etAns.getText().toString());*/
-                    addNewUserToDB(createNewUser());
+                    bundle.putString("ans",etAns.getText().toString());
+                    //addNewUserToDB(createNewUser());
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }else{
@@ -250,16 +260,4 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    private User createNewUser(){
-        return new User(UUID.randomUUID().toString(),etUsername.getText().toString(),etPassword.getText().toString(),
-                etQuestion.getText().toString(),etAns.getText().toString(),"暂无",R.drawable.icon_dollar,"","fku");
-    }
-
-    // TODO 实现以下接口(待测试)
-    private void addNewUserToDB(User user){
-        LogoActivity.userDao.insert(user);
-        NewTableHelper newTableHelper = new NewTableHelper(this,user.getName());
-        newTableHelper.create();
-        Toast.makeText(SignUpActivity.this,"got"+user.getName(),Toast.LENGTH_SHORT).show();
-    }
 }

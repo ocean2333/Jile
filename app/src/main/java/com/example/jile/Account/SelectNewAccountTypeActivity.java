@@ -16,6 +16,8 @@ import com.example.jile.New.NewBIllActivity;
 import com.example.jile.R;
 import com.example.jile.Setting.SettingActivity;
 
+import static com.example.jile.Constant.Constants.CASH_ACCOUNT;
+
 public class SelectNewAccountTypeActivity extends AppCompatActivity {
     private Button btnCreateNewCashAccount,btnCreateNewCreditCardAccount,btnCreateNewBankAccount,btnCreateNewFinanceAccount,btnCreateNewVirtualAccount;
     @Override
@@ -44,35 +46,33 @@ public class SelectNewAccountTypeActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Intent intent;
-            int accountType;
+            String accountType;
             switch (v.getId()){
                 case R.id.btnCreateNewCashAccount:
-                    accountType=0;
+                    accountType=CASH_ACCOUNT;
                     break;
                 case R.id.btnCreateNewCreditCardAccount:
-                    accountType=1;
+                    accountType=CASH_ACCOUNT;
                     break;
                 case R.id.btnCreateNewBankAccount:
-                    accountType=2;
+                    //accountType=BANK_ACCOUNT;
                     break;
                 case R.id.btnCreateNewFinanceAccount:
-                    accountType=3;
+                    //accountType=3;
                     break;
                 case R.id.btnCreateNewVirtualAccount:
-                    accountType=4;
+                    //accountType=4;
                     break;
                 default:
                     Log.e("error","未知的按键id");
                     throw new IllegalStateException("Unexpected value: " + v.getId());
             }
             intent = new Intent(SelectNewAccountTypeActivity.this,CreateNewAccountActivity.class);
-            startActivityForResult(intent,accountType);
+            Bundle bundle = new Bundle();
+            //bundle.putInt("type",accountType);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-    }
 }

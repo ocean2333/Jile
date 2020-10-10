@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jile.Bean.Mem;
+import com.example.jile.Database.DatabaseHelper;
 import com.example.jile.MainView.MainActivity;
 import com.example.jile.R;
 import com.example.jile.ui.login.data.Result;
@@ -38,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DatabaseHelper helper = new DatabaseHelper(this);
         setContentView(R.layout.activity_login);
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);

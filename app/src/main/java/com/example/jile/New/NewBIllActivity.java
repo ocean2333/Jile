@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
@@ -21,9 +23,12 @@ import com.example.jile.Database.Dao.BillDao;
 import com.example.jile.LogoActivity;
 import com.example.jile.R;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class NewBIllActivity extends AppCompatActivity {
     private Button btnFirstClass,btnSecondClass,btnSetDate,btnBack,btnSave,btnSelectAccount,btnSelectMember,btnSetStore;
@@ -31,6 +36,8 @@ public class NewBIllActivity extends AppCompatActivity {
     private List<List<String>> secondClassItems;
     private int type=0;
     private OnClick onClick = new OnClick();
+    private EditText etMoneyNumber,etNote;
+    private String firstClass,secondClass,accountName,member,store,time;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +45,7 @@ public class NewBIllActivity extends AppCompatActivity {
         init();
     }
 
-    private void getBtns(){
+    private void getComponents(){
         btnSetDate = findViewById(R.id.btnSetDate);
         btnBack = findViewById(R.id.btnBack);
         btnSave = findViewById(R.id.btnSave);
@@ -47,6 +54,8 @@ public class NewBIllActivity extends AppCompatActivity {
         btnSelectAccount = findViewById(R.id.btnSelectAccount);
         btnSelectMember = findViewById(R.id.btnSelectMember);
         btnSetStore = findViewById(R.id.btnSetStore);
+        etMoneyNumber = findViewById(R.id.etMoneyNumber);
+        etNote = findViewById(R.id.etNote);
     }
 
     private class OnClick implements View.OnClickListener{
@@ -57,7 +66,8 @@ public class NewBIllActivity extends AppCompatActivity {
                     TimePickerView pvTime = new TimePickerBuilder(NewBIllActivity.this, new OnTimeSelectListener() {
                         @Override
                         public void onTimeSelect(Date date,View v) {//选中事件回调
-                            btnSetDate.setText(getTime(date));
+                            btnSetDate.setText(getNowTime(date));
+                            time = getTime(date);
                         }
                     }).setType(new boolean[]{true, true, true, true, true, false})//分别对应年月日时分秒，默认全部显示
                       .build();
@@ -69,16 +79,17 @@ public class NewBIllActivity extends AppCompatActivity {
                     break;
                 case R.id.btnSave:
                     addNewBillToDB(createNewBill());
+                    finish();
                     break;
                 case R.id.btnFirstClass:
                     OptionsPickerView pvOptions = new OptionsPickerBuilder(NewBIllActivity.this, new OnOptionsSelectListener() {
                         @Override
                         public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
                             //返回的分别是三个级别的选中位置
-                            String ftx = firstClassItems.get(options1);
-                            String stx = secondClassItems.get(options1).get(option2);
-                            btnFirstClass.setText(ftx);
-                            btnSecondClass.setText(stx);
+                            firstClass = firstClassItems.get(options1);
+                            secondClass = secondClassItems.get(options1).get(option2);
+                            btnFirstClass.setText(firstClass);
+                            btnSecondClass.setText(secondClass);
                         }
                     }).build();
                     pvOptions.setPicker(firstClassItems,secondClassItems);
@@ -89,8 +100,8 @@ public class NewBIllActivity extends AppCompatActivity {
                         @Override
                         public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
                             //返回的分别是三个级别的选中位置
-                            String ftx = accountItems.get(options1);
-                            btnSelectAccount.setText(ftx);
+                            accountName = accountItems.get(options1);
+                            btnSelectAccount.setText(accountName);
                         }
                     }).build();
                     pvOptions2.setPicker(accountItems);
@@ -101,8 +112,8 @@ public class NewBIllActivity extends AppCompatActivity {
                         @Override
                         public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
                             //返回的分别是三个级别的选中位置
-                            String ftx = memberItems.get(options1);
-                            btnSelectMember.setText(ftx);
+                            member = memberItems.get(options1);
+                            btnSelectMember.setText(member);
                         }
                     }).build();
                     pvOptions3.setPicker(memberItems);
@@ -113,8 +124,8 @@ public class NewBIllActivity extends AppCompatActivity {
                         @Override
                         public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
                             //返回的分别是三个级别的选中位置
-                            String ftx = storeItems.get(options1);
-                            btnSetStore.setText(ftx);
+                            store = storeItems.get(options1);
+                            btnSetStore.setText(store);
                         }
                     }).build();
                     pvOptions4.setPicker(storeItems);
@@ -139,39 +150,54 @@ public class NewBIllActivity extends AppCompatActivity {
     private void getItems(){
         firstClassItems = Arrays.asList("a", "b", "ccccccc");
         secondClassItems = Arrays.asList(Arrays.asList("0","asdasd","nmsl"),Arrays.asList("1","asdasd","nmsl"),Arrays.asList("2","asdasd","nmsl"));
-        accountItems = Arrays.asList("支付宝","微信","现金");
+        List<Account> al = LogoActivity.accountDao.query();
+        accountItems = new ArrayList<>();
+        for(Account a:al){
+            accountItems.add(a.getSelfname());
+        }
         memberItems = Arrays.asList("自己","lzy","zyh");
         storeItems = Arrays.asList("home","school","mall");
     }
-
-    // TODO 添加bill到数据库
-    private void addNewBillToDB(Bill bill){
-        LogoActivity.billDao.insert(bill);
-        Account[] tempaccount =LogoActivity.accountDao.querybyskey("selfname","accountname").toArray(new Account[0]);
-        tempaccount[0].setBalance(tempaccount[0].getBalance().add(bill.getNum()));
-        LogoActivity.accountDao.update(tempaccount[0]);
-    }
-
-    // TODO 获得最近用过的店
-    private String getMostRecentStore(){
-        return "home";
-    }
-    // TODO 更新最近用过的店
-    private void modifyMostRecentStore(String s){
-
-    }
-
     // TODO 实现以上接口
 
-    // TODO 构造BILL
+    // TODO 添加bill到数据库(测
+    private void addNewBillToDB(Bill bill){
+        LogoActivity.billDao.insert(bill);
+        List<Account> tempaccount =LogoActivity.accountDao.querybyskey("selfname",bill.getAccountname());
+        tempaccount.get(0).setBalance(tempaccount.get(0).getBalance().add(bill.getNum()));
+        LogoActivity.accountDao.update(tempaccount.get(0));
+    }
+
+    // TODO 获得最近用过的店（测
+    private String getMostRecentStore(){
+        String recentStore = LogoActivity.sp.getString("recentStore",null);
+        if(recentStore==null){
+            return storeItems.get(0);
+        }else{
+            return recentStore;
+        }
+    }
+    // TODO 更新最近用过的店(测
+    private void modifyMostRecentStore(String s){
+        LogoActivity.sp.edit().putString("recentStore",s).apply();
+    }
+
+    // TODO 构造BILL(测
     private Bill createNewBill(){
-        return null;
+        return new Bill(UUID.randomUUID().toString(),new BigDecimal(etMoneyNumber.getText().toString()),
+                accountName,firstClass,secondClass,member,store,time,R.drawable.icon_dollar,etNote.getText().toString());
     }
 
     private String getNowTime(){
         @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");// HH:mm:ss
         //获取当前时间
         Date date = new Date(System.currentTimeMillis());
+        return simpleDateFormat.format(date);
+    }
+
+    private String getNowTime(Date date){
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");// HH:mm:ss
+        //获取时间
         return simpleDateFormat.format(date);
     }
 
@@ -203,7 +229,7 @@ public class NewBIllActivity extends AppCompatActivity {
 
     private void init(){
         getItems();
-        getBtns();
+        getComponents();
         setListener(onClick);
         setRadioGroupListener();
         btnFirstClass.setText(firstClassItems.get(0));
@@ -212,5 +238,12 @@ public class NewBIllActivity extends AppCompatActivity {
         btnSelectMember.setText(memberItems.get(0));
         btnSetStore.setText(getMostRecentStore());
         btnSetDate.setText(getNowTime());
+        accountName = accountItems.get(0);
+        firstClass = firstClassItems.get(0);
+        secondClass = secondClassItems.get(0).get(0);
+        member = memberItems.get(0);
+        store = getMostRecentStore();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");// HH:mm:ss
+        time = simpleDateFormat.format(new Date(System.currentTimeMillis()));
     }
 }

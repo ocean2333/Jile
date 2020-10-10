@@ -8,8 +8,7 @@ import com.example.jile.Bean.Bill;
 import com.example.jile.Database.DatabaseHelper;
 
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Time;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -76,7 +75,7 @@ public class BillDao {
 
         while(cursor.moveToNext()){
 
-            Bill m = new Bill(cursor.getString(uuidindex),new BigDecimal(cursor.getDouble(numindex)),cursor.getString(accountnameindex),cursor.getString(firstindex),cursor.getString(secondindex),cursor.getString(memberindex),cursor.getString(storeindex),
+            Bill m = new Bill(cursor.getString(uuidindex),new BigDecimal(cursor.getString(numindex)),cursor.getString(accountnameindex),cursor.getString(firstindex),cursor.getString(secondindex),cursor.getString(memberindex),cursor.getString(storeindex),
                     cursor.getString(dateindex),cursor.getInt(iconidindex),cursor.getString(otherindex));
             re.add(m);
         }
@@ -102,7 +101,7 @@ public class BillDao {
         int otherindex = cursor.getColumnIndex("other");
         while(cursor.moveToNext()){
 
-            Bill m = new Bill(cursor.getString(uuidindex),new BigDecimal(cursor.getDouble(numindex)),cursor.getString(accountnameindex),cursor.getString(firstindex),cursor.getString(secondindex),cursor.getString(memberindex),
+            Bill m = new Bill(cursor.getString(uuidindex),new BigDecimal(cursor.getString(numindex)),cursor.getString(accountnameindex),cursor.getString(firstindex),cursor.getString(secondindex),cursor.getString(memberindex),
                     cursor.getString(storeindex),cursor.getString(dateindex),cursor.getInt(iconidindex),cursor.getString(otherindex));
             re.add(m);
         }

@@ -12,36 +12,45 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.jile.Bean.User;
-import com.example.jile.Database.Dao.AccountDao;
 import com.example.jile.LogoActivity;
 import com.example.jile.MainView.MainActivity;
 import com.example.jile.Bean.Account;
 import com.example.jile.R;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
+
+import static com.example.jile.Constant.Constants.BANK_ACCOUNT;
+import static com.example.jile.Constant.Constants.CASH_ACCOUNT;
+import static com.example.jile.Constant.Constants.NET_ACCOUNT;
+import static com.example.jile.Constant.Constants.OTHER_ACCOUNT;
 
 public class AccountActivity extends AppCompatActivity {
     private Button btnBack,btnCreateNewAccount;
-    private Account[] cashAccount,virtualAccount,cardAccount,wealthAccount;
-    private String totalMoney,deltaMoney,cashMoney,wealthMoney,virtualMoney,cardMoney;
+    private List<Account> cashAccount, bankAccount, netAccount,otherAccount;
+    private String totalMoney,deltaMoney,cashMoney, otherMoney, bankMoney, netMoney;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         init();
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        updateView();
+    }
+
     // TODO 实现以下接口(测
     // TODO 获取所有账户信息 没有则返回null（测
     private void getAccounts(){
-        cardAccount= LogoActivity.accountDao.querybyskey("type","cardAccount").toArray(new Account[LogoActivity.accountDao.query().size()]);
-        cashAccount=LogoActivity.accountDao.querybyskey("type","cashAccount").toArray(new Account[LogoActivity.accountDao.query().size()]);
-        virtualAccount=LogoActivity.accountDao.querybyskey("type","virtualAccount").toArray(new Account[LogoActivity.accountDao.query().size()]);
-        wealthAccount= LogoActivity.accountDao.querybyskey("type","wealthAccount").toArray(new Account[LogoActivity.accountDao.query().size()]);
+        netAccount = LogoActivity.accountDao.querybyskey("type",NET_ACCOUNT);
+        cashAccount=LogoActivity.accountDao.querybyskey("type",CASH_ACCOUNT);
+        bankAccount =LogoActivity.accountDao.querybyskey("type",BANK_ACCOUNT);
+        otherAccount= LogoActivity.accountDao.querybyskey("type",OTHER_ACCOUNT);
     }
-    private BigDecimal getMoneysofAccount(Account[] account){
+    private BigDecimal getMoneysofAccount(List<Account> account){
         BigDecimal sumMoney=new BigDecimal("0");
         for(Account money:account){
             sumMoney=sumMoney.add(money.getBalance());
@@ -49,64 +58,62 @@ public class AccountActivity extends AppCompatActivity {
         return sumMoney;
     }
     private void getMoneys(){
-        BigDecimal cashMoneyTemp,wealthMoneyTemp,virtualMoneyTemp,cardMoneyTemp;
-        cardMoneyTemp=getMoneysofAccount(cardAccount);
+        BigDecimal cashMoneyTemp,otherMoneyTemp,bankMoneyTemp,netMoneyTemp;
+        netMoneyTemp=getMoneysofAccount(netAccount);
         cashMoneyTemp=getMoneysofAccount(cashAccount);
-        virtualMoneyTemp=getMoneysofAccount(virtualAccount);
-        wealthMoneyTemp=getMoneysofAccount(wealthAccount);
-        cardMoney=cardMoneyTemp.toString();
+        bankMoneyTemp=getMoneysofAccount(bankAccount);
+        otherMoneyTemp=getMoneysofAccount(otherAccount);
+        netMoney =netMoneyTemp.toString();
         cashMoney=cashMoneyTemp.toString();
-        virtualMoney=virtualMoneyTemp.toString();
-        wealthMoney=wealthMoneyTemp.toString();
-        totalMoney=cardMoneyTemp.add(cashMoneyTemp.add(virtualMoneyTemp.add(wealthMoneyTemp))).toString();
+        bankMoney =bankMoneyTemp.toString();
+        otherMoney =otherMoneyTemp.toString();
+        deltaMoney="123.0";
+        totalMoney=netMoneyTemp.add(cashMoneyTemp.add(bankMoneyTemp.add(otherMoneyTemp))).toString();
     }
     // TODO 实现以上接口
 
     private void setListView(){
-        ListView lvCard = findViewById(R.id.lvCard);
-        ListView lvWealth = findViewById(R.id.lvWealth);
-        ListView lvVirtual = findViewById(R.id.lvVirtual);
         ListView lvCash = findViewById(R.id.lvCash);
-        if(cardAccount!=null){
-            ArrayAdapter<Account> cardAdapter = new AccountAdapter(AccountActivity.this,R.layout.adapter_account, Arrays.asList(cardAccount));
-            lvCard.setAdapter(cardAdapter);
-            lvCard.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        ListView lvBank = findViewById(R.id.lvBank);
+        ListView lvNet = findViewById(R.id.lvNet);
+        ListView lvOther = findViewById(R.id.lvOther);
+        if(netAccount !=null){
+            ArrayAdapter<Account> cardAdapter = new AccountAdapter(AccountActivity.this,R.layout.adapter_account, netAccount);
+            lvNet.setAdapter(cardAdapter);
+            lvNet.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                     Toast.makeText(AccountActivity.this,position,Toast.LENGTH_SHORT).show();
-
                 }
             });
         }
         if (cashAccount!=null){
-            ArrayAdapter<Account> cashAdapter = new AccountAdapter(AccountActivity.this,R.layout.adapter_account, Arrays.asList(cashAccount));
+            ArrayAdapter<Account> cashAdapter = new AccountAdapter(AccountActivity.this,R.layout.adapter_account, cashAccount);
             lvCash.setAdapter(cashAdapter);
             lvCash.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                     Toast.makeText(AccountActivity.this,position,Toast.LENGTH_SHORT).show();
-
                 }
             });
         }
-        if (virtualAccount!=null){
-            ArrayAdapter<Account> virtualAdapter = new AccountAdapter(AccountActivity.this,R.layout.adapter_account, Arrays.asList(virtualAccount));
-            lvVirtual.setAdapter(virtualAdapter);
-            lvVirtual.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        if (bankAccount !=null){
+            ArrayAdapter<Account> virtualAdapter = new AccountAdapter(AccountActivity.this,R.layout.adapter_account, bankAccount);
+            lvBank.setAdapter(virtualAdapter);
+            lvBank.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                     Toast.makeText(AccountActivity.this,position,Toast.LENGTH_SHORT).show();
-
                 }
             });
         }
-        if (wealthAccount!=null){
-            ArrayAdapter<Account> wealthAdapter = new AccountAdapter(AccountActivity.this,R.layout.adapter_account, Arrays.asList(wealthAccount));
-            lvWealth.setAdapter(wealthAdapter);
-            lvWealth.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        if (otherAccount!=null){
+            ArrayAdapter<Account> wealthAdapter = new AccountAdapter(AccountActivity.this,R.layout.adapter_account, otherAccount);
+            lvOther.setAdapter(wealthAdapter);
+            lvOther.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id){
@@ -128,27 +135,31 @@ public class AccountActivity extends AppCompatActivity {
         btnCreateNewAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(AccountActivity.this,SelectNewAccountTypeActivity.class));
+                startActivity(new Intent(AccountActivity.this,CreateNewAccountActivity.class));
             }
         });
+        updateView();
+    }
+
+    private void updateView(){
         getAccounts();
         getMoneys();
         TextView tvTotalMoney = findViewById(R.id.tvTotalWealthNum);
         TextView tvDelta = findViewById(R.id.tvCompareToLastMonth);
         TextView tvCashNum = findViewById(R.id.tvCashNum);
-        TextView tvWealthNum = findViewById(R.id.tvWealthNum);
-        TextView tvCardNum = findViewById(R.id.tvCardNum);
-        TextView tvVirtualNum = findViewById(R.id.tvVirtualNum);
+        TextView tvBankNum = findViewById(R.id.tvBankNum);
+        TextView tvNetNum = findViewById(R.id.tvNetNum);
+        TextView tvOtherNum = findViewById(R.id.tvOtherNum);
         tvTotalMoney.setText(totalMoney);
         if(deltaMoney.charAt(0)=='-'){
             tvDelta.setText("相比上个月减少"+(deltaMoney.split("-")[1]));
         }else{
             tvDelta.setText("相比上个月增加"+deltaMoney);
         }
-        tvCardNum.setText(cardMoney);
+        tvNetNum.setText(netMoney);
         tvCashNum.setText(cashMoney);
-        tvWealthNum.setText(wealthMoney);
-        tvVirtualNum.setText(virtualMoney);
+        tvBankNum.setText(bankMoney);
+        tvOtherNum.setText(otherMoney);
         setListView();
     }
 }

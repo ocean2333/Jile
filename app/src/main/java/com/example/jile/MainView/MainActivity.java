@@ -37,6 +37,7 @@ import com.example.jile.Setting.SettingActivity;
 import java.math.BigDecimal;
 import java.sql.Time;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -68,12 +69,23 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            updateView();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void getBill(){
         bills= LogoActivity.billDao.query().toArray(new Bill[LogoActivity.billDao.query().size()]);
         Arrays.sort(bills, new Comparator<Bill>() {
             @Override
             public int compare(Bill o1, Bill o2) {
-                return o1.getDate().compareTo(o2.getDate());
+                return o2.getDate().compareTo(o1.getDate());
             }
         });
     }
@@ -146,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
             } else {
-                finish();
+                //finish();
                 System.exit(0);
             }
             return true;
@@ -167,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         edt.setMinLines(1);
         edt.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_VARIATION_NORMAL);
         new AlertDialog.Builder(this)
-                .setTitle("请输入")
+                .setTitle("请输入预算")
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setView(edt)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -178,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton("取消", null)
                 .show();
     }
-//todo
+    //todo
     private static Bill[] getbillbytime(Date startDate,Date endDate) throws ParseException {
         Bill[] tempBill=new Bill[bills.length];
         int i=0;
@@ -226,13 +238,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setBudgetThisMonth(BigDecimal budget){
-
+        
     }
-    private Bill[] getFiveMostRecentBill(){
-        Bill[] fiveMostRecentBill = new Bill[4];
+
+    private List<Bill> getFiveMostRecentBill(){
+        List<Bill> fiveMostRecentBill = new ArrayList<>();
         int i=0;
         for(Bill temp:bills){
-            fiveMostRecentBill[i]=temp;
+            fiveMostRecentBill.add(temp);
             i++;
             if(i==5){
                 break;
@@ -244,18 +257,21 @@ public class MainActivity extends AppCompatActivity {
                 "zhi","we", new java.sql.Date(2020,10,02)，R.drawable.icon_dollar,"qwe");
         bills = new Bill[]{b,b,b,b,b};
      */
-
     }
-    // TODO 实现以上接口
+
     private void init() throws ParseException {
         getBtns();
+        OnClick onClick = new OnClick();
+        setBtnListener(onClick);
+        updateView();
+    }
+
+    private void updateView() throws ParseException {
         getBill();
         getbudgetThisMonth();
         getCostAndIncome("month");
         getMonth();
         getCostAndIncome("day");
-        OnClick onClick = new OnClick();
-        setBtnListener(onClick);
         TextView tvMonth = findViewById(R.id.tvMonth);
         TextView tvCost = findViewById(R.id.tvCost);
         TextView tvIncome = findViewById(R.id.tvIncome);
@@ -268,12 +284,10 @@ public class MainActivity extends AppCompatActivity {
         tvIncomeToday.setText(todayIncome);
         tvCostToday.setText(todayCost);
         tvMonth.setText(month);
-        getFiveMostRecentBill();
         ListView listView = findViewById(R.id.lvRecent);
-        ArrayAdapter<Bill> arrayAdapter = new BillAdapter(MainActivity.this,R.layout.adapter_bill,getFiveMostRecentBill());
+        ArrayAdapter<Bill> arrayAdapter = new BillAdapter(MainActivity.this,R.layout.adapter_bill,getFiveMostRecentBill().toArray(new Bill[0]));
         listView.setAdapter(arrayAdapter);
     }
-
 }
 
 

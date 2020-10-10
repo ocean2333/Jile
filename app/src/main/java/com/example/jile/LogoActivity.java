@@ -25,7 +25,6 @@ public class LogoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logo);
-        DatabaseHelper helper = new DatabaseHelper(this);
         sp = getSharedPreferences("login",MODE_PRIVATE);
         userDao = new UserDao(this);
         new Thread(new Runnable() {

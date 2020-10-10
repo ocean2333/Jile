@@ -8,18 +8,20 @@
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.8"
+        android:layout_height="50dp"
+        android:layout_weight="0"
         android:background="@drawable/top_and_bottom_edge">
         <Button
             android:id="@+id/btnBack"
             android:layout_width="0dp"
             android:layout_weight="0.1"
             android:layout_height="match_parent"/>
+
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="0.63"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_weight="0.63" />
+
         <Button
             android:id="@+id/btnConfirm"
             android:layout_width="0dp"
@@ -28,30 +30,30 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_height="200dp"
+        android:layout_weight="0"
         android:background="@drawable/top_and_bottom_edge"
         android:orientation="vertical"
         android:paddingHorizontal="50dp"
         android:paddingBottom="20dp">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="100dp"
+            android:layout_weight="0"
             android:text="账户名"
             android:gravity="bottom"
             android:textSize="18sp"/>
         <EditText
             android:id="@+id/etAccountName"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.6"
+            android:layout_height="60dp"
+            android:layout_weight="0"
             android:hint="请输入账户名" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.8"
+        android:layout_height="50dp"
+        android:layout_weight="0"
         android:background="@drawable/top_and_bottom_edge">
         <ImageView
             android:layout_width="0dp"
@@ -77,8 +79,8 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="50dp"
+        android:layout_weight="0"
         android:background="@drawable/top_and_bottom_edge"
         android:paddingRight="50dp">
         <ImageView
@@ -93,16 +95,17 @@
             android:textSize="18sp"
             android:gravity="center|start"/>
         <EditText
+            android:inputType="numberDecimal|numberSigned"
+            android:id="@+id/etBalance"
             android:layout_width="0dp"
             android:layout_weight="0.53"
-            android:layout_height="match_parent"
-            android:hint="0.00"/>
+            android:layout_height="match_parent" />
 
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="50dp"
+        android:layout_weight="0"
         android:background="@drawable/top_and_bottom_edge">
         <ImageView
             android:layout_width="0dp"
@@ -115,17 +118,34 @@
             android:text="币种"
             android:textSize="18sp"
             android:gravity="center|start"/>
-        <TextView
-            android:id="@+id/tvCurrency"
-            android:layout_width="0dp"
-            android:layout_weight="0.3"
-            android:layout_height="match_parent"/>
         <Button
-            android:id="@+id/btnSelectCurrency"
+            android:id="@+id/btnCurrency"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_weight="0"
+        android:background="@drawable/top_and_bottom_edge">
+        <ImageView
             android:layout_width="0dp"
             android:layout_weight="0.1"
             android:layout_height="match_parent"/>
-
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="0.33"
+            android:layout_height="match_parent"
+            android:text="账户类型"
+            android:textSize="18sp"
+            android:gravity="center|start"/>
+        <Button
+            android:id="@+id/btnAccountType"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_height="match_parent"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -135,8 +155,8 @@
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="50dp"
+            android:layout_weight="0">
             <ImageView
                 android:layout_width="0dp"
                 android:layout_weight="0.1"
@@ -153,7 +173,7 @@
 
         <EditText
             android:paddingHorizontal="30dp"
-            android:id="@+id/add_content"
+            android:id="@+id/etNote"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="5"
