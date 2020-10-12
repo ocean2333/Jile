@@ -30,7 +30,7 @@ public class LoginDataSource {
         }
     }
 
-    // TODO 验证登录(待测试)
+    //
     private boolean authenticate(String username,String password){
         List<User> userList = LogoActivity.userDao.query();
         User user = null;
@@ -46,7 +46,7 @@ public class LoginDataSource {
         }
     }
 
-    // TODO 返回登录成功的用户信息(待测试)
+    //
     private Mem userInfo(String username){
         return new Mem(java.util.UUID.randomUUID().toString(),
                 username);

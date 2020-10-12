@@ -114,7 +114,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         return false;
     }
 
-    // TODO 实现该接口 检查用户是否存在（待测试）
+    //
     private boolean checkIsUserExists(String username){
         List<User> userList = LogoActivity.userDao.query();
         User user = null;

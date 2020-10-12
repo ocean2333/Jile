@@ -19,8 +19,13 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.example.jile.Bean.Account;
 import com.example.jile.Bean.Bill;
+import com.example.jile.Bean.FirstClass;
+import com.example.jile.Bean.Mem;
+import com.example.jile.Bean.SecondClass;
+import com.example.jile.Bean.Store;
 import com.example.jile.Constant.Constants;
 import com.example.jile.Database.Dao.BillDao;
+import com.example.jile.Database.Dao.FirstClassDao;
 import com.example.jile.LogoActivity;
 import com.example.jile.R;
 
@@ -28,6 +33,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,6 +45,7 @@ public class NewBIllActivity extends AppCompatActivity {
     private OnClick onClick = new OnClick();
     private EditText etMoneyNumber,etNote;
     private String firstClass,secondClass,accountName,member,store,time;
+    private OptionsPickerView<String> pvOptions,pvOptions2,pvOptions3,pvOptions4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +90,7 @@ public class NewBIllActivity extends AppCompatActivity {
                     finish();
                     break;
                 case R.id.btnFirstClass:
-                    OptionsPickerView pvOptions = new OptionsPickerBuilder(NewBIllActivity.this, new OnOptionsSelectListener() {
+                    pvOptions = new OptionsPickerBuilder(NewBIllActivity.this, new OnOptionsSelectListener() {
                         @Override
                         public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
                             //返回的分别是三个级别的选中位置
@@ -97,7 +104,7 @@ public class NewBIllActivity extends AppCompatActivity {
                     pvOptions.show();
                     break;
                 case R.id.btnSelectAccount:
-                    OptionsPickerView pvOptions2 = new OptionsPickerBuilder(NewBIllActivity.this, new OnOptionsSelectListener() {
+                    pvOptions2 = new OptionsPickerBuilder(NewBIllActivity.this, new OnOptionsSelectListener() {
                         @Override
                         public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
                             //返回的分别是三个级别的选中位置
@@ -109,7 +116,7 @@ public class NewBIllActivity extends AppCompatActivity {
                     pvOptions2.show();
                     break;
                 case R.id.btnSelectMember:
-                    OptionsPickerView pvOptions3 = new OptionsPickerBuilder(NewBIllActivity.this, new OnOptionsSelectListener() {
+                    pvOptions3 = new OptionsPickerBuilder(NewBIllActivity.this, new OnOptionsSelectListener() {
                         @Override
                         public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
                             //返回的分别是三个级别的选中位置
@@ -121,7 +128,7 @@ public class NewBIllActivity extends AppCompatActivity {
                     pvOptions3.show();
                     break;
                 case R.id.btnSetStore:
-                    OptionsPickerView pvOptions4 = new OptionsPickerBuilder(NewBIllActivity.this, new OnOptionsSelectListener() {
+                    pvOptions4 = new OptionsPickerBuilder(NewBIllActivity.this, new OnOptionsSelectListener() {
                         @Override
                         public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
                             //返回的分别是三个级别的选中位置
@@ -146,27 +153,52 @@ public class NewBIllActivity extends AppCompatActivity {
         btnSelectAccount.setOnClickListener(onClick);
         btnSetStore.setOnClickListener(onClick);
     }
-    // TODO 实现下列接口
-    // TODO 获得各级分类数据
+    // TODO 获得各级分类数据(待测
     private void getItems(){
-        firstClassItems = Arrays.asList("a", "b", "ccccccc");
-        secondClassItems = Arrays.asList(Arrays.asList("0","asdasd","nmsl"),Arrays.asList("1","asdasd","nmsl"),Arrays.asList("2","asdasd","nmsl"));
+        firstClassItems = new LinkedList<>();
+        for(FirstClass f:LogoActivity.firstClassDao.query()){
+            if(f.getType().equals(type)){
+                firstClassItems.add(f.getName());
+            }
+        }
+        secondClassItems = new LinkedList<>();
+        for(String first:firstClassItems){
+            List<String> tempList = new LinkedList<>();
+            for(SecondClass s:LogoActivity.secondClassDao.querybyskey("firstclass",first)){
+                tempList.add(s.getName());
+            }
+            secondClassItems.add(tempList);
+        }
         List<Account> al = LogoActivity.accountDao.query();
-        accountItems = new ArrayList<>();
+        accountItems = new LinkedList<>();
         for(Account a:al){
             accountItems.add(a.getSelfname());
         }
-        memberItems = Arrays.asList("自己","lzy","zyh");
-        storeItems = Arrays.asList("home","school","mall");
+        memberItems = new LinkedList<>();
+        for(Mem m:LogoActivity.memDao.query()){
+            memberItems.add(m.getName());
+        }
+        storeItems = new LinkedList<>();
+        for(Store s:LogoActivity.storeDao.query()){
+            storeItems.add(s.getName());
+        }
     }
-    // TODO 实现以上接口
 
-    // TODO 添加bill到数据库(测
     private void addNewBillToDB(Bill bill){
         LogoActivity.billDao.insert(bill);
-        List<Account> tempaccount =LogoActivity.accountDao.querybyskey("selfname",bill.getAccountname());
-        tempaccount.get(0).setBalance(tempaccount.get(0).getBalance().add(bill.getNum()));
-        LogoActivity.accountDao.update(tempaccount.get(0));
+        if(bill.getType().equals(Constants.INCOME)||bill.getType().equals(Constants.COST)){
+            List<Account> tempaccount =LogoActivity.accountDao.querybyskey("selfname",bill.getAccountname());
+            tempaccount.get(0).setBalance(tempaccount.get(0).getBalance().add(bill.getNum()));
+            LogoActivity.accountDao.update(tempaccount.get(0));
+        }
+        else if(bill.getType().equals(Constants.TRANSFER)){
+            List<Account> outaccount =LogoActivity.accountDao.querybyskey("selfname",bill.getFirst());
+            outaccount.get(0).setBalance(outaccount.get(0).getBalance().subtract(bill.getNum()));
+            LogoActivity.accountDao.update(outaccount.get(0));
+            List<Account> inaccount =LogoActivity.accountDao.querybyskey("selfname",bill.getSecond());
+            inaccount.get(0).setBalance(inaccount.get(0).getBalance().subtract(bill.getNum()));
+            LogoActivity.accountDao.update(inaccount.get(0));
+        }
     }
 
     // TODO 获得最近用过的店（测
@@ -183,7 +215,6 @@ public class NewBIllActivity extends AppCompatActivity {
         LogoActivity.sp.edit().putString("recentStore",s).apply();
     }
 
-    // TODO 构造BILL(测
     private Bill createNewBill(){
         return new Bill(UUID.randomUUID().toString(),type,new BigDecimal(etMoneyNumber.getText().toString()),
                 accountName,firstClass,secondClass,member,store,time,R.drawable.icon_dollar,etNote.getText().toString());
@@ -224,6 +255,10 @@ public class NewBIllActivity extends AppCompatActivity {
                         type=Constants.TRANSFER;
                         break;
                 }
+                getItems();
+                btnFirstClass.setText(firstClassItems.get(0));
+                btnSecondClass.setText(secondClassItems.get(0).get(0));
+                pvOptions.setPicker(firstClassItems,secondClassItems);
             }
         });
     }

@@ -20,7 +20,7 @@ public class FirstClassDao {
     }
     public  void insert(FirstClass firstclass){
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String sql ="insert into " + mUsername+"_Store(uuid,type,name) values(?,?,?,?)";
+        String sql ="insert into " + mUsername+"_FirstClass(uuid,type,name) values(?,?,?)";
         db.execSQL(sql,new Object[]{firstclass.getUuid(),firstclass.getType() ,firstclass.getName()});
         db.close();
     }
@@ -42,7 +42,7 @@ public class FirstClassDao {
     }
     public List<FirstClass> query(){
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String sql = "select * from "+mUsername+"_Mem";
+        String sql = "select * from "+mUsername+"_FirstClass";
         Cursor cursor = db.rawQuery(sql,null);
         List<FirstClass> re = new LinkedList<FirstClass>();
         /**
@@ -63,7 +63,7 @@ public class FirstClassDao {
     }
     public List<FirstClass> querybyskey(String keyname,String value){
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String sql = "select * from "+mUsername+"_Mem  where "+keyname+" = "+"'"+value+"'";
+        String sql = "select * from "+mUsername+"_FirstClass  where "+keyname+" = "+"'"+value+"'";
         Cursor cursor = db.rawQuery(sql,null);
         List<FirstClass> re = new LinkedList<FirstClass>();
         /**

@@ -21,7 +21,7 @@ public class SecondClassDao {
     }
     public  void insert(SecondClass secondclass){
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String sql ="insert into " + mUsername+"_Store(uuid,type,firstclass,name) values(?,?,?,?)";
+        String sql ="insert into " + mUsername+"_SecondClass(uuid,type,firstclass,name) values(?,?,?,?)";
         db.execSQL(sql,new Object[]{secondclass.getUuid(),secondclass.getType(),secondclass.getFirstclass(),secondclass.getName()});
         db.close();
     }
@@ -30,7 +30,7 @@ public class SecondClassDao {
          * todo
          */
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String sql = "delete from "+mUsername+"_Mem"+" where uuid = "+"'"+secondclass.getUuid()+"'";
+        String sql = "delete from "+mUsername+"_SecondClass"+" where uuid = "+"'"+secondclass.getUuid()+"'";
         db.execSQL(sql);
         db.close();
     }
@@ -43,7 +43,7 @@ public class SecondClassDao {
     }
     public List<SecondClass> query(){
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String sql = "select * from "+mUsername+"_Mem";
+        String sql = "select * from "+mUsername+"_SecondClass";
         Cursor cursor = db.rawQuery(sql,null);
         List<SecondClass> re = new LinkedList<SecondClass>();
         /**
@@ -64,7 +64,7 @@ public class SecondClassDao {
     }
     public List<SecondClass> querybyskey(String keyname,String value){
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String sql = "select * from "+mUsername+"_Mem  where "+keyname+" = "+"'"+value+"'";
+        String sql = "select * from "+mUsername+"_SecondClass  where "+keyname+" = "+"'"+value+"'";
         Cursor cursor = db.rawQuery(sql,null);
         List<SecondClass> re = new LinkedList<SecondClass>();
         /**

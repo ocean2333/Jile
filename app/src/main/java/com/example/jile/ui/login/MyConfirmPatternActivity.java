@@ -51,7 +51,7 @@ public class MyConfirmPatternActivity extends ConfirmPatternActivity {
         startActivity(new Intent(MyConfirmPatternActivity.this, MainActivity.class));
     }
 
-    // TODO: 实现该接口 Get saved pattern sha1(待测试).
+    //
     private String getPattenSha1(String username){
         List<User> userList = LogoActivity.userDao.query();
         User user = null;

@@ -74,7 +74,7 @@ public class AnsQuestionActivity extends AppCompatActivity {
         });
     }
 
-    // TODO 检验答案是否正确（待测试）
+    //
     private boolean isAnsCorrect(String s,String username){
         List<User> userList = LogoActivity.userDao.query();
         User user = null;
@@ -92,7 +92,7 @@ public class AnsQuestionActivity extends AppCompatActivity {
     }
 
 
-    // TODO 获得密保问题(待测试)
+    //
     private String getQuestion(String username){
         List<User> userList = LogoActivity.userDao.query();
         User user = null;

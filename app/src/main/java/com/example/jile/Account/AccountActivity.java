@@ -42,8 +42,6 @@ public class AccountActivity extends AppCompatActivity {
         updateView();
     }
 
-    // TODO 实现以下接口(测
-    // TODO 获取所有账户信息 没有则返回null（测
     private void getAccounts(){
         netAccount = LogoActivity.accountDao.querybyskey("type",NET_ACCOUNT);
         cashAccount=LogoActivity.accountDao.querybyskey("type",CASH_ACCOUNT);
@@ -70,7 +68,6 @@ public class AccountActivity extends AppCompatActivity {
         deltaMoney="123.0";
         totalMoney=netMoneyTemp.add(cashMoneyTemp.add(bankMoneyTemp.add(otherMoneyTemp))).toString();
     }
-    // TODO 实现以上接口
 
     private void setListView(){
         ListView lvCash = findViewById(R.id.lvCash);

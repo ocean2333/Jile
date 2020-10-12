@@ -97,7 +97,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         });
     }
 
-    // TODO 实现该接口 修改数据库中的密码(待测试)
+    //
     private void resetPassword(String username,String newPassword){
         List<User> userList = LogoActivity.userDao.query();
         User user = null;

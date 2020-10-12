@@ -31,7 +31,7 @@ public class StoreDao
          * todo
          */
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String sql = "delete from "+mUsername+"_Mem"+" where uuid = "+"'"+store.getUuid()+"'";
+        String sql = "delete from "+mUsername+"_Store"+" where uuid = "+"'"+store.getUuid()+"'";
         db.execSQL(sql);
         db.close();
     }
@@ -44,7 +44,7 @@ public class StoreDao
     }
     public List<Store> query(){
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String sql = "select * from "+mUsername+"_Mem";
+        String sql = "select * from "+mUsername+"_Store";
         Cursor cursor = db.rawQuery(sql,null);
         List<Store> re = new LinkedList<Store>();
         /**

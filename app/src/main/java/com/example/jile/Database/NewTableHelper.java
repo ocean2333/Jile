@@ -57,7 +57,7 @@ public class NewTableHelper {
         sql = "create table "+mName+"_Bill"+"(uuid varchar,type varchar,num decimal(15,2),accountname varchar,first varchar,second varchar,member varchar,store varchar,date varchar,iconId integer,note varchar)";
         db.execSQL(sql);
 
-        sql = "create table "+mName+"_Store"+"(uuid varchar,name varchar)";
+        sql = "create table "+mName+"_Store"+"(uuid varchar,type varchar,name varchar)";
         db.execSQL(sql);
 
         sql = "create table "+mName+"_FirstClass"+"(uuid varchar,type varchar,name varchar)";
@@ -108,6 +108,8 @@ public class NewTableHelper {
                 secondClassDao.insert(new SecondClass(UUID.randomUUID().toString(),Constants.INCOME,x,z));
             }
         }
+
+
         return  status;
     }
 }

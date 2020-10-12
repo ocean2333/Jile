@@ -8,7 +8,10 @@ import android.os.Bundle;
 
 import com.example.jile.Database.Dao.AccountDao;
 import com.example.jile.Database.Dao.BillDao;
+import com.example.jile.Database.Dao.FirstClassDao;
 import com.example.jile.Database.Dao.MemDao;
+import com.example.jile.Database.Dao.SecondClassDao;
+import com.example.jile.Database.Dao.StoreDao;
 import com.example.jile.Database.Dao.UserDao;
 import com.example.jile.Database.DatabaseHelper;
 import com.example.jile.MainView.MainActivity;
@@ -20,6 +23,10 @@ public class LogoActivity extends AppCompatActivity {
     public static BillDao billDao;
     public static MemDao memDao;
     public static UserDao userDao;
+    public static FirstClassDao firstClassDao;
+    public static SecondClassDao secondClassDao;
+    public static StoreDao storeDao;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +55,7 @@ public class LogoActivity extends AppCompatActivity {
 
     }
 
-    // TODO 判断是否已有登录账号(待测试)
+    //
     private boolean isLogin(){
         String loginUser = sp.getString("loginUser",null);
         return loginUser != null;

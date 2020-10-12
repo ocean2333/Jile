@@ -103,7 +103,6 @@ public class LoginActivity extends AppCompatActivity {
                     //Complete and destroy login activity once successful
                     updateUiWithUser(loginResult.getSuccess());
                     setResult(Activity.RESULT_OK);
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
                 }
                 if(loginResult.getFailure()!=null){
@@ -159,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }
 

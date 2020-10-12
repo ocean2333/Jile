@@ -23,9 +23,14 @@ import android.widget.Toast;
 
 import com.example.jile.Account.AccountActivity;
 import com.example.jile.Bean.Account;
+import com.example.jile.Bean.User;
+import com.example.jile.Constant.Constants;
 import com.example.jile.Database.Dao.AccountDao;
 import com.example.jile.Database.Dao.BillDao;
+import com.example.jile.Database.Dao.FirstClassDao;
 import com.example.jile.Database.Dao.MemDao;
+import com.example.jile.Database.Dao.SecondClassDao;
+import com.example.jile.Database.Dao.StoreDao;
 import com.example.jile.Detail.DeatilActivity;
 import com.example.jile.Graph.GraphActivity;
 import com.example.jile.Bean.Bill;
@@ -48,7 +53,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnToDetail,btnAccount,btnDetail,btnNew,btnGraph,btnSetting,btnModifyBudget;
-    private String month,cost,income,budget,todayCost,todayIncome;
+    private String month,cost,income,budget,todaycost,todayincome;
     private BigDecimal budgetInput;
     private static Bill[] bills;
     @Override
@@ -60,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
             LogoActivity.accountDao = new AccountDao(this,user);
             LogoActivity.billDao = new BillDao(this,user);
             LogoActivity.memDao = new MemDao(this,user);
+            LogoActivity.firstClassDao = new FirstClassDao(this,user);
+            LogoActivity.storeDao = new StoreDao(this,user);
+            LogoActivity.secondClassDao = new SecondClassDao(this,user);
         }else{
             Toast.makeText(this,"error in getLoginUser",Toast.LENGTH_SHORT).show();
         }
@@ -80,9 +88,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void getBill(){
-        bills= LogoActivity.billDao.query().toArray(new Bill[LogoActivity.billDao.query().size()]);
-        Arrays.sort(bills, new Comparator<Bill>() {
+    private void getBill(Bill[] bill){
+        bill= LogoActivity.billDao.query().toArray(new Bill[LogoActivity.billDao.query().size()]);
+        Arrays.sort(bill, new Comparator<Bill>() {
             @Override
             public int compare(Bill o1, Bill o2) {
                 return o2.getDate().compareTo(o1.getDate());
@@ -190,11 +198,12 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton("取消", null)
                 .show();
     }
-    //todo
-    private static Bill[] getbillbytime(Date startDate,Date endDate) throws ParseException {
-        Bill[] tempBill=new Bill[bills.length];
+
+    // TODO
+    private static Bill[] getbillbytime(Bill[] bill,Date startDate,Date endDate) throws ParseException {
+        Bill[] tempBill=new Bill[bill.length];
         int i=0;
-        for(Bill temp:bills){
+        for(Bill temp:bill){
             java.text.SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd-hh-mm");
             Date date = simpleDateFormat.parse(temp.getDate());
             if (date.before(endDate) && date.after(startDate)){
@@ -205,11 +214,9 @@ public class MainActivity extends AppCompatActivity {
         return tempBill;
     }
 
-    // TODO 实现下列获取信息的接口（待测试
-    private void getCostAndIncome(String type) throws ParseException {
+    private void getCostAndIncome(Bill[] bill,String type) throws ParseException {
         BigDecimal tempcost=new BigDecimal("0");
         BigDecimal tempincome=new BigDecimal("0");
-        BigDecimal zerocost=new BigDecimal("0");
         Calendar rightNow = Calendar.getInstance();
         Date endtime = rightNow.getTime();
         if(type.equals("month")){
@@ -219,26 +226,34 @@ public class MainActivity extends AppCompatActivity {
             rightNow.add(Calendar.DAY_OF_YEAR,-1);
         }
         Date starttime = rightNow.getTime();
-        Bill[] tempBill = getbillbytime(starttime,endtime);
+        Bill[] tempBill = getbillbytime(bill,starttime,endtime);
         for(Bill i:tempBill){
-            if (i.getNum().compareTo(zerocost)==-1){
+            if (i.getType().equals(Constants.COST)){
                 tempcost=tempcost.add(i.getNum());
             }
-            else {
+            else if(i.getType().equals(Constants.INCOME)){
                 tempincome=tempincome.add(i.getNum());
             }
         }
-        cost = tempcost.toString();
-        income = tempincome.toString();
+        if(type.equals("month")){
+            cost = tempcost.toString();
+            income = tempincome.toString();
+        }
+        else if(type.equals("day")){
+            todaycost = tempcost.toString();
+            todayincome = tempincome.toString();
+        }
     }
 
     private void getbudgetThisMonth(){
-        budget = "100000";
+        List<User> list = LogoActivity.userDao.querybyskey("name",LogoActivity.sp.getString("username",""));
+        budget = list.get(0).getBudget();
     }
 
-
     private void setBudgetThisMonth(BigDecimal budget){
-        
+        User user = LogoActivity.userDao.querybyskey("name",LogoActivity.sp.getString("username","")).get(0);
+        user.setBudget(budget.toPlainString());
+        LogoActivity.userDao.update(user);
     }
 
     private List<Bill> getFiveMostRecentBill(){
@@ -252,11 +267,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return fiveMostRecentBill;
-    /**样例
-        Bill b = new Bill("0",new BigDecimal("666.321"),"an","t1","t2",
-                "zhi","we", new java.sql.Date(2020,10,02)，R.drawable.icon_dollar,"qwe");
-        bills = new Bill[]{b,b,b,b,b};
-     */
     }
 
     private void init() throws ParseException {
@@ -267,22 +277,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateView() throws ParseException {
-        getBill();
-        getbudgetThisMonth();
-        getCostAndIncome("month");
+        getBill(bills);
         getMonth();
-        getCostAndIncome("day");
         TextView tvMonth = findViewById(R.id.tvMonth);
         TextView tvCost = findViewById(R.id.tvCost);
         TextView tvIncome = findViewById(R.id.tvIncome);
         TextView tvBudget = findViewById(R.id.tvBudgetNum);
         TextView tvIncomeToday = findViewById(R.id.tvIncomeToday);
         TextView tvCostToday = findViewById(R.id.tvCostToday);
-        tvCost.setText(cost);
+        getbudgetThisMonth();
         tvBudget.setText(budget);
+        getCostAndIncome(bills,"month");
+        tvCost.setText(cost);
         tvIncome.setText(income);
-        tvIncomeToday.setText(todayIncome);
-        tvCostToday.setText(todayCost);
+        getCostAndIncome(bills,"day");
+        tvIncomeToday.setText(todayincome);
+        tvCostToday.setText(todaycost);
         tvMonth.setText(month);
         ListView listView = findViewById(R.id.lvRecent);
         ArrayAdapter<Bill> arrayAdapter = new BillAdapter(MainActivity.this,R.layout.adapter_bill,getFiveMostRecentBill().toArray(new Bill[0]));
