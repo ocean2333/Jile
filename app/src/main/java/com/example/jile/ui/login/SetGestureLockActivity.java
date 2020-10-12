@@ -67,7 +67,7 @@ public class SetGestureLockActivity extends SetPatternActivity {
 
     private User createNewUser(String patten){
         return new User(UUID.randomUUID().toString(),username,password,
-                question,ans,"暂无",R.drawable.icon_dollar,"",patten);
+                question,ans,"暂无",R.drawable.icon_dollar,"",patten,"1500");
     }
 
     // TODO 实现以下接口(待测试)
@@ -75,8 +75,8 @@ public class SetGestureLockActivity extends SetPatternActivity {
         LogoActivity.userDao.insert(user);
         NewTableHelper newTableHelper = new NewTableHelper(this,user.getName());
         newTableHelper.create();
-        Account account = new Account(UUID.randomUUID().toString(), Constants.CASH_ACCOUNT,"现金",new BigDecimal("0"),"CNY",R.drawable.icon_dollar,"");
-        new AccountDao(this,user.getName()).insert(account);
+        //Account account = new Account(UUID.randomUUID().toString(), Constants.CASH_ACCOUNT,"现金",new BigDecimal("0"),"CNY",R.drawable.icon_dollar,"");
+        //new AccountDao(this,user.getName()).insert(account);
         Toast.makeText(SetGestureLockActivity.this,"got"+user.getName(),Toast.LENGTH_SHORT).show();
     }
 }

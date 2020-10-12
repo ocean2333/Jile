@@ -3,7 +3,24 @@ package com.example.jile.Bean;
 public class User {
 
 
-    public User(String uuid, String name, String password, String securequestion, String ans, String tips, int iconId, String other,String graphpass) {
+
+
+
+    private String uuid;
+    private String name;
+    private String password;
+
+    private String securequestion;
+
+    private String ans;
+
+    private String tips;
+
+    private int iconId;
+
+    private String other;
+
+    public User(String uuid, String name, String password, String securequestion, String ans, String tips, int iconId, String other, String graphpass, String budget) {
         this.uuid = uuid;
         this.name = name;
         this.password = password;
@@ -13,11 +30,8 @@ public class User {
         this.iconId = iconId;
         this.other = other;
         this.graphpass = graphpass;
+        this.budget = budget;
     }
-    private String pattenSha1;
-    private String uuid;
-    private String name;
-    private String password;
 
     public String getUuid() {
         return uuid;
@@ -83,13 +97,6 @@ public class User {
         this.other = other;
     }
 
-    private String securequestion;
-    private String ans;
-    private String tips;
-    private int iconId;
-    private String other;
-    private String graphpass;
-
     public String getGraphpass() {
         return graphpass;
     }
@@ -97,4 +104,18 @@ public class User {
     public void setGraphpass(String graphpass) {
         this.graphpass = graphpass;
     }
+
+    public String getBudget() {
+        return budget;
+    }
+
+    public void setBudget(String budget) {
+        this.budget = budget;
+    }
+
+    private String graphpass;
+
+    private String budget;
+
+
 }

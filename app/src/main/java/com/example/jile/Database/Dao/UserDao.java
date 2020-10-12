@@ -22,8 +22,8 @@ public class UserDao {
 
     public  void insert(User user){
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String sql ="insert into All_User(uuid,name,password,securequestion,ans,tips,iconId,other,graphpass) values(?,?,?,?,?,?,?,?,?)";
-        db.execSQL(sql,new Object[]{user.getUuid(),user.getName(),user.getPassword(),user.getSecurequestion(),user.getAns(),user.getTips(),user.getIconId(),user.getOther(),user.getGraphpass()});
+        String sql ="insert into All_User(uuid,name,password,securequestion,ans,tips,iconId,other,graphpass,budget) values(?,?,?,?,?,?,?,?,?,?)";
+        db.execSQL(sql,new Object[]{user.getUuid(),user.getName(),user.getPassword(),user.getSecurequestion(),user.getAns(),user.getTips(),user.getIconId(),user.getOther(),user.getGraphpass(),user.getBudget()});
         db.close();
     }
     public  void delete(User user){
@@ -67,10 +67,11 @@ public class UserDao {
         int iconIdindex = cursor.getColumnIndex("iconId");
         int otherindex = cursor.getColumnIndex("other");
         int graphpassindex = cursor.getColumnIndex("graphpass");
+        int budgetindex = cursor.getColumnIndex("budget");
 
         while(cursor.moveToNext()){
 
-            User m = new User(cursor.getString(uuidindex),cursor.getString(nameindex),cursor.getString(passwordindex),cursor.getString(securequestionindex),cursor.getString(ansindex),cursor.getString(tipsindex),cursor.getInt(iconIdindex),cursor.getString(otherindex),cursor.getString(graphpassindex));
+            User m = new User(cursor.getString(uuidindex),cursor.getString(nameindex),cursor.getString(passwordindex),cursor.getString(securequestionindex),cursor.getString(ansindex),cursor.getString(tipsindex),cursor.getInt(iconIdindex),cursor.getString(otherindex),cursor.getString(graphpassindex),cursor.getString(budgetindex));
             re.add(m);
         }
         db.close();
@@ -100,10 +101,10 @@ public class UserDao {
         int iconIdindex = cursor.getColumnIndex("iconId");
         int otherindex = cursor.getColumnIndex("other");
         int graphpassindex = cursor.getColumnIndex("graphpass");
-
+        int budgetindex = cursor.getColumnIndex("budget");
         while(cursor.moveToNext()){
 
-            User m = new User(cursor.getString(uuidindex),cursor.getString(nameindex),cursor.getString(passwordindex),cursor.getString(securequestionindex),cursor.getString(ansindex),cursor.getString(tipsindex),cursor.getInt(iconIdindex),cursor.getString(otherindex),cursor.getString(graphpassindex));
+            User m = new User(cursor.getString(uuidindex),cursor.getString(nameindex),cursor.getString(passwordindex),cursor.getString(securequestionindex),cursor.getString(ansindex),cursor.getString(tipsindex),cursor.getInt(iconIdindex),cursor.getString(otherindex),cursor.getString(graphpassindex),cursor.getString(budgetindex));
             re.add(m);
         }
         db.close();

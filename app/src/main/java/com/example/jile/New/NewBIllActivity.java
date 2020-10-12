@@ -19,6 +19,7 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.example.jile.Bean.Account;
 import com.example.jile.Bean.Bill;
+import com.example.jile.Constant.Constants;
 import com.example.jile.Database.Dao.BillDao;
 import com.example.jile.LogoActivity;
 import com.example.jile.R;
@@ -34,7 +35,7 @@ public class NewBIllActivity extends AppCompatActivity {
     private Button btnFirstClass,btnSecondClass,btnSetDate,btnBack,btnSave,btnSelectAccount,btnSelectMember,btnSetStore;
     private List<String> firstClassItems,accountItems,memberItems,storeItems;
     private List<List<String>> secondClassItems;
-    private int type=0;
+    private String type= Constants.COST;
     private OnClick onClick = new OnClick();
     private EditText etMoneyNumber,etNote;
     private String firstClass,secondClass,accountName,member,store,time;
@@ -184,7 +185,7 @@ public class NewBIllActivity extends AppCompatActivity {
 
     // TODO 构造BILL(测
     private Bill createNewBill(){
-        return new Bill(UUID.randomUUID().toString(),new BigDecimal(etMoneyNumber.getText().toString()),
+        return new Bill(UUID.randomUUID().toString(),type,new BigDecimal(etMoneyNumber.getText().toString()),
                 accountName,firstClass,secondClass,member,store,time,R.drawable.icon_dollar,etNote.getText().toString());
     }
 
@@ -214,13 +215,13 @@ public class NewBIllActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (group.getCheckedRadioButtonId()) {
                     case R.id.rbExpenses:
-                        type=0;
+                        type=Constants.COST;
                         break;
                     case R.id.rbIncome:
-                        type=1;
+                        type=Constants.INCOME;
                         break;
                     case R.id.rbTransfer:
-                        type=2;
+                        type=Constants.TRANSFER;
                         break;
                 }
             }

@@ -27,8 +27,8 @@ public class AccountDao {
 
     public  void insert(Account account){
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String sql ="insert into " + mUsername +"_Account(uuid,type,selfname,balance,currency,iconId,other) values(?,?,?,?,?,?,?)";
-        db.execSQL(sql,new Object[]{account.getUuid(),account.getType(),account.getSelfname(),account.getBalance(),account.getCurrency(),account.getIconId(),account.getOther()});
+        String sql ="insert into " + mUsername +"_Account(uuid,type,selfname,balance,currency,iconId,note) values(?,?,?,?,?,?,?)";
+        db.execSQL(sql,new Object[]{account.getUuid(),account.getType(),account.getSelfname(),account.getBalance().toString(),account.getCurrency(),account.getIconId(),account.getNote()});
         db.close();
     }
 
@@ -70,9 +70,9 @@ public class AccountDao {
         int balanceindex = cursor.getColumnIndex("balance");
         int currencyindex = cursor.getColumnIndex("currency");
         int iconIdindex = cursor.getColumnIndex("iconId");
-        int otherindex = cursor.getColumnIndex("other");
+        int noteindex = cursor.getColumnIndex("note");
         while(cursor.moveToNext()){
-            Account m = new Account(cursor.getString(uuidindex),cursor.getString(typeindex),cursor.getString(selfnameindex),new BigDecimal(cursor.getString(balanceindex)),cursor.getString(currencyindex),cursor.getInt(iconIdindex),cursor.getString(otherindex));
+            Account m = new Account(cursor.getString(uuidindex),cursor.getString(typeindex),cursor.getString(selfnameindex),new BigDecimal(cursor.getString(balanceindex)),cursor.getString(currencyindex),cursor.getInt(iconIdindex),cursor.getString(noteindex));
             re.add(m);
         }
         db.close();
@@ -99,10 +99,10 @@ public class AccountDao {
         int balanceindex = cursor.getColumnIndex("balance");
         int currencyindex = cursor.getColumnIndex("currency");
         int iconIdindex = cursor.getColumnIndex("iconId");
-        int otherindex = cursor.getColumnIndex("other");
+        int noteindex = cursor.getColumnIndex("note");
         while(cursor.moveToNext()){
 
-            Account m = new Account(cursor.getString(uuidindex),cursor.getString(typeindex),cursor.getString(selfnameindex),new BigDecimal(cursor.getString(balanceindex)),cursor.getString(currencyindex),cursor.getInt(iconIdindex),cursor.getString(otherindex));
+            Account m = new Account(cursor.getString(uuidindex),cursor.getString(typeindex),cursor.getString(selfnameindex),new BigDecimal(cursor.getString(balanceindex)),cursor.getString(currencyindex),cursor.getInt(iconIdindex),cursor.getString(noteindex));
             re.add(m);
         }
         db.close();

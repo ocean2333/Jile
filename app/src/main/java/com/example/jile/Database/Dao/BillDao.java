@@ -24,8 +24,8 @@ public class BillDao {
     }
     public  void insert(Bill bill){
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String sql ="insert into " + mUsername +"_Bill(uuid,num,accountname,first,second,member,store,date,iconId,other) values(?,?,?,?,?,?,?,?,?,?)";
-        db.execSQL(sql,new Object[]{bill.getUuid(),bill.getNum(),bill.getAccountname(),bill.getFirst(),bill.getSecond(),bill.getMember(),bill.getStore(),bill.getDate(),bill.getIconId(),bill.getOther()});
+        String sql ="insert into " + mUsername +"_Bill(uuid,type,num,accountname,first,second,member,store,date,iconId,note) values(?,?,?,?,?,?,?,?,?,?,?)";
+        db.execSQL(sql,new Object[]{bill.getUuid(),bill.getType(),bill.getNum().toString(),bill.getAccountname(),bill.getFirst(),bill.getSecond(),bill.getMember(),bill.getStore(),bill.getDate(),bill.getIconId(),bill.getNote()});
         db.close();
     }
     public  void delete(Bill bill){
@@ -62,6 +62,7 @@ public class BillDao {
          *     private String other;
          */
         int uuidindex = cursor.getColumnIndex("uuid");
+        int typeindex = cursor.getColumnIndex("type");
         int numindex = cursor.getColumnIndex("num");
         int accountnameindex = cursor.getColumnIndex("accountname");
         int firstindex = cursor.getColumnIndex("first");
@@ -69,14 +70,12 @@ public class BillDao {
         int memberindex = cursor.getColumnIndex("member");
         int storeindex = cursor.getColumnIndex("store");
         int dateindex = cursor.getColumnIndex("date");
-        int timeindex = cursor.getColumnIndex("time");
         int iconidindex = cursor.getColumnIndex("iconId");
-        int otherindex = cursor.getColumnIndex("other");
+        int noteindex = cursor.getColumnIndex("note");
 
         while(cursor.moveToNext()){
-
-            Bill m = new Bill(cursor.getString(uuidindex),new BigDecimal(cursor.getString(numindex)),cursor.getString(accountnameindex),cursor.getString(firstindex),cursor.getString(secondindex),cursor.getString(memberindex),cursor.getString(storeindex),
-                    cursor.getString(dateindex),cursor.getInt(iconidindex),cursor.getString(otherindex));
+            Bill m = new Bill(cursor.getString(uuidindex),cursor.getString(typeindex),new BigDecimal(cursor.getString(numindex)),cursor.getString(accountnameindex),cursor.getString(firstindex),cursor.getString(secondindex),cursor.getString(memberindex),cursor.getString(storeindex),
+                    cursor.getString(dateindex),cursor.getInt(iconidindex),cursor.getString(noteindex));
             re.add(m);
         }
         db.close();
@@ -89,6 +88,7 @@ public class BillDao {
         Cursor cursor = db.rawQuery(sql,null);
         List<Bill> re = new LinkedList<Bill>();
         int uuidindex = cursor.getColumnIndex("uuid");
+        int typeindex = cursor.getColumnIndex("type");
         int numindex = cursor.getColumnIndex("num");
         int accountnameindex = cursor.getColumnIndex("accountname");
         int firstindex = cursor.getColumnIndex("first");
@@ -96,18 +96,26 @@ public class BillDao {
         int memberindex = cursor.getColumnIndex("member");
         int storeindex = cursor.getColumnIndex("store");
         int dateindex = cursor.getColumnIndex("date");
-        int timeindex = cursor.getColumnIndex("time");
         int iconidindex = cursor.getColumnIndex("iconId");
-        int otherindex = cursor.getColumnIndex("other");
+        int noteindex = cursor.getColumnIndex("note");
         while(cursor.moveToNext()){
 
-            Bill m = new Bill(cursor.getString(uuidindex),new BigDecimal(cursor.getString(numindex)),cursor.getString(accountnameindex),cursor.getString(firstindex),cursor.getString(secondindex),cursor.getString(memberindex),
-                    cursor.getString(storeindex),cursor.getString(dateindex),cursor.getInt(iconidindex),cursor.getString(otherindex));
+            Bill m = new Bill(cursor.getString(uuidindex),cursor.getString(typeindex),new BigDecimal(cursor.getString(numindex)),cursor.getString(accountnameindex),cursor.getString(firstindex),cursor.getString(secondindex),cursor.getString(memberindex),cursor.getString(storeindex),
+                    cursor.getString(dateindex),cursor.getInt(iconidindex),cursor.getString(noteindex));
             re.add(m);
         }
         db.close();
         return re;
     }
+    public List<Bill> querybytimerange(String starttime,String endtime){
+
+        return null;
+    }
+    public List<Bill> querybytimefrom(String starttime){
+
+        return null;
+    }
+
 
 }
 
