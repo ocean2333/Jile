@@ -2,14 +2,18 @@ package com.example.jile.New;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
@@ -46,6 +50,7 @@ public class NewBIllActivity extends AppCompatActivity {
     private EditText etMoneyNumber,etNote;
     private String firstClass,secondClass,accountName,member,store,time;
     private OptionsPickerView<String> pvOptions,pvOptions2,pvOptions3,pvOptions4;
+    private LayoutTransition layoutTransition;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +59,7 @@ public class NewBIllActivity extends AppCompatActivity {
     }
 
     private void getComponents(){
+        layoutTransition = new LayoutTransition();
         btnSetDate = findViewById(R.id.btnSetDate);
         btnBack = findViewById(R.id.btnBack);
         btnSave = findViewById(R.id.btnSave);
@@ -220,6 +226,22 @@ public class NewBIllActivity extends AppCompatActivity {
                 accountName,firstClass,secondClass,member,store,time,R.drawable.icon_dollar,etNote.getText().toString());
     }
 
+    private void getAccounts(){
+        List<Account> allAccount = LogoActivity.accountDao.query();
+        List<String> allAccountName = new ArrayList<>();
+        for(Account a:allAccount){
+            allAccountName.add(a.getSelfname());
+        }
+        firstClassItems.clear();
+        secondClassItems.clear();
+        for(String s:allAccountName){
+            List<String> temp = new LinkedList<>(allAccountName);
+            temp.remove(s);
+            firstClassItems.add(s);
+            secondClassItems.add(temp);
+        }
+    }
+
     private String getNowTime(){
         @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");// HH:mm:ss
         //获取当前时间
@@ -244,27 +266,75 @@ public class NewBIllActivity extends AppCompatActivity {
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                boolean needToUpdate;
                 switch (group.getCheckedRadioButtonId()) {
                     case R.id.rbExpenses:
+                        needToUpdate = type.equals(Constants.TRANSFER);
                         type=Constants.COST;
+                        getItems();
+                        if(needToUpdate){
+                            updateUIToNormalType();
+                        }
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                btnFirstClass.setText(firstClassItems.get(0));
+                                btnSecondClass.setText(secondClassItems.get(0).get(0));
+                            }
+                        }).start();
                         break;
                     case R.id.rbIncome:
+                        needToUpdate = type.equals(Constants.TRANSFER);
                         type=Constants.INCOME;
+                        getItems();
+                        if(needToUpdate){
+                            updateUIToNormalType();
+                        }
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                btnFirstClass.setText(firstClassItems.get(0));
+                                btnSecondClass.setText(secondClassItems.get(0).get(0));
+                            }
+                        }).start();
                         break;
                     case R.id.rbTransfer:
+                        needToUpdate = !type.equals(Constants.TRANSFER);
                         type=Constants.TRANSFER;
+                        getAccounts();
+                        if(needToUpdate){
+                            updateUIToTransferType();
+                        }
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                btnFirstClass.setText(firstClassItems.get(0));
+                                btnSecondClass.setText(secondClassItems.get(0).get(0));
+                            }
+                        }).start();
                         break;
                 }
-                getItems();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        btnFirstClass.setText(firstClassItems.get(0));
-                        btnSecondClass.setText(secondClassItems.get(0).get(0));
-                    }
-                }).start();
             }
         });
+    }
+
+    private void updateUIToTransferType(){
+        TextView tvClass = findViewById(R.id.tvClass);
+        tvClass.setText("账户");
+        LinearLayout ll = findViewById(R.id.ll);
+        ll.removeViewAt(1);
+    }
+
+    private void updateUIToNormalType(){
+        TextView tvClass = findViewById(R.id.tvClass);
+        tvClass.setText("分类");
+        LinearLayout ll = findViewById(R.id.ll);
+        LayoutInflater mInflater = LayoutInflater.from(this);
+        View mView = mInflater.inflate(R.layout.adapter_class,null);
+        Button btnAccount = mView.findViewById(R.id.btnSelectAccount);
+        btnAccount.setText(accountItems.get(0));
+        btnAccount.setOnClickListener(new OnClick());
+        ll.addView(mView,1);
     }
 
     private void init(){

@@ -9,17 +9,18 @@
     <LinearLayout
         android:id="@+id/ll_1"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="250"
+        android:layout_height="250dp"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/tvMonth"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1.0"
-            android:textSize="30sp"
             android:gravity="center_vertical"
-            android:paddingLeft="20dp"/>
+            android:paddingLeft="20dp"
+            android:textSize="30sp" />
+
         <LinearLayout
             android:id="@+id/EarnAndCostTitle"
             android:layout_width="match_parent"
@@ -106,8 +107,7 @@
     <LinearLayout
         android:id="@+id/ll_2"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="75"
+        android:layout_height="75dp"
         android:orientation="horizontal"
         android:background="@drawable/top_and_bottom_edge"
         android:padding="1dp">
@@ -150,8 +150,7 @@
     <LinearLayout
         android:id="@+id/ll_3"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="340"
+        android:layout_height="340dp"
         android:orientation="vertical">
         <!--// TODO 添加可下拉地查看最近记账的功能 alpha版 只能显示5条-->
         <ListView
@@ -162,8 +161,7 @@
     <LinearLayout
         android:id="@+id/bottomButton"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="65"
+        android:layout_height="65dp"
         android:orientation="horizontal"
         tools:ignore="MissingConstraints">
         <Button
