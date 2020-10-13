@@ -27,13 +27,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jile.Bean.Mem;
+import com.example.jile.Bean.User;
 import com.example.jile.Database.DatabaseHelper;
+import com.example.jile.LogoActivity;
 import com.example.jile.MainView.MainActivity;
 import com.example.jile.R;
 import com.example.jile.ui.login.data.Result;
 
-public class LoginActivity extends AppCompatActivity {
+import java.util.List;
 
+public class LoginActivity extends AppCompatActivity {
+    private String hint;
     private LoginViewModel loginViewModel;
 
     @Override
@@ -106,7 +110,11 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
                 }
                 if(loginResult.getFailure()!=null){
-                    Toast.makeText(LoginActivity.this,"登陆失败,密码错误或用户不存在",Toast.LENGTH_SHORT).show();
+                    if(hint==null){
+                        Toast.makeText(LoginActivity.this,"登陆失败,用户不存在",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(LoginActivity.this,"密码错误 提示:"+hint,Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -147,6 +155,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
+                List<User> lu = LogoActivity.userDao.querybyskey("name",usernameEditText.getText().toString());
+                if(!lu.isEmpty()){
+                    hint = lu.get(0).getTips();
+                }
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
             }

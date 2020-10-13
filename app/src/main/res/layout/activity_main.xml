@@ -35,15 +35,16 @@
                 android:text="支出"
                 android:gravity="center_vertical"
                 android:textSize="25dp"/>
+
             <TextView
                 android:id="@+id/tvEarnTitle"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:paddingLeft="20dp"
                 android:text="收入"
-                android:gravity="center_vertical"
-                android:textSize="25dp"/>
+                android:textSize="20dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -68,8 +69,8 @@
                 android:layout_weight="1"
                 android:paddingLeft="20dp"
                 android:text="+14.00"
-                android:gravity="center_vertical"
-                android:textSize="50dp"/>
+                android:gravity="top"
+                android:textSize="20dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -98,7 +99,7 @@
         <Button
             android:id="@+id/btnModifyBudget"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="5dp"
             android:layout_weight="0.5"
             android:text="更改预算"/>
     </LinearLayout>

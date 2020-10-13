@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class SignUpActivity extends AppCompatActivity {
-    private EditText etUsername,etPassword,etRepeatPassword,etQuestion,etAns;
+    private EditText etUsername,etPassword,etRepeatPassword,etQuestion,etAns,etHint;
     private Button btnBack,btnNext;
     private boolean b1=false,b2=false,b3=false,b4=false,b5=false;
     @Override
@@ -180,6 +180,7 @@ public class SignUpActivity extends AppCompatActivity {
                     bundle.putString("password",etPassword.getText().toString());
                     bundle.putString("question",etQuestion.getText().toString());
                     bundle.putString("ans",etAns.getText().toString());
+                    bundle.putString("hint",etHint.getText().toString());
                     //addNewUserToDB(createNewUser());
                     intent.putExtras(bundle);
                     startActivity(intent);
@@ -198,6 +199,7 @@ public class SignUpActivity extends AppCompatActivity {
         etAns = findViewById(R.id.etAns);
         btnNext = findViewById(R.id.btnNext);
         btnBack = findViewById(R.id.btnBack);
+        etHint = findViewById(R.id.etHint);
     }
 
     private void init(){

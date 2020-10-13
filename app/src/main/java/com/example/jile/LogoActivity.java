@@ -16,6 +16,7 @@ import com.example.jile.Database.Dao.UserDao;
 import com.example.jile.Database.DatabaseHelper;
 import com.example.jile.MainView.MainActivity;
 import com.example.jile.ui.login.LoginActivity;
+import com.idescout.sql.SqlScoutServer;
 
 public class LogoActivity extends AppCompatActivity {
     public static SharedPreferences sp;
@@ -32,6 +33,7 @@ public class LogoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logo);
+        SqlScoutServer.create(this, getPackageName());
         sp = getSharedPreferences("login",MODE_PRIVATE);
         userDao = new UserDao(this);
         new Thread(new Runnable() {

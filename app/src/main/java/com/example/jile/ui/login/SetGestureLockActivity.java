@@ -27,7 +27,7 @@ import me.zhanghai.android.patternlock.SetPatternActivity;
 import static com.example.jile.LogoActivity.accountDao;
 
 public class SetGestureLockActivity extends SetPatternActivity {
-    private String username,password,question,ans;
+    private String username,password,question,ans,hint;
     @Override
     protected void onSetPattern(List<PatternView.Cell> pattern) {
         String patternSha1 = PatternUtils.patternToSha1String(pattern);
@@ -36,6 +36,7 @@ public class SetGestureLockActivity extends SetPatternActivity {
         password = bundle.getString("password");
         question = bundle.getString("question");
         ans = bundle.getString("ans");
+        hint = bundle.getString("hint");
         addNewUserToDB(createNewUser(patternSha1));
         //addPatternSha1ToDB(patternSha1,bundle.getString("username"));
     }
@@ -67,7 +68,7 @@ public class SetGestureLockActivity extends SetPatternActivity {
 
     private User createNewUser(String patten){
         return new User(UUID.randomUUID().toString(),username,password,
-                question,ans,"暂无",R.drawable.icon_dollar,"",patten,"1500");
+                question,ans,hint,R.drawable.icon_dollar,"",patten,"1500");
     }
 
     //

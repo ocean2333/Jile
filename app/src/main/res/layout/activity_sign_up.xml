@@ -58,7 +58,7 @@
         android:layout_toEndOf="@+id/tvPassword"
         android:layout_below="@+id/tvUserName"
         android:hint="请输入密码"/>
-    <TextView
+        <TextView
         android:id="@+id/tvRepeatPassword"
         android:layout_width="100dp"
         android:layout_height="50dp"
@@ -67,7 +67,7 @@
         android:textSize="20sp"
         android:gravity="center_vertical|start"
         android:layout_marginLeft="50dp"/>
-    <EditText
+        <EditText
         android:maxWidth="100dp"
         android:lines="1"
         android:inputType="textPassword"
@@ -78,6 +78,26 @@
         android:layout_toEndOf="@+id/tvRepeatPassword"
         android:layout_below="@+id/tvPassword"
         android:hint="请再次输入密码"/>
+    <TextView
+        android:id="@+id/tvHint"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/tvRepeatPassword"
+        android:text="密码提示"
+        android:textSize="20sp"
+        android:gravity="center_vertical|start"
+        android:layout_marginLeft="50dp"/>
+    <EditText
+        android:maxWidth="100dp"
+        android:lines="1"
+        android:inputType="textPassword"
+        android:id="@+id/etHint"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:textSize="15sp"
+        android:layout_toEndOf="@+id/tvHint"
+        android:layout_below="@+id/tvRepeatPassword"
+        android:hint="请输入密码提示"/>
     <TextView
         android:id="@+id/tvQuestion"
         android:layout_width="300dp"

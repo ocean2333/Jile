@@ -88,14 +88,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void getBill(Bill[] bill){
-        bill= LogoActivity.billDao.query().toArray(new Bill[LogoActivity.billDao.query().size()]);
+    private Bill[] getBill(Bill[] bill){
+        bill = LogoActivity.billDao.query().toArray(new Bill[LogoActivity.billDao.query().size()]);
         Arrays.sort(bill, new Comparator<Bill>() {
             @Override
             public int compare(Bill o1, Bill o2) {
                 return o2.getDate().compareTo(o1.getDate());
             }
         });
+        return bill;
     }
     private void getBtns(){
         btnToDetail = findViewById(R.id.btnToDetail);
@@ -192,7 +193,15 @@ public class MainActivity extends AppCompatActivity {
                 .setView(edt)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
-                        setBudgetThisMonth(new BigDecimal(edt.getText().toString()));
+                        String b = edt.getText().toString();
+                        setBudgetThisMonth(new BigDecimal(b));
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                TextView tvBudget = findViewById(R.id.tvBudgetNum);
+                                tvBudget.setText(edt.getText().toString());
+                            }
+                        }).start();
                     }
                 })
                 .setNegativeButton("取消", null)
@@ -202,16 +211,16 @@ public class MainActivity extends AppCompatActivity {
     // TODO
     private static Bill[] getbillbytime(Bill[] bill,Date startDate,Date endDate) throws ParseException {
         Bill[] tempBill=new Bill[bill.length];
+        List<Bill> lb = new ArrayList<>();
         int i=0;
         for(Bill temp:bill){
             java.text.SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd-hh-mm");
             Date date = simpleDateFormat.parse(temp.getDate());
             if (date.before(endDate) && date.after(startDate)){
-                tempBill[i]=temp;
-                i++;
+                lb.add(temp);
             }
         }
-        return tempBill;
+        return lb.toArray(new Bill[0]);
     }
 
     private void getCostAndIncome(Bill[] bill,String type) throws ParseException {
@@ -246,12 +255,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getbudgetThisMonth(){
-        List<User> list = LogoActivity.userDao.querybyskey("name",LogoActivity.sp.getString("username",""));
+        String s = LogoActivity.sp.getString("loginUser","");
+        List<User> list = LogoActivity.userDao.querybyskey("name",s);
         budget = list.get(0).getBudget();
     }
 
     private void setBudgetThisMonth(BigDecimal budget){
-        User user = LogoActivity.userDao.querybyskey("name",LogoActivity.sp.getString("username","")).get(0);
+        User user = LogoActivity.userDao.querybyskey("name",LogoActivity.sp.getString("loginUser","")).get(0);
         user.setBudget(budget.toPlainString());
         LogoActivity.userDao.update(user);
     }
@@ -277,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateView() throws ParseException {
-        getBill(bills);
+        bills = getBill(bills);
         getMonth();
         TextView tvMonth = findViewById(R.id.tvMonth);
         TextView tvCost = findViewById(R.id.tvCost);

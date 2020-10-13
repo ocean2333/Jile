@@ -256,9 +256,13 @@ public class NewBIllActivity extends AppCompatActivity {
                         break;
                 }
                 getItems();
-                btnFirstClass.setText(firstClassItems.get(0));
-                btnSecondClass.setText(secondClassItems.get(0).get(0));
-                pvOptions.setPicker(firstClassItems,secondClassItems);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        btnFirstClass.setText(firstClassItems.get(0));
+                        btnSecondClass.setText(secondClassItems.get(0).get(0));
+                    }
+                }).start();
             }
         });
     }
