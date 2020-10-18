@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.xuexiang.xui.widget.alpha.XUIAlphaTextView
+        android:id="@+id/expand_button"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:windowBackground"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/GraphByKind" />
+
+    <com.xuexiang.xui.widget.layout.ExpandableLayout
+        android:layout_below="@id/expand_button"
+        android:id="@+id/expandable_layout_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:el_duration="1000"
+        app:el_expanded="false">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textCostGraph"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rb_bg_selector"
+                    android:text="@string/CostGraph" />
+
+                <Button
+                    android:id="@+id/btnCostGraphByKind"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_blue_dark"
+                    android:text="@string/CostGraphByKind" />
+                <Button
+                    android:id="@+id/btnCostGraphBySecondClass"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_blue_dark"
+                    android:text="@string/CostGraphBySecondClass" />
+
+                <Button
+                    android:id="@+id/btnCostGraphByAccount"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/xui_transparent"
+                    android:text="@string/CostGraphByAccount" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textIncomeGraph"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rb_bg_selector"
+                    android:text="@string/IncomeGraph" />
+
+                <Button
+                    android:id="@+id/btnIncomeGraphByKind"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_blue_dark"
+                    android:text="@string/IncomeGraphByKind" />
+                <Button
+                    android:id="@+id/btnIncomeGraphBySecondClass"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_blue_dark"
+                    android:text="@string/IncomeGraphBySecondClass" />
+                <Button
+                    android:id="@+id/btnIncomeGraphByAccount"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/xui_transparent"
+                    android:text="@string/IncomeGraphByAccount" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/textMonthGraph"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rb_bg_selector"
+                    android:text="@string/MonthGraph" />
+
+                <Button
+                    android:id="@+id/btnMonthIncome"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_blue_dark"
+                    android:text="@string/MonthIncome" />
+
+                <Button
+                    android:id="@+id/btnMonthCost"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/xui_transparent"
+                    android:text="@string/MonthCost" />
+                <Button
+                    android:id="@+id/btnMonthCompare"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/xui_transparent"
+                    android:text="@string/MonthCompare"/>
+
+            </TableRow>
+
+        </TableLayout>
+
+    </com.xuexiang.xui.widget.layout.ExpandableLayout>
+
+
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/top_and_bottom_edge">
+        <Button
+            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:id="@+id/btnSetStartDate"
+            />
+        <Button
+            android:layout_toEndOf="@+id/btnSetStartDate"
+            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:id="@+id/btnSetEndDate"
+            />
+        <Button
+            android:layout_alignParentEnd="true"
+            android:id="@+id/btnSetBarChart"
+            android:layout_width="75dp"
+            android:layout_height="match_parent"/>
+        <Button
+            android:layout_toStartOf="@id/btnSetBarChart"
+            android:id="@+id/btnSetPieChart"
+            android:layout_width="75dp"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="57dp"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
+
+

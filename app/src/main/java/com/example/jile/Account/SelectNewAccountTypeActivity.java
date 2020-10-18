@@ -1,6 +1,5 @@
 package com.example.jile.Account;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,12 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.jile.Detail.DeatilActivity;
-import com.example.jile.Graph.GraphActivity;
-import com.example.jile.MainView.MainActivity;
-import com.example.jile.New.NewBIllActivity;
 import com.example.jile.R;
-import com.example.jile.Setting.SettingActivity;
 
 import static com.example.jile.Constant.Constants.CASH_ACCOUNT;
 
