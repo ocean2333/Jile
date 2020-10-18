@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="50dp">
     <TextView
         android:id="@+id/tvTime"
@@ -25,27 +27,37 @@
         android:textSize="15sp"
         android:gravity="center_vertical|start"
         android:id="@+id/tvSecondClass"
-        android:layout_width="175dp"
+        android:layout_width="200dp"
         android:layout_height="25dp"
-        android:layout_toEndOf="@+id/ivIcon"/>
+        android:layout_toEndOf="@+id/ivIcon"
+        android:layout_toStartOf="@id/tvMoney"/>
     <TextView
         android:textSize="15sp"
         android:gravity="center_vertical|start"
-        android:id="@+id/tvStore"
+        android:id="@+id/tvAccount"
         android:layout_toEndOf="@+id/ivIcon"
+        android:layout_toStartOf="@id/tvMoney"
         android:layout_below="@+id/tvSecondClass"
-        android:layout_width="175dp"
+        android:layout_width="200dp"
         android:layout_height="25dp"/>
-    <TextView
+    <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+        app:aftv_minTextSize="5sp"
         android:textSize="10sp"
+        android:text="123123123"
         android:gravity="center_vertical|start"
         android:id="@+id/tvMoney"
+        android:maxLines="1"
         android:layout_width="60dp"
-        android:layout_toEndOf="@+id/tvStore"
+        android:layout_toStartOf="@id/btnModify"
         android:layout_height="match_parent"/>
     <Button
-        android:id="@+id/btnToDetail"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_toEndOf="@+id/tvMoney"/>
+        android:id="@+id/btnModify"
+        android:layout_alignParentEnd="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
+    <TextView
+        android:id="@+id/tvUuid"
+        android:visibility="invisible"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
 </RelativeLayout>

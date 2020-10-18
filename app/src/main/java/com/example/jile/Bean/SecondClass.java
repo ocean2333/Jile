@@ -5,7 +5,9 @@ public class SecondClass {
     private String type;
     private String firstclass;
     private String name;
+    public SecondClass(){
 
+    }
     public SecondClass(String uuid, String type, String firstclass, String name) {
         this.uuid = uuid;
         this.type = type;

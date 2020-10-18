@@ -3,7 +3,9 @@ package com.example.jile.Bean;
 import java.math.BigDecimal;
 
 public class Account {
+    public Account(){
 
+    }
 
     public Account(String uuid, String type, String selfname, BigDecimal balance, String currency, int iconId, String note) {
         this.uuid = uuid;

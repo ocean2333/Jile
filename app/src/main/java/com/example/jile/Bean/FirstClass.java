@@ -3,9 +3,11 @@ package com.example.jile.Bean;
 public class FirstClass {
     private String uuid;
     private String type;
-
     private String name;
 
+    public FirstClass(){
+
+    }
     public FirstClass(String uuid, String type, String name) {
         this.uuid = uuid;
         this.type = type;

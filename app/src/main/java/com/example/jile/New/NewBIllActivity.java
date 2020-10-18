@@ -2,25 +2,24 @@ package com.example.jile.New;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
-import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
-import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
-import com.bigkoo.pickerview.view.TimePickerView;
 import com.example.jile.Bean.Account;
 import com.example.jile.Bean.Bill;
 import com.example.jile.Bean.FirstClass;
@@ -28,14 +27,18 @@ import com.example.jile.Bean.Mem;
 import com.example.jile.Bean.SecondClass;
 import com.example.jile.Bean.Store;
 import com.example.jile.Constant.Constants;
-import com.example.jile.Database.Dao.BillDao;
-import com.example.jile.Database.Dao.FirstClassDao;
 import com.example.jile.LogoActivity;
 import com.example.jile.R;
+import com.example.jile.Util.ToastUtil;
+import com.xuexiang.xui.XUI;
+import com.xuexiang.xui.widget.picker.widget.TimePickerView;
+import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder;
+import com.xuexiang.xui.widget.picker.widget.listener.OnTimeSelectListener;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,18 +51,27 @@ public class NewBIllActivity extends AppCompatActivity {
     private String type= Constants.COST;
     private OnClick onClick = new OnClick();
     private EditText etMoneyNumber,etNote;
-    private String firstClass,secondClass,accountName,member,store,time;
     private OptionsPickerView<String> pvOptions,pvOptions2,pvOptions3,pvOptions4;
-    private LayoutTransition layoutTransition;
+    private String uuid;
+    private BigDecimal oldMoneyNum;
+    private int initSelection1,initSelection2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_bill);
-        init();
+        XUI.initTheme(this);
+        if(getIntent().getExtras()==null){
+        }else{
+            uuid = getIntent().getExtras().getString("uuid");
+        }
+        try {
+            init();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getComponents(){
-        layoutTransition = new LayoutTransition();
         btnSetDate = findViewById(R.id.btnSetDate);
         btnBack = findViewById(R.id.btnBack);
         btnSave = findViewById(R.id.btnSave);
@@ -72,40 +84,101 @@ public class NewBIllActivity extends AppCompatActivity {
         etNote = findViewById(R.id.etNote);
     }
 
+    //点击编辑框以外的地方关闭输入法
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (isShouldHideInput(v, ev)) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+            return super.dispatchTouchEvent(ev);
+        }
+        // 必不可少，否则所有的组件都不会有TouchEvent了
+        if (getWindow().superDispatchTouchEvent(ev)) {
+            return true;
+        }
+        return onTouchEvent(ev);
+    }
+
+    public  boolean isShouldHideInput(View v, MotionEvent event) {
+        if (v != null && (v instanceof EditText)) {
+            int[] leftTop = { 0, 0 };
+            //获取输入框当前的location位置
+            v.getLocationInWindow(leftTop);
+
+            int left = leftTop[0];
+            int top = leftTop[1];
+            int bottom = top + v.getHeight();
+            int right = left + v.getWidth();
+            if (event.getX() > left && event.getX() < right
+                    && event.getY() > top && event.getY() < bottom) {
+                // 点击的是输入框区域，保留点击EditText的事件
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 一系列点击事件的实现
+     * */
     private class OnClick implements View.OnClickListener{
         @Override
         public void onClick(View v) {
             switch (v.getId()){
                 case R.id.btnSetDate:
+                    Calendar calendar = Calendar.getInstance();
+                    try {
+                        calendar.setTime(Constants.DATE_FORMAT_COMPLEX.parse(btnSetDate.getText().toString()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     TimePickerView pvTime = new TimePickerBuilder(NewBIllActivity.this, new OnTimeSelectListener() {
                         @Override
-                        public void onTimeSelect(Date date,View v) {//选中事件回调
-                            btnSetDate.setText(getNowTime(date));
-                            time = getTime(date);
+                        public void onTimeSelected(Date date, View v) {
+                            btnSetDate.setText(Constants.DATE_FORMAT_COMPLEX.format(date));
                         }
-                    }).setType(new boolean[]{true, true, true, true, true, false})//分别对应年月日时分秒，默认全部显示
-                      .build();
-                    //pvTime.setDate(Calendar.getInstance());//注：根据需求来决定是否使用该方法（一般是精确到秒的情况），此项可以在弹出选择器的时候重新设置当前时间，避免在初始化之后由于时间已经设定，导致选中时间与当前时间不匹配的问题。
+                    }).setType(true, true, true, true, true, false)//分别对应年月日时分秒，默认全部显示
+                       .setTitleText("时间选择")
+                       .setDate(calendar)
+                       .build();
                     pvTime.show();
                     break;
                 case R.id.btnBack:
                     finish();
                     break;
                 case R.id.btnSave:
-                    addNewBillToDB(createNewBill());
-                    finish();
+                    if(btnFirstClass.getText().toString().equals(btnSecondClass.getText().toString())){
+                        Toast.makeText(NewBIllActivity.this,"转入账户和转出账户不能相同！",Toast.LENGTH_SHORT).show();
+                    }else if(etMoneyNumber.getText().toString().equals("")){
+                         ToastUtil.showShortToast(NewBIllActivity.this,"金额不能为空");
+                    }else{
+                        if(uuid==null){
+                            try {addNewBillToDB(createNewBill());}catch(ParseException e){e.printStackTrace();}
+                        }else{
+                            try {updateBillInDB(createNewBill());}catch(ParseException e){e.printStackTrace();}
+                        }
+                        modifyMostRecentStore(btnSetStore.getText().toString());
+                        finish();
+                    }
                     break;
                 case R.id.btnFirstClass:
+                case R.id.btnSecondClass:
                     pvOptions = new OptionsPickerBuilder(NewBIllActivity.this, new OnOptionsSelectListener() {
                         @Override
                         public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
                             //返回的分别是三个级别的选中位置
-                            firstClass = firstClassItems.get(options1);
-                            secondClass = secondClassItems.get(options1).get(option2);
-                            btnFirstClass.setText(firstClass);
-                            btnSecondClass.setText(secondClass);
+                            btnFirstClass.setText(firstClassItems.get(options1));
+                            btnSecondClass.setText(secondClassItems.get(options1).get(option2));
                         }
-                    }).build();
+                    })      .setSelectOptions(initSelection1,initSelection2)
+                            .build();
                     pvOptions.setPicker(firstClassItems,secondClassItems);
                     pvOptions.show();
                     break;
@@ -114,8 +187,7 @@ public class NewBIllActivity extends AppCompatActivity {
                         @Override
                         public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
                             //返回的分别是三个级别的选中位置
-                            accountName = accountItems.get(options1);
-                            btnSelectAccount.setText(accountName);
+                            btnSelectAccount.setText(accountItems.get(options1));
                         }
                     }).build();
                     pvOptions2.setPicker(accountItems);
@@ -126,8 +198,7 @@ public class NewBIllActivity extends AppCompatActivity {
                         @Override
                         public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
                             //返回的分别是三个级别的选中位置
-                            member = memberItems.get(options1);
-                            btnSelectMember.setText(member);
+                            btnSelectMember.setText(memberItems.get(options1));
                         }
                     }).build();
                     pvOptions3.setPicker(memberItems);
@@ -137,9 +208,7 @@ public class NewBIllActivity extends AppCompatActivity {
                     pvOptions4 = new OptionsPickerBuilder(NewBIllActivity.this, new OnOptionsSelectListener() {
                         @Override
                         public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
-                            //返回的分别是三个级别的选中位置
-                            store = storeItems.get(options1);
-                            btnSetStore.setText(store);
+                            btnSetStore.setText(storeItems.get(options1));
                         }
                     }).build();
                     pvOptions4.setPicker(storeItems);
@@ -202,12 +271,31 @@ public class NewBIllActivity extends AppCompatActivity {
             outaccount.get(0).setBalance(outaccount.get(0).getBalance().subtract(bill.getNum()));
             LogoActivity.accountDao.update(outaccount.get(0));
             List<Account> inaccount =LogoActivity.accountDao.querybyskey("selfname",bill.getSecond());
-            inaccount.get(0).setBalance(inaccount.get(0).getBalance().subtract(bill.getNum()));
+            inaccount.get(0).setBalance(inaccount.get(0).getBalance().add(bill.getNum()));
             LogoActivity.accountDao.update(inaccount.get(0));
         }
     }
 
-    // TODO 获得最近用过的店（测
+    private void updateBillInDB(Bill bill){
+        LogoActivity.billDao.update(bill);
+        if(bill.getType().equals(Constants.INCOME)||bill.getType().equals(Constants.COST)){
+            List<Account> tempaccount =LogoActivity.accountDao.querybyskey("selfname",bill.getAccountname());
+            tempaccount.get(0).setBalance(tempaccount.get(0).getBalance().add(bill.getNum()).subtract(oldMoneyNum));
+            LogoActivity.accountDao.update(tempaccount.get(0));
+        }
+        else if(bill.getType().equals(Constants.TRANSFER)){
+            List<Account> outaccount =LogoActivity.accountDao.querybyskey("selfname",bill.getFirst());
+            outaccount.get(0).setBalance(outaccount.get(0).getBalance().subtract(bill.getNum()).add(oldMoneyNum));
+            LogoActivity.accountDao.update(outaccount.get(0));
+            List<Account> inaccount =LogoActivity.accountDao.querybyskey("selfname",bill.getSecond());
+            inaccount.get(0).setBalance(inaccount.get(0).getBalance().add(bill.getNum()).subtract(oldMoneyNum));
+            LogoActivity.accountDao.update(inaccount.get(0));
+        }
+    }
+
+    /**
+     * 在sharePreference中存储和获得最近去的店
+     * */
     private String getMostRecentStore(){
         String recentStore = LogoActivity.sp.getString("recentStore",null);
         if(recentStore==null){
@@ -216,14 +304,44 @@ public class NewBIllActivity extends AppCompatActivity {
             return recentStore;
         }
     }
-    // TODO 更新最近用过的店(测
     private void modifyMostRecentStore(String s){
         LogoActivity.sp.edit().putString("recentStore",s).apply();
     }
 
-    private Bill createNewBill(){
-        return new Bill(UUID.randomUUID().toString(),type,new BigDecimal(etMoneyNumber.getText().toString()),
-                accountName,firstClass,secondClass,member,store,time,R.drawable.icon_dollar,etNote.getText().toString());
+    /**
+     * 根据Button控件和EditText控件的值构造bill，有转账和非转账两种构造方法
+     * */
+    private Bill createNewBill() throws ParseException {
+        if(uuid!=null){
+            if(!type.equals(Constants.TRANSFER)){
+                return new Bill(uuid,type,new BigDecimal(etMoneyNumber.getText().toString()),
+                        btnSelectAccount.getText().toString(),btnFirstClass.getText().toString(),btnSecondClass.getText().toString(),
+                        btnSelectMember.getText().toString(),btnSetStore.getText().toString(),
+                        Constants.DATE_FORMAT_SIMPLE.format(Constants.DATE_FORMAT_COMPLEX.parse(btnSetDate.getText().toString())),
+                        R.drawable.icon_dollar,etNote.getText().toString());
+            }else{
+                return new Bill(uuid,type,new BigDecimal(etMoneyNumber.getText().toString()),
+                        "",btnFirstClass.getText().toString(),btnSecondClass.getText().toString(),
+                        btnSelectMember.getText().toString(),btnSetStore.getText().toString(),
+                        Constants.DATE_FORMAT_SIMPLE.format(Constants.DATE_FORMAT_COMPLEX.parse(btnSetDate.getText().toString())),
+                        R.drawable.icon_transfer,etNote.getText().toString());
+            }
+        }else{
+            if(!type.equals(Constants.TRANSFER)){
+                return new Bill(UUID.randomUUID().toString(),type,new BigDecimal(etMoneyNumber.getText().toString()),
+                        btnSelectAccount.getText().toString(),btnFirstClass.getText().toString(),btnSecondClass.getText().toString(),
+                        btnSelectMember.getText().toString(),btnSetStore.getText().toString(),
+                        Constants.DATE_FORMAT_SIMPLE.format(Constants.DATE_FORMAT_COMPLEX.parse(btnSetDate.getText().toString())),
+                        R.drawable.icon_dollar,etNote.getText().toString());
+            }else{
+                return new Bill(UUID.randomUUID().toString(),type,new BigDecimal(etMoneyNumber.getText().toString()),
+                        "",btnFirstClass.getText().toString(),btnSecondClass.getText().toString(),
+                        btnSelectMember.getText().toString(),btnSetStore.getText().toString(),
+                        Constants.DATE_FORMAT_SIMPLE.format(Constants.DATE_FORMAT_COMPLEX.parse(btnSetDate.getText().toString())),
+                        R.drawable.icon_transfer,etNote.getText().toString());
+            }
+        }
+
     }
 
     private void getAccounts(){
@@ -236,29 +354,9 @@ public class NewBIllActivity extends AppCompatActivity {
         secondClassItems.clear();
         for(String s:allAccountName){
             List<String> temp = new LinkedList<>(allAccountName);
-            temp.remove(s);
             firstClassItems.add(s);
             secondClassItems.add(temp);
         }
-    }
-
-    private String getNowTime(){
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");// HH:mm:ss
-        //获取当前时间
-        Date date = new Date(System.currentTimeMillis());
-        return simpleDateFormat.format(date);
-    }
-
-    private String getNowTime(Date date){
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");// HH:mm:ss
-        //获取时间
-        return simpleDateFormat.format(date);
-    }
-
-    private String getTime(Date date){
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");// HH:mm:ss
-        //获取时间
-        return simpleDateFormat.format(date);
     }
 
     private void setRadioGroupListener(){
@@ -321,39 +419,60 @@ public class NewBIllActivity extends AppCompatActivity {
     private void updateUIToTransferType(){
         TextView tvClass = findViewById(R.id.tvClass);
         tvClass.setText("账户");
-        LinearLayout ll = findViewById(R.id.ll);
-        ll.removeViewAt(1);
+        LinearLayout ll_2 = findViewById(R.id.ll_2);
+        ll_2.setVisibility(View.GONE);
     }
 
     private void updateUIToNormalType(){
         TextView tvClass = findViewById(R.id.tvClass);
         tvClass.setText("分类");
-        LinearLayout ll = findViewById(R.id.ll);
+        LinearLayout ll_2 = findViewById(R.id.ll_2);
+        ll_2.setVisibility(View.VISIBLE);
+        Button btnSelectAccount =  ll_2.findViewById(R.id.btnSelectAccount);
+        btnSelectAccount.setText(accountItems.get(0));
+        /*LinearLayout ll = findViewById(R.id.ll);
         LayoutInflater mInflater = LayoutInflater.from(this);
         View mView = mInflater.inflate(R.layout.adapter_class,null);
         Button btnAccount = mView.findViewById(R.id.btnSelectAccount);
         btnAccount.setText(accountItems.get(0));
         btnAccount.setOnClickListener(new OnClick());
-        ll.addView(mView,1);
+        ll.addView(mView,1);*/
     }
 
-    private void init(){
+    /**
+     * 初始化activity，根据是否有bundle决定页面是否有初始值以及点击btnSave的动作
+     * */
+    private void init() throws ParseException {
         getItems();
         getComponents();
         setListener(onClick);
         setRadioGroupListener();
-        btnFirstClass.setText(firstClassItems.get(0));
-        btnSecondClass.setText(secondClassItems.get(0).get(0));
-        btnSelectAccount.setText(accountItems.get(0));
-        btnSelectMember.setText(memberItems.get(0));
-        btnSetStore.setText(getMostRecentStore());
-        btnSetDate.setText(getNowTime());
-        accountName = accountItems.get(0);
-        firstClass = firstClassItems.get(0);
-        secondClass = secondClassItems.get(0).get(0);
-        member = memberItems.get(0);
-        store = getMostRecentStore();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm");// HH:mm:ss
-        time = simpleDateFormat.format(new Date(System.currentTimeMillis()));
+        if(uuid==null){
+            btnFirstClass.setText(firstClassItems.get(0));
+            btnSecondClass.setText(secondClassItems.get(0).get(0));
+            btnSelectAccount.setText(accountItems.get(0));
+            btnSelectMember.setText(memberItems.get(0));
+            btnSetStore.setText(getMostRecentStore());
+            btnSetDate.setText(Constants.DATE_FORMAT_COMPLEX.format(new Date(System.currentTimeMillis())));
+        }else{
+            Bill bill = LogoActivity.billDao.querybyskey("uuid",uuid).get(0);
+            oldMoneyNum = bill.getNum();
+            btnFirstClass.setText(bill.getFirst());
+            btnSecondClass.setText(bill.getSecond());
+            btnSelectAccount.setText(bill.getAccountname());
+            initSelection1 = firstClassItems.indexOf(bill.getFirst());
+            initSelection2 = secondClassItems.get(initSelection1).indexOf(bill.getSecond());
+            btnSelectMember.setText(bill.getMember());
+            btnSetStore.setText(bill.getStore());
+            btnSetDate.setText(Constants.DATE_FORMAT_COMPLEX.format(Constants.DATE_FORMAT_SIMPLE.parse(bill.getDate())));
+            TextView etMoneyNumber = findViewById(R.id.etMoneyNumber);
+            etMoneyNumber.setText(bill.getNum().toPlainString());
+            RadioGroup rg = findViewById(R.id.rgType);
+            if(bill.getType().equals(Constants.COST)){type=Constants.COST;rg.check(R.id.rbExpenses);}
+            if(bill.getType().equals(Constants.TRANSFER)){updateUIToTransferType();type=Constants.TRANSFER;rg.check(R.id.rbTransfer);}
+            for (int i = 0; i < rg.getChildCount(); i++) {
+                rg.getChildAt(i).setEnabled(false);
+            }
+        }
     }
 }

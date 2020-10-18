@@ -1,7 +1,9 @@
 package com.example.jile.Bean;
 
 public class Mem {
+    public Mem(){
 
+    }
     private String uuid;
 
     public String getName() {

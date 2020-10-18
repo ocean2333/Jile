@@ -1,12 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Detail.DeatilActivity">
-    <TextView
+    <LinearLayout
+        android:id="@+id/ll_1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Detail"/>
-</RelativeLayout>
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:background="@drawable/top_and_bottom_edge">
+        <Button
+            android:id="@+id/btnBack"
+            android:background="@drawable/ic_arrow_right"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.11"
+            />
+        <TextView
+            android:id="@+id/tvTitle"
+            android:gravity="center_vertical|start"
+            android:paddingLeft="20dp"
+            android:textSize="25sp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.81"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        android:background="@drawable/top_and_bottom_edge">
+        <TextView
+            android:layout_width="match_parent"
+            android:text="结余"
+            android:textSize="25sp"
+            android:gravity="bottom"
+            android:paddingLeft="20dp"
+            android:paddingBottom="10dp"
+            android:layout_height="75dp"/>
+        <TextView
+            android:id="@+id/tvBalance"
+            android:layout_width="match_parent"
+            android:paddingLeft="20dp"
+            android:text="1234.56"
+            android:textSize="40sp"
+            android:gravity="center_vertical|start"
+            android:layout_height="75dp"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent">
+
+            <TextView
+                android:id="@+id/tvIncome"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|start"
+                android:paddingLeft="20dp"
+                android:text="收入  123456.78"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tvCost"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="20dp"
+                android:textSize="15sp"
+                android:text="支出  1234.56"
+                android:gravity="center_vertical|start"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <Button
+            android:id="@+id/btnDateStart"
+            android:background="@android:color/transparent"
+            android:textSize="15sp"
+            android:text="2020年12月12日"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"/>
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_arrow_right"
+            android:layout_height="match_parent"/>
+        <Button
+            android:id="@+id/btnDateEnd"
+            android:textSize="15sp"
+            android:background="@android:color/transparent"
+            android:text="2020年12月12日"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"/>
+        <Button
+            android:id="@+id/btnSearchType"
+            android:background="@android:color/transparent"
+            android:layout_width="125dp"
+            android:textSize="15sp"
+            android:text="这是一个分类"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never" />
+    </LinearLayout>
+</LinearLayout>
