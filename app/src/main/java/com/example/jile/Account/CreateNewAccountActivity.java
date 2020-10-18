@@ -58,7 +58,7 @@ public class CreateNewAccountActivity extends AppCompatActivity {
                         //返回的分别是三个级别的选中位置
                         chineseAccountType = chineseAccountTypeItems.get(options1);
                         accountType = accountTypeItems.get(options1);
-                        btnCurrency.setText(chineseAccountType);
+                        btnAccountType.setText(chineseAccountType);
                     }
                 }).build();
                 pvOptions2.setPicker(chineseAccountTypeItems);

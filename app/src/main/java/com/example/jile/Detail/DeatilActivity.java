@@ -29,6 +29,7 @@ import com.example.jile.Bean.Store;
 import com.example.jile.Constant.Constants;
 import com.example.jile.New.NewBIllActivity;
 import com.example.jile.R;
+import com.example.jile.Util.BillMiddle;
 import com.example.jile.Util.DateUtil;
 import com.xuexiang.xui.XUI;
 import com.xuexiang.xui.utils.WidgetUtils;
@@ -53,7 +54,7 @@ import java.util.List;
  * */
 public class DeatilActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private Button btnStartDateSelector,btnEndDateSelector,btnSearchTypeSelector;
+    private Button btnStartDateSelector,btnEndDateSelector,btnSearchTypeSelector,btnBack;
     private TextView tvBalance,tvIncome,tvCost;
     private Object searchType;
     private Date startDate,endDate;
@@ -67,36 +68,35 @@ public class DeatilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deatil);
         recyclerView = findViewById(R.id.recycler_view);
-        init();
+        try {
+            init();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         tvBalance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(DeatilActivity.this,"its a test",Toast.LENGTH_SHORT).show();
             }
         });
-        Bill example  = new Bill("123", Constants.COST,new BigDecimal("666666.00"),"我的钱包","用膳","宵夜",
-                "朕","家","2020-10-14 22-40",R.drawable.icon_dollar,"无");
-        List<Bill> bills = new LinkedList<Bill>(Arrays.asList(example, example,example,example,example));
-        List<View> lv = new LinkedList<>();
-        for(Bill b:bills){
-            lv.add(BillToViewAdapter(b));
-        }
-        LineElement test = new LineElement("title","1234.56",lv);
-        List<LineElement> lle = new LinkedList<LineElement>(Arrays.asList(test));
-        WidgetUtils.initRecyclerView(recyclerView);
-        recyclerView.setAdapter(new ExpandableListAdapter(recyclerView,lle));
+        btnBack.setOnClickListener((l)->finish());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        update();
+        try {
+            update();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getComponent(){
         btnEndDateSelector = findViewById(R.id.btnDateEnd);
         btnStartDateSelector = findViewById(R.id.btnDateStart);
         btnSearchTypeSelector = findViewById(R.id.btnSearchType);
+        btnBack = findViewById(R.id.btnBack);
         tvBalance = findViewById(R.id.tvBalance);
         tvIncome = findViewById(R.id.tvIncome);
         tvCost = findViewById(R.id.tvCost);
@@ -105,7 +105,7 @@ public class DeatilActivity extends AppCompatActivity {
     /**
      * 初始化activity
      * */
-    private void init(){
+    private void init() throws ParseException {
         getComponent();
         btnSearchTypeSelector.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +135,11 @@ public class DeatilActivity extends AppCompatActivity {
                                     break;
                             }
                         }
-                        update();
+                        try {
+                            update();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }).setTitleText("分类选择")
                         .setDividerColor(Color.BLACK)
@@ -149,6 +153,7 @@ public class DeatilActivity extends AppCompatActivity {
         });
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(System.currentTimeMillis()));
+        endDate = calendar.getTime();
         btnEndDateSelector.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,7 +162,11 @@ public class DeatilActivity extends AppCompatActivity {
                     public void onTimeSelected(Date date, View v) {
                         endDate = date;
                         btnEndDateSelector.setText(Constants.DATE_FORMAT_YEAR_MONTH_DAY.format(date));
-                        update();
+                        try {
+                            update();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
                 })
                         .setType(true,true,true,false,false,false)
@@ -168,6 +177,7 @@ public class DeatilActivity extends AppCompatActivity {
             }
         });
         calendar.add(Calendar.DATE,-6);
+        startDate = calendar.getTime();
         btnStartDateSelector.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,7 +186,11 @@ public class DeatilActivity extends AppCompatActivity {
                     public void onTimeSelected(Date date, View v) {
                         startDate = date;
                         btnStartDateSelector.setText(Constants.DATE_FORMAT_YEAR_MONTH_DAY.format(date));
-                        update();
+                        try {
+                            update();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
                 })
                         .setType(true,true,true,false,false,false)
@@ -193,14 +207,39 @@ public class DeatilActivity extends AppCompatActivity {
         update();
     }
 
-    private void update(){
-        data = getBill(searchType,startDate,endDate);
+    private void update() throws ParseException {
+        if(searchType instanceof String){
+            data = BillMiddle.getBill((String)searchType,startDate,endDate,this);
+        }else if(searchType instanceof FirstClass){
+            data = BillMiddle.getBill((FirstClass) searchType,startDate,endDate,this);
+        }else if(searchType instanceof SecondClass){
+            data = BillMiddle.getBill((SecondClass)searchType,startDate,endDate,this);
+        }else if(searchType instanceof Account){
+            data = BillMiddle.getBill((Account)searchType,startDate,endDate,this);
+        }else if(searchType instanceof Mem){
+            data = BillMiddle.getBill((Mem)searchType,startDate,endDate,this);
+        }else{
+            data = BillMiddle.getBill((Store)searchType,startDate,endDate,this);
+        }
         BigDecimal cost,income;
         cost = getTotalCost(data);
         income = getTotalIncome(data);
-        tvBalance.setText(income.subtract(cost).toString());
+        tvBalance.setText(income.add(cost).toString());
         tvIncome.setText(income.toString());
         tvCost.setText(cost.toString());
+        List<LineElement> lle = new LinkedList<>();
+        for(List<Bill> lb:data){
+            List<View> lv = new LinkedList<>();
+            for(Bill b:lb){
+                lv.add(BillToViewAdapter(b));
+            }
+            LineElement le = new LineElement(getLineElementTitle(lb),
+                    getLineElementBalance(lb).toPlainString(),getLineElementIncome(lb).toPlainString()
+                    ,getLineElementCost(lb).toPlainString(),lv);
+            lle.add(le);
+        }
+        WidgetUtils.initRecyclerView(recyclerView);
+        recyclerView.setAdapter(new ExpandableListAdapter(recyclerView,lle));
     }
 
 
@@ -254,33 +293,15 @@ public class DeatilActivity extends AppCompatActivity {
     }
 
     /**
-     * 搜索时间区间内符合搜索要求的Bill并根据分类返回一个List
-     * 例如：搜索时间-日时，每个时间区间内带有bill的日子的所有bill都加入到一个单独的list里，然后
-     * 把所有list<bill>按日期由近到远排序
-     *       搜索一级分类时，把每个时间区间内带有bill的一级分类的所有bill都加入到一个单独的list里，
-     * 然后把所有list<bill>按支出bill的总金额大小排序，支出越多越前
-     * @param searchType 搜索类型，包括SEARCHTYPE_DAY = "day";
-     *                                SEARCHTYPE_WEEK = "week";
-     *                                SEARCHTYPE_MONTH = "month";
-     *                                SEARCHTYPE_YEAR = "year",
-     *                                FirstClass,
-     *                                SecondClass,
-     *                                Account,
-     *                                Mem,
-     *                                Store
-     * @param DateStart Date类型的时间，包括这一天
-     * @param DateEnd Date类型的时间，包括这一天
-    * */
-    private List<List<Bill>> getBill(Object searchType,Date DateStart,Date DateEnd){
-        return new LinkedList<>();
-    }
-
-    /**
      * 统计符合要求的所有支出
      * @param llb 所有符合要求的bill
     * */
     private BigDecimal getTotalCost(List<List<Bill>> llb){
-        return new BigDecimal(0);
+        BigDecimal cost = new BigDecimal("0");
+        for(List<Bill> lb:llb){
+            cost = cost.add(getLineElementCost(lb));
+        }
+        return cost;
     }
 
     /**
@@ -288,6 +309,54 @@ public class DeatilActivity extends AppCompatActivity {
      * @param llb 所有符合要求的bill
      * */
     private BigDecimal getTotalIncome(List<List<Bill>> llb){
-        return new BigDecimal(0);
+        BigDecimal income = new BigDecimal("0");
+        for(List<Bill> lb:llb){
+            income = income.add(getLineElementIncome(lb));
+        }
+        return income;
+    }
+
+    /**
+     * 统计单行收入
+     * @param lb 所有符合要求的bill
+     * */
+    private BigDecimal getLineElementIncome(List<Bill> lb){
+        BigDecimal income = new BigDecimal("0");
+        for(Bill b:lb){
+            if(b.getType().equals(Constants.INCOME)){
+                income = income.add(b.getNum());
+            }
+        }
+        return income;
+    }
+
+    /**
+     * 统计单行支出
+     * @param lb 所有符合要求的bill
+     * */
+    private BigDecimal getLineElementCost(List<Bill> lb){
+        BigDecimal cost = new BigDecimal("0");
+        for(Bill b:lb){
+            if(b.getType().equals(Constants.COST)){
+                cost = cost.add(b.getNum());
+            }
+        }
+        return cost;
+    }
+
+    /**
+     * 统计单行结余
+     * @param lb 所有符合要求的bill
+     * */
+    private BigDecimal getLineElementBalance(List<Bill> lb){
+        return getLineElementIncome(lb).add(getLineElementCost(lb));
+    }
+
+    /**
+     * 获得单行title
+     * @param lb 所有符合要求的bill
+     * */
+    private String getLineElementTitle(List<Bill> lb){
+        return "it's a title";
     }
 }
