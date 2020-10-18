@@ -9,4 +9,17 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="CostGraph">支出图表</string>
+    <string name="CostGraphByKind">分类支出</string>
+    <string name="CostGraphByAccount">账户支出</string>
+    <string name="IncomeGraph">收入图表</string>
+    <string name="IncomeGraphByKind">分类收入</string>
+    <string name="IncomeGraphByAccount">账户收入</string>
+    <string name="MonthGraph">月度图表</string>
+    <string name="MonthIncome">月度收入</string>
+    <string name="MonthCost">月度支出</string>
+    <string name="GraphByKind">分类</string>
+    <string name="CostGraphBySecondClass">二级支出</string>
+    <string name="IncomeGraphBySecondClass">二级收入</string>
+    <string name="MonthCompare">收支对比</string>
 </resources>

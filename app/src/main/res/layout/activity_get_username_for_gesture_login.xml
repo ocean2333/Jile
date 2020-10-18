@@ -24,19 +24,22 @@
         android:layout_width="60dp"
         android:layout_height="50dp"
         android:gravity="center"/>
+
     <EditText
         android:id="@+id/etUsername"
-        android:hint="请输入用户名"
         android:layout_width="200dp"
         android:layout_height="50dp"
+        android:layout_marginStart="6dp"
         android:layout_marginTop="120dp"
-        android:layout_toEndOf="@+id/tv_1"/>
+        android:layout_toEndOf="@+id/tv_1"
+        android:hint="请输入用户名" />
+
     <Button
         android:id="@+id/btnNext"
-        android:text="下一步"
         android:layout_width="100dp"
         android:layout_height="50dp"
+        android:layout_marginHorizontal="160dp"
         android:layout_marginTop="200dp"
-        android:layout_marginHorizontal="160dp"/>
+        android:text="下一步" />
 
 </RelativeLayout>

@@ -16,11 +16,11 @@ buildscript {
 allprojects {
     repositories {
         maven{ url 'http://maven.aliyun.com/nexus/content/groups/public'}
-        maven{url 'https://jitpack.io'}
+        maven{ url 'https://jitpack.io' }
+
         maven { url 'https://maven.google.com' }
-        maven {
-            url 'http://www.idescout.com/maven/repo/'
-        }
+        maven { url 'http://www.idescout.com/maven/repo/' }
+
         google()
         jcenter()
     }

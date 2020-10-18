@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.icu.text.DateFormat;
-import android.icu.text.Edits;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.text.InputType;
@@ -22,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jile.Account.AccountActivity;
-import com.example.jile.Bean.Account;
 import com.example.jile.Bean.User;
 import com.example.jile.Constant.Constants;
 import com.example.jile.Database.Dao.AccountDao;
@@ -32,7 +29,7 @@ import com.example.jile.Database.Dao.MemDao;
 import com.example.jile.Database.Dao.SecondClassDao;
 import com.example.jile.Database.Dao.StoreDao;
 import com.example.jile.Detail.DeatilActivity;
-import com.example.jile.Graph.GraphActivity;
+import com.example.jile.Graph.GraphPieActivity;
 import com.example.jile.Bean.Bill;
 import com.example.jile.LogoActivity;
 import com.example.jile.New.NewBIllActivity;
@@ -40,16 +37,13 @@ import com.example.jile.R;
 import com.example.jile.Setting.SettingActivity;
 
 import java.math.BigDecimal;
-import java.sql.Time;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnToDetail,btnAccount,btnDetail,btnNew,btnGraph,btnSetting,btnModifyBudget;
@@ -136,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     break;
                 case R.id.btnGraph:
-                    intent = new Intent(MainActivity.this, GraphActivity.class);
+                    intent = new Intent(MainActivity.this, GraphPieActivity.class);
                     startActivity(intent);
                     break;
                 case R.id.btnSetting:
