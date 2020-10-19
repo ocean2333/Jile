@@ -53,7 +53,13 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="fill_parent">
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|start"
+                android:paddingHorizontal="20dp"
+                android:text="收入"
+                android:textSize="15sp" />
             <TextView
                 android:id="@+id/tvIncome"
                 android:layout_width="wrap_content"
@@ -62,7 +68,13 @@
                 android:paddingLeft="20dp"
                 android:text="收入  123456.78"
                 android:textSize="15sp" />
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="20dp"
+                android:textSize="15sp"
+                android:text="支出"
+                android:gravity="center_vertical|start"/>
             <TextView
                 android:id="@+id/tvCost"
                 android:layout_width="wrap_content"

@@ -17,6 +17,7 @@ package com.example.jile.Detail;
  */
 
 
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,6 +90,8 @@ public class ExpandableListAdapter extends BaseRecyclerAdapter<LineElement> {
         holder.select(R.id.fl_title, isSelected);
         holder.text(R.id.tvTitle, item.getTitle());
         holder.text(R.id.tvBalance, item.getBalance());
+        holder.text(R.id.tvIncome,item.getIncome());
+        holder.text(R.id.tvCost,item.getCost());
         LinearLayout ll = (LinearLayout) holder.findView(R.id.ll);
         for(View b:item.getBills()){
             if(b.getParent()!=null){

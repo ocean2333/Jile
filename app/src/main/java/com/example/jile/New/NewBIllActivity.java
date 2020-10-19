@@ -259,6 +259,9 @@ public class NewBIllActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 向数据库添加新账单，同时更新Account的bablnce
+     * */
     private void addNewBillToDB(Bill bill){
         LogoActivity.billDao.insert(bill);
         if(bill.getType().equals(Constants.INCOME)||bill.getType().equals(Constants.COST)){
@@ -276,6 +279,9 @@ public class NewBIllActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 向数据库更新旧账单，同时更新Account的bablnce
+     * */
     private void updateBillInDB(Bill bill){
         LogoActivity.billDao.update(bill);
         if(bill.getType().equals(Constants.INCOME)||bill.getType().equals(Constants.COST)){

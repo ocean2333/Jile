@@ -8,12 +8,16 @@ import java.util.List;
 
 public class LineElement {
     private String title;
-    private String Balance;
+    private String balance;
+    private String income;
+    private String cost;
     private List<View> bills;
 
-    public LineElement(String title, String balance, List<View> bills) {
+    public LineElement(String title, String balance, String income, String cost, List<View> bills) {
         this.title = title;
-        Balance = balance;
+        this.balance = balance;
+        this.income = income;
+        this.cost = cost;
         this.bills = bills;
     }
 
@@ -26,11 +30,11 @@ public class LineElement {
     }
 
     public String getBalance() {
-        return Balance;
+        return balance;
     }
 
     public void setBalance(String balance) {
-        Balance = balance;
+        this.balance = balance;
     }
 
     public List<View> getBills() {
@@ -39,5 +43,21 @@ public class LineElement {
 
     public void setBills(List<View> bills) {
         this.bills = bills;
+    }
+
+    public String getIncome() {
+        return income;
+    }
+
+    public void setIncome(String income) {
+        this.income = income;
+    }
+
+    public String getCost() {
+        return cost;
+    }
+
+    public void setCost(String cost) {
+        this.cost = cost;
     }
 }
