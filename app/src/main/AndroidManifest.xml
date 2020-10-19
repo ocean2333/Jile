@@ -20,6 +20,7 @@
         <activity android:name=".New.NewBIllActivity" />
         <activity android:name=".Setting.SettingActivity" />
         <activity android:name=".Graph.GraphPieActivity" />
+        <activity android:name=".Graph.GraphBarActivity" />
         <activity android:name=".Account.CreateNewAccountActivity" />
         <activity android:name=".Account.SelectNewAccountTypeActivity" />
         <activity android:name=".Account.AccountActivity" />

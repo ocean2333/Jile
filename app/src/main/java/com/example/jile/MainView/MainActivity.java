@@ -27,7 +27,7 @@ import com.example.jile.Database.Dao.MemDao;
 import com.example.jile.Database.Dao.SecondClassDao;
 import com.example.jile.Database.Dao.StoreDao;
 import com.example.jile.Detail.DeatilActivity;
-import com.example.jile.Graph.GraphActivity;
+import com.example.jile.Graph.GraphPieActivity;
 import com.example.jile.Bean.Bill;
 import com.example.jile.LogoActivity;
 import com.example.jile.New.NewBIllActivity;
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     break;
                 case R.id.btnGraph:
-                    intent = new Intent(MainActivity.this, GraphActivity.class);
+                    intent = new Intent(MainActivity.this, GraphPieActivity.class);
                     startActivity(intent);
                     break;
                 case R.id.btnSetting:
