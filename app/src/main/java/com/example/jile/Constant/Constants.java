@@ -31,4 +31,5 @@ public class Constants {
     public static final String SEARCH_TYPE_ACCOUNT = "A";
     public static final String SEARCH_TYPE_MEM = "M";
     public static final String SEARCH_TYPE_STORE = "S";
+    public static final String SEARCH_TYPE_SECOND_CLASS_IN_FIRST_CLASS = "FCISC";
 }

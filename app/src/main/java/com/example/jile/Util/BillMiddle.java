@@ -325,13 +325,14 @@ public class BillMiddle {
                 res.set(c,a);
             }
             else{
-                mp.put(bill.getStore(),new Integer(index));
+                mp.put(bill.getSecond(),new Integer(index));
                 List<Bill> a = new LinkedList<>();
                 a.add(bill);
                 res.add(a);
                 index++;
             }
         }
+
         Collections.sort(res, new Comparator<List<Bill>>() {
             @Override
             public int compare(List<Bill> o1, List<Bill> o2) {

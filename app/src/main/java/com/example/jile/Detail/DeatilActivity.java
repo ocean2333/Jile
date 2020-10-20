@@ -28,6 +28,7 @@ import com.example.jile.Bean.Mem;
 import com.example.jile.Bean.SecondClass;
 import com.example.jile.Bean.Store;
 import com.example.jile.Constant.Constants;
+import com.example.jile.LogoActivity;
 import com.example.jile.New.NewBIllActivity;
 import com.example.jile.R;
 import com.example.jile.Util.BillMiddle;
@@ -58,10 +59,11 @@ public class DeatilActivity extends AppCompatActivity {
     private Button btnStartDateSelector,btnEndDateSelector,btnSearchTypeSelector,btnBack;
     private TextView tvBalance,tvIncome,tvCost;
     private Object searchType;
+    private String firstClass;
     private Date startDate,endDate;
     private List<String> firstClassItems = new LinkedList<>(Arrays.asList("时间","一级分类","二级分类","账户","成员","商家"));
-    private List<List<String>> secondClassItems = new LinkedList<>(Arrays.asList(new LinkedList<>(Arrays.asList("日","周","月","年")),Arrays.asList("一级分类"),
-                                                                    Arrays.asList("二级分类"),Arrays.asList("账户"),Arrays.asList("成员"),Arrays.asList("商家")));
+    private List<List<String>> secondClassItems = new LinkedList<>(Arrays.asList(new LinkedList<>(Arrays.asList("日","周","月","年")),new LinkedList<>(Arrays.asList("一级分类")),
+            new LinkedList<>(Arrays.asList("所有二级分类")),new LinkedList<>(Arrays.asList("账户")),new LinkedList<>(Arrays.asList("成员")),new LinkedList<>(Arrays.asList("商家"))));
     private List<List<Bill>> data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +103,104 @@ public class DeatilActivity extends AppCompatActivity {
         tvBalance = findViewById(R.id.tvBalance);
         tvIncome = findViewById(R.id.tvIncome);
         tvCost = findViewById(R.id.tvCost);
+        List<FirstClass> allFc = LogoActivity.firstClassDao.query();
+        List<String> temp =  secondClassItems.get(2);
+        for(FirstClass fc:allFc){
+            String s = fc.getName();
+            temp.add(s);
+        }
+        secondClassItems.set(2,temp);
+    }
+
+    private void setListener(){
+        btnSearchTypeSelector.setOnClickListener(v -> {
+            OptionsPickerView<String> optionsPickerView = new OptionsPickerBuilder(DeatilActivity.this, (options1, option2, options3, v1) -> {
+                btnSearchTypeSelector.setText(secondClassItems.get(options1).get(option2));
+                if(options1==0){
+                    searchType = secondClassItems.get(0).get(option2);
+                }else if(options1==2){
+                    searchType=new SecondClass();
+                    if(option2!=0){firstClass=secondClassItems.get(2).get(option2);}
+                    else{firstClass=null;}
+                }else{
+                    switch (options1){
+                        case 1:
+                            searchType = new FirstClass();
+                            break;
+                        case 3:
+                            searchType = new Account();
+                            break;
+                        case 4:
+                            searchType = new Mem();
+                            break;
+                        case 5:
+                            searchType = new Store();
+                            break;
+                    }
+                }
+                try {
+                    update();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }).setTitleText("分类选择")
+                    .setDividerColor(Color.BLACK)
+                    .setTextColorCenter(Color.BLACK) //设置选中项文字颜色
+                    .setContentTextSize(20)
+                    .setSelectOptions(0,0)
+                    .build();
+            optionsPickerView.setPicker(firstClassItems,secondClassItems);
+            optionsPickerView.show();
+        });
+        Calendar calendar = Calendar.getInstance();
+        Calendar calendar1 = Calendar.getInstance();
+        //默认使用一周时间范围
+        if(startDate==null&&endDate==null){
+            calendar.setTime(new Date(System.currentTimeMillis()));
+            endDate = calendar.getTime();
+            calendar1.add(Calendar.DATE,-6);
+            calendar1.setTime(calendar.getTime());
+            startDate = calendar1.getTime();
+        }else{//否则使用提供的时间范围
+            calendar.setTime(endDate);
+            calendar1.setTime(startDate);
+        }
+        btnEndDateSelector.setOnClickListener(v -> {
+            TimePickerView mDatePicker = new TimePickerBuilder(DeatilActivity.this, (date, v13) -> {
+                endDate = DateUtil.getLastTImeOfDay(date);
+                btnEndDateSelector.setText(Constants.DATE_FORMAT_YEAR_MONTH_DAY.format(date));
+                try {
+                    update();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            })
+                    .setType(true,true,true,false,false,false)
+                    .setDate(calendar)
+                    .setTitleText("结束日期选择")
+                    .build();
+            mDatePicker.show();
+        });
+        btnStartDateSelector.setOnClickListener(v -> {
+            TimePickerView mDatePicker = new TimePickerBuilder(DeatilActivity.this, (date, v12) -> {
+                startDate = DateUtil.getFirstTImeOfDay(date);
+                btnStartDateSelector.setText(Constants.DATE_FORMAT_YEAR_MONTH_DAY.format(date));
+                try {
+                    update();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            })
+                    .setType(true,true,true,false,false,false)
+                    .setDate(calendar1)
+                    .setTitleText("起始日期选择")
+                    .build();
+            mDatePicker.show();
+        });
+        searchType = Constants.SEARCH_TYPE_DAY;
+        btnStartDateSelector.setText(Constants.DATE_FORMAT_YEAR_MONTH_DAY.format(startDate));
+        btnEndDateSelector.setText(Constants.DATE_FORMAT_YEAR_MONTH_DAY.format(endDate));
+        btnSearchTypeSelector.setText(firstClassItems.get(0)+"-"+secondClassItems.get(0).get(0));
     }
 
     /**
@@ -108,103 +208,6 @@ public class DeatilActivity extends AppCompatActivity {
      * */
     private void init() throws ParseException {
         getComponent();
-        btnSearchTypeSelector.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OptionsPickerView<String> optionsPickerView = new OptionsPickerBuilder(DeatilActivity.this, new OnOptionsSelectListener() {
-                    @Override
-                    public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
-                        btnSearchTypeSelector.setText(secondClassItems.get(options1).get(option2));
-                        if(options1==0){
-                            searchType = secondClassItems.get(0).get(option2);
-                        }else{
-                            switch (options1){
-                                case 1:
-                                    searchType = new FirstClass();
-                                    break;
-                                case 2:
-                                    searchType = new SecondClass();
-                                    break;
-                                case 3:
-                                    searchType = new Account();
-                                    break;
-                                case 4:
-                                    searchType = new Mem();
-                                    break;
-                                case 5:
-                                    searchType = new Store();
-                                    break;
-                            }
-                        }
-                        try {
-                            update();
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).setTitleText("分类选择")
-                        .setDividerColor(Color.BLACK)
-                        .setTextColorCenter(Color.BLACK) //设置选中项文字颜色
-                        .setContentTextSize(20)
-                        .setSelectOptions(0,0)
-                        .build();
-                optionsPickerView.setPicker(firstClassItems,secondClassItems);
-                optionsPickerView.show();
-            }
-        });
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date(System.currentTimeMillis()));
-        endDate = calendar.getTime();
-        btnEndDateSelector.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerView mDatePicker = new TimePickerBuilder(DeatilActivity.this, new OnTimeSelectListener() {
-                    @Override
-                    public void onTimeSelected(Date date, View v) {
-                        endDate = date;
-                        btnEndDateSelector.setText(Constants.DATE_FORMAT_YEAR_MONTH_DAY.format(date));
-                        try {
-                            update();
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                })
-                        .setType(true,true,true,false,false,false)
-                        .setDate(calendar)
-                        .setTitleText("结束日期选择")
-                        .build();
-                mDatePicker.show();
-            }
-        });
-        calendar.add(Calendar.DATE,-6);
-        startDate = calendar.getTime();
-        btnStartDateSelector.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerView mDatePicker = new TimePickerBuilder(DeatilActivity.this, new OnTimeSelectListener() {
-                    @Override
-                    public void onTimeSelected(Date date, View v) {
-                        startDate = date;
-                        btnStartDateSelector.setText(Constants.DATE_FORMAT_YEAR_MONTH_DAY.format(date));
-                        try {
-                            update();
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                })
-                        .setType(true,true,true,false,false,false)
-                        .setDate(calendar)
-                        .setTitleText("起始日期选择")
-                        .build();
-                mDatePicker.show();
-            }
-        });
-        searchType = Constants.SEARCH_TYPE_DAY;
-        btnStartDateSelector.setText(Constants.DATE_FORMAT_YEAR_MONTH_DAY.format(calendar.getTime()));
-        btnEndDateSelector.setText(Constants.DATE_FORMAT_YEAR_MONTH_DAY.format(new Date(System.currentTimeMillis())));
-        btnSearchTypeSelector.setText(firstClassItems.get(0)+"-"+secondClassItems.get(0).get(0));
         if(getIntent().getExtras()!=null){
             String st=getIntent().getExtras().getString("searchType");
             switch (st){
@@ -241,6 +244,7 @@ public class DeatilActivity extends AppCompatActivity {
             startDate=Constants.DATE_FORMAT_SIMPLE.parse(getIntent().getExtras().getString("startDate"));
             endDate=Constants.DATE_FORMAT_SIMPLE.parse(getIntent().getExtras().getString("endDate"));
         }
+        setListener();
         update();
     }
 
@@ -251,6 +255,15 @@ public class DeatilActivity extends AppCompatActivity {
             data = BillMiddle.getBill((FirstClass) searchType,startDate,endDate,this);
         }else if(searchType instanceof SecondClass){
             data = BillMiddle.getBill((SecondClass)searchType,startDate,endDate,this);
+            if(firstClass!=null){
+                List<List<Bill>> temp = new LinkedList<>();
+                for(List<Bill> lb:data){
+                    if(LogoActivity.secondClassDao.querybyskey("name",lb.get(0).getSecond()).get(0).getFirstclass().equals(firstClass)){
+                        temp.add(lb);
+                    }
+                }
+                data = new LinkedList<>(temp);
+            }
         }else if(searchType instanceof Account){
             data = BillMiddle.getBill((Account)searchType,startDate,endDate,this);
         }else if(searchType instanceof Mem){

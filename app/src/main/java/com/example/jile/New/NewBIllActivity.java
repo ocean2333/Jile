@@ -453,8 +453,8 @@ public class NewBIllActivity extends AppCompatActivity {
     private void init() throws ParseException {
         if(uuid!=null){
             bill = LogoActivity.billDao.querybyskey("uuid",uuid).get(0);
+            type = bill.getType();
         }
-        type = bill.getType();
         getItems();
         getComponents();
         setListener(onClick);
@@ -488,7 +488,9 @@ public class NewBIllActivity extends AppCompatActivity {
     }
 
     /**
-     *
+     *  获得带参数跳转至此Activity的intent
+     * @param context 上下文
+     * @param uuid 需要跳转进来的bill的uuid
      * */
     public static Intent startThisActivity(Context context,String uuid){
         Bundle bundle = new Bundle();

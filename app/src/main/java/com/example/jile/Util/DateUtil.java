@@ -62,4 +62,24 @@ public class DateUtil {
         Date date = new Date(System.currentTimeMillis());
         return simpleDateFormat.format(date);
     }
+
+    /**
+     * 获得一天的00:00:00
+     * */
+    public static Date getFirstTImeOfDay(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(date.getYear()+1900,date.getMonth(),date.getDate(),0,0,0);
+        return calendar.getTime();
+    }
+
+    /**
+     * 获得一天的23:59:59
+     * */
+    public static Date getLastTImeOfDay(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(date.getYear()+1900,date.getMonth(),date.getDate(),23,59,59);
+        return calendar.getTime();
+    }
 }
