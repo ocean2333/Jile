@@ -48,7 +48,7 @@ import java.util.List;
 import static com.example.jile.Constant.Constants.COST;
 import static com.example.jile.Constant.Constants.INCOME;
 
-public class GraphActivity extends AppCompatActivity  {
+public class GraphActivity extends AppCompatActivity implements OnChartValueSelectedListener {
 
     private EasyIndicator mGraph ;
     private ViewPager mViewPager;
@@ -147,19 +147,19 @@ public class GraphActivity extends AppCompatActivity  {
 
         recyclerView= view2.findViewById(R.id.bar_recycler_view);
     }
-//
-//    @Override
-//    public void onValueSelected(Entry e, Highlight h) {
-//        Log.d("", "onValueSelected: ");
-//        PieEntry pe = (PieEntry)e;
-//        searchType = pe.getLabel();
-//        btnBillDetail.setText(pe.getLabel()+" "+pe.getValue()+" >");
-//    }
-//
-//    @Override
-//    public void onNothingSelected() {
-//        btnBillDetail.setText("");
-//    }
+
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+        Log.d("", "onValueSelected: ");
+        PieEntry pe = (PieEntry)e;
+        searchType = pe.getLabel();
+        btnBillDetail.setText(pe.getLabel()+" "+pe.getValue()+" >");
+    }
+
+    @Override
+    public void onNothingSelected() {
+        btnBillDetail.setText("");
+    }
 
     private class OnClick implements View.OnClickListener{
         @Override
@@ -322,7 +322,7 @@ public class GraphActivity extends AppCompatActivity  {
         mPieChart.setRotationEnabled(true);
         mPieChart.setHighlightPerTapEnabled(true);
 
-//        mPieChart.setOnChartValueSelectedListener(this);
+        mPieChart.setOnChartValueSelectedListener(this);
     }
     /**
      * 搜索时间区间内符合搜索要求的Bill并根据分类返回一个List
