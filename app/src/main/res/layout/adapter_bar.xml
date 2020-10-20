@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/xui_config_list_item_selector"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/billImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/icon_dollar" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/xui_config_list_item_selector"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/billTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="食物饮料"
+                android:layout_centerVertical="true"
+                />
+            <TextView
+                android:id="@+id/billProportion"
+                android:layout_toRightOf="@id/billTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="   30.1%"
+                android:layout_centerVertical="true"
+                />
+            <Button
+                android:id="@+id/billMoney"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="189.00  >"
+                />
+
+            <com.xuexiang.xui.widget.progress.HorizontalProgressView
+                android:layout_below="@id/billTitle"
+                android:id="@+id/hpv_language"
+                android:layout_width="285dp"
+                android:layout_height="31dp"
+                app:hpv_progress_textColor="@color/xui_config_color_black"
+                app:hpv_end_progress="92"
+                app:hpv_isTracked="true"
+                app:hpv_progress_textVisibility="false"
+                />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
