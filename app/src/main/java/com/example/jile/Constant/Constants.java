@@ -26,4 +26,9 @@ public class Constants {
     public static final String SEARCH_TYPE_WEEK = "周";
     public static final String SEARCH_TYPE_MONTH = "月";
     public static final String SEARCH_TYPE_YEAR = "年";
+    public static final String SEARCH_TYPE_FIRST_CLASS = "FC";
+    public static final String SEARCH_TYPE_SECOND_CLASS = "SC";
+    public static final String SEARCH_TYPE_ACCOUNT = "A";
+    public static final String SEARCH_TYPE_MEM = "M";
+    public static final String SEARCH_TYPE_STORE = "S";
 }

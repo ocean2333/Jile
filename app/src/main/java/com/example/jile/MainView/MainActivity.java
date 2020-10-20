@@ -152,7 +152,10 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.btnToDetail:
                 case R.id.btnDetail:
-                    intent = new Intent(MainActivity.this, DeatilActivity.class);
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(new Date(System.currentTimeMillis()));
+                    calendar.add(Calendar.DATE,-4);
+                    intent = DeatilActivity.startThisActivity(MainActivity.this,Constants.SEARCH_TYPE_DAY,calendar.getTime(),new Date(System.currentTimeMillis()));
                     startActivity(intent);
                     break;
                 case R.id.btnNew:
@@ -437,10 +440,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter = new BillRecyclerAdapter(getFiveMostRecentBillEachTime(mIndex),R.layout.adapter_bill,(v,p)->{
             Bundle bundle = new Bundle();
             TextView tvUuid = v.findViewById(R.id.tvUuid);
-            bundle.putString("uuid",tvUuid.getText().toString());
-            Intent intent = new Intent(this, NewBIllActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
+            startActivity(NewBIllActivity.startThisActivity(this,tvUuid.getText().toString()));
         }));
         swipeRefreshLayout.setColorSchemeColors(0xff0099cc, 0xffff4444, 0xff669900, 0xffaa66cc, 0xffff8800);
         swipeRefreshLayout.setOnRefreshListener(mRefreshListener);

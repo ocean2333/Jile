@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -55,6 +56,7 @@ public class NewBIllActivity extends AppCompatActivity {
     private String uuid;
     private BigDecimal oldMoneyNum;
     private int initSelection1,initSelection2;
+    private Bill bill;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -449,6 +451,10 @@ public class NewBIllActivity extends AppCompatActivity {
      * 初始化activity，根据是否有bundle决定页面是否有初始值以及点击btnSave的动作
      * */
     private void init() throws ParseException {
+        if(uuid!=null){
+            bill = LogoActivity.billDao.querybyskey("uuid",uuid).get(0);
+        }
+        type = bill.getType();
         getItems();
         getComponents();
         setListener(onClick);
@@ -461,7 +467,6 @@ public class NewBIllActivity extends AppCompatActivity {
             btnSetStore.setText(getMostRecentStore());
             btnSetDate.setText(Constants.DATE_FORMAT_COMPLEX.format(new Date(System.currentTimeMillis())));
         }else{
-            Bill bill = LogoActivity.billDao.querybyskey("uuid",uuid).get(0);
             oldMoneyNum = bill.getNum();
             btnFirstClass.setText(bill.getFirst());
             btnSecondClass.setText(bill.getSecond());
@@ -480,5 +485,16 @@ public class NewBIllActivity extends AppCompatActivity {
                 rg.getChildAt(i).setEnabled(false);
             }
         }
+    }
+
+    /**
+     *
+     * */
+    public static Intent startThisActivity(Context context,String uuid){
+        Bundle bundle = new Bundle();
+        bundle.putString("uuid",uuid);
+        Intent intent = new Intent(context,NewBIllActivity.class);
+        intent.putExtras(bundle);
+        return intent;
     }
 }

@@ -3,6 +3,7 @@ package com.example.jile.Detail;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
@@ -204,6 +205,42 @@ public class DeatilActivity extends AppCompatActivity {
         btnStartDateSelector.setText(Constants.DATE_FORMAT_YEAR_MONTH_DAY.format(calendar.getTime()));
         btnEndDateSelector.setText(Constants.DATE_FORMAT_YEAR_MONTH_DAY.format(new Date(System.currentTimeMillis())));
         btnSearchTypeSelector.setText(firstClassItems.get(0)+"-"+secondClassItems.get(0).get(0));
+        if(getIntent().getExtras()!=null){
+            String st=getIntent().getExtras().getString("searchType");
+            switch (st){
+                case Constants.SEARCH_TYPE_DAY:
+                    searchType = Constants.SEARCH_TYPE_DAY;
+                    break;
+                case Constants.SEARCH_TYPE_WEEK:
+                    searchType = Constants.SEARCH_TYPE_WEEK;
+                    break;
+                case Constants.SEARCH_TYPE_MONTH:
+                    searchType = Constants.SEARCH_TYPE_MONTH;
+                    break;
+                case Constants.SEARCH_TYPE_YEAR:
+                    searchType = Constants.SEARCH_TYPE_YEAR;
+                    break;
+                case Constants.SEARCH_TYPE_ACCOUNT:
+                    searchType = new Account();
+                    break;
+                case Constants.SEARCH_TYPE_MEM:
+                    searchType = new Mem();
+                    break;
+                case Constants.SEARCH_TYPE_STORE:
+                    searchType = new Store();
+                    break;
+                case Constants.SEARCH_TYPE_FIRST_CLASS:
+                    searchType = new FirstClass();
+                    break;
+                case Constants.SEARCH_TYPE_SECOND_CLASS:
+                    searchType = new SecondClass();
+                    break;
+                default:
+                    searchType = Constants.SEARCH_TYPE_DAY;
+            }
+            startDate=Constants.DATE_FORMAT_SIMPLE.parse(getIntent().getExtras().getString("startDate"));
+            endDate=Constants.DATE_FORMAT_SIMPLE.parse(getIntent().getExtras().getString("endDate"));
+        }
         update();
     }
 
@@ -356,7 +393,40 @@ public class DeatilActivity extends AppCompatActivity {
      * 获得单行title
      * @param lb 所有符合要求的bill
      * */
-    private String getLineElementTitle(List<Bill> lb){
+    private String getLineElementTitle(List<Bill> lb) throws ParseException {
+        if(searchType instanceof String){
+            switch ((String) searchType){
+                case Constants.SEARCH_TYPE_DAY:
+                    return Constants.DATE_FORMAT_SIMPLE.parse(lb.get(0).getDate()).getDate() +"日";
+                case Constants.SEARCH_TYPE_MONTH:
+                    return (Constants.DATE_FORMAT_SIMPLE.parse(lb.get(0).getDate()).getMonth() + 1) +"月";
+                case Constants.SEARCH_TYPE_YEAR:
+                    return (Constants.DATE_FORMAT_SIMPLE.parse(lb.get(0).getDate()).getYear() + 1900) +"年";
+            }
+        }else if(searchType instanceof FirstClass){
+            return lb.get(0).getFirst();
+        }else if(searchType instanceof SecondClass){
+            return lb.get(0).getSecond();
+        }else if(searchType instanceof Account){
+            return lb.get(0).getAccountname();
+        }else if(searchType instanceof Mem){
+            return lb.get(0).getMember();
+        }else if(searchType instanceof Store){
+            return lb.get(0).getStore();
+        }
         return "it's a title";
+    }
+
+    /**
+     * 返回带参数启动该Activity的intent
+     * */
+    public static Intent startThisActivity(Context context,String searchType,Date startDate,Date endDate){
+       Bundle bundle = new Bundle();
+       Intent intent = new Intent(context,DeatilActivity.class);
+       bundle.putString("startDate",Constants.DATE_FORMAT_SIMPLE.format(startDate));
+       bundle.putString("endDate",Constants.DATE_FORMAT_SIMPLE.format(endDate));
+       bundle.putString("searchType",searchType);
+       intent.putExtras(bundle);
+       return intent;
     }
 }
