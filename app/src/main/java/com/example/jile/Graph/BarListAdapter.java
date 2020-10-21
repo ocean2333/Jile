@@ -1,5 +1,6 @@
 package com.example.jile.Graph;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +17,9 @@ import com.xuexiang.xui.adapter.recyclerview.BaseRecyclerAdapter;
 import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder;
 import com.xuexiang.xui.widget.progress.HorizontalProgressView;
 
+import java.text.DecimalFormat;
 import java.util.Collection;
+import java.util.List;
 
 public class BarListAdapter extends BaseRecyclerAdapter<PieEntry>{
 
@@ -37,14 +40,16 @@ public class BarListAdapter extends BaseRecyclerAdapter<PieEntry>{
         return R.layout.adapter_bar;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void bindData(@NonNull RecyclerViewHolder holder, int position, PieEntry item) {
         holder.text(R.id.billTitle,item.getLabel());
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
         HorizontalProgressView v =  (HorizontalProgressView) holder.findView(R.id.hpv_language);
         v.setEndProgress(item.getValue()/sum);
-        holder.text(R.id.billProportion,"  "+item.getValue()/sum);
+        holder.text(R.id.billProportion,"  "+decimalFormat.format(item.getValue()/sum));
         Button button = (Button)holder.findView(R.id.billMoney);
-        button.setText(item.getValue()+" >");
+        button.setText(decimalFormat.format(item.getValue())+" >");
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,9 +59,16 @@ public class BarListAdapter extends BaseRecyclerAdapter<PieEntry>{
         button.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                if(GraphActivity.searchType.equals("FirstClass")){
+                    GraphActivity.searchType=item.getLabel();
+                    GraphRefersh(GraphActivity.getpiebill(GraphActivity.searchType,GraphActivity.billtype,GraphActivity.startDate,GraphActivity.endDate));
+                }
                 return false;
             }
         });
 
+    }
+    private void GraphRefersh(List<PieEntry> item){
+        this.refresh(item);
     }
 }
