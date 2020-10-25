@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Jile</string>
+    <string name="app_name">记了</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

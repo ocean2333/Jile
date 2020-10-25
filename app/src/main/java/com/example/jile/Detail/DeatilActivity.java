@@ -313,7 +313,7 @@ public class DeatilActivity extends AppCompatActivity {
             TextView tvSecondClass = view.findViewById(R.id.tvSecondClass);
             TextView tvAccount = view.findViewById(R.id.tvAccount);
             AutoFitTextView tvMoney = view.findViewById(R.id.tvMoney);
-            Button btnModify = view.findViewById(R.id.btnModify);
+            ImageButton btnModify = view.findViewById(R.id.btnModify);
             if(!bill.getType().equals(Constants.TRANSFER)){
                 im.setImageResource(bill.getIconId());
             }else{
