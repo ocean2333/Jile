@@ -246,6 +246,7 @@ public class DeatilActivity extends AppCompatActivity {
             }
             startDate=Constants.DATE_FORMAT_SIMPLE.parse(getIntent().getExtras().getString("startDate"));
             endDate=Constants.DATE_FORMAT_SIMPLE.parse(getIntent().getExtras().getString("endDate"));
+            firstClass = getIntent().getExtras().getString("firstClass");
         }
         setListener();
         update();
@@ -433,12 +434,13 @@ public class DeatilActivity extends AppCompatActivity {
     /**
      * 返回带参数启动该Activity的intent
      * */
-    public static Intent startThisActivity(Context context,String searchType,Date startDate,Date endDate){
+    public static Intent startThisActivity(Context context,String searchType,String firstClass,Date startDate,Date endDate){
        Bundle bundle = new Bundle();
        Intent intent = new Intent(context,DeatilActivity.class);
        bundle.putString("startDate",Constants.DATE_FORMAT_SIMPLE.format(startDate));
        bundle.putString("endDate",Constants.DATE_FORMAT_SIMPLE.format(endDate));
        bundle.putString("searchType",searchType);
+       bundle.putString("firstClass",firstClass);
        intent.putExtras(bundle);
        return intent;
     }

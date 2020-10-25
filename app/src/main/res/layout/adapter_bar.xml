@@ -10,13 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@drawable/xui_config_list_item_selector"
+        android:paddingBottom="@dimen/pl_pattern_dot_line_width"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/billImage"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/icon_dollar" />
+            android:src="@drawable/icon_dollar"
+            android:contentDescription="TODO" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,7 +33,7 @@
                 />
             <TextView
                 android:id="@+id/billProportion"
-                android:layout_toRightOf="@id/billTitle"
+                android:layout_toEndOf="@id/billTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:text="   30.1%"
@@ -39,7 +41,7 @@
                 />
             <Button
                 android:id="@+id/billMoney"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:text="189.00  >"
@@ -49,11 +51,15 @@
                 android:layout_below="@id/billTitle"
                 android:id="@+id/hpv_language"
                 android:layout_width="285dp"
-                android:layout_height="31dp"
-                app:hpv_progress_textColor="@color/xui_config_color_black"
-                app:hpv_end_progress="92"
+                android:layout_height="30dp"
+                app:hpv_end_color="@color/yellowbill"
+                app:hpv_start_progress="1"
+                app:hpv_end_progress="80"
                 app:hpv_isTracked="true"
+                app:hpv_progress_duration="2600"
                 app:hpv_progress_textVisibility="false"
+                app:hpv_start_color="@color/purple"
+                app:hpv_track_width="8dp"
                 />
         </RelativeLayout>
 

@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(new Date(System.currentTimeMillis()));
                     calendar.add(Calendar.DATE,-4);
-                    intent = DeatilActivity.startThisActivity(MainActivity.this,Constants.SEARCH_TYPE_DAY,calendar.getTime(),new Date(System.currentTimeMillis()));
+                    intent = DeatilActivity.startThisActivity(MainActivity.this,Constants.SEARCH_TYPE_DAY,null,calendar.getTime(),new Date(System.currentTimeMillis()));
                     startActivity(intent);
                     break;
                 case R.id.btnNew:

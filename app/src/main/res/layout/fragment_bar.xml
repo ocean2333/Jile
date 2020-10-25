@@ -7,14 +7,17 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="94dp"
-        android:paddingTop="60dp"
+        android:layout_height="180dp"
+        android:paddingTop="68dp"
+        android:textSize="40sp"
         android:text="TextView" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bar_recycler_view"
-        android:layout_below="@id/textView"
         android:layout_width="match_parent"
-        android:layout_height="507dp">
+        android:layout_height="493dp"
+        android:layout_below="@id/textView"
+        android:layout_marginTop="14dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 
