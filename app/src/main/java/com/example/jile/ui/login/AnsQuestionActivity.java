@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +26,7 @@ public class AnsQuestionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ans_question);
-        final Button btnBack = findViewById(R.id.btnBack);
+        final ImageButton btnBack = findViewById(R.id.btnBack);
         final Button btnNext = findViewById(R.id.btnNext);
         final EditText etAns = findViewById(R.id.etAns);
         final TextView tvQuestion = findViewById(R.id.tvQuestion);

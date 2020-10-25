@@ -2,17 +2,15 @@ package com.example.jile.New;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -35,6 +33,8 @@ import com.xuexiang.xui.XUI;
 import com.xuexiang.xui.widget.picker.widget.TimePickerView;
 import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder;
 import com.xuexiang.xui.widget.picker.widget.listener.OnTimeSelectListener;
+import com.xuexiang.xui.widget.tabbar.EasyIndicator;
+import com.xuexiang.xui.widget.tabbar.TabSegment;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -46,7 +46,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class NewBIllActivity extends AppCompatActivity {
-    private Button btnFirstClass,btnSecondClass,btnSetDate,btnBack,btnSave,btnSelectAccount,btnSelectMember,btnSetStore;
+    private Button btnFirstClass,btnSecondClass,btnSetDate,btnSelectAccount,btnSelectMember,btnSetStore;
+    private ImageButton btnBack,btnSave;
     private List<String> firstClassItems,accountItems,memberItems,storeItems;
     private List<List<String>> secondClassItems;
     private String type= Constants.COST;
@@ -59,6 +60,7 @@ public class NewBIllActivity extends AppCompatActivity {
     private Bill bill;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        XUI.initTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_bill);
         XUI.initTheme(this);
@@ -367,59 +369,60 @@ public class NewBIllActivity extends AppCompatActivity {
         }
     }
 
-    private void setRadioGroupListener(){
-        RadioGroup rg = findViewById(R.id.rgType);
-        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                boolean needToUpdate;
-                switch (group.getCheckedRadioButtonId()) {
-                    case R.id.rbExpenses:
-                        needToUpdate = type.equals(Constants.TRANSFER);
-                        type=Constants.COST;
-                        getItems();
-                        if(needToUpdate){
-                            updateUIToNormalType();
+    private void setEasyIndicator(){
+
+        TabSegment tabSegment = findViewById(R.id.tsType);
+        String[] pages = new String[]{"支出","收入","转账"};
+        for (String page : pages) {
+            tabSegment.addTab(new TabSegment.Tab(page));
+        }
+        tabSegment.selectTab(TabSegment.MODE_FIXED);
+        tabSegment.notifyDataChanged();
+        tabSegment.setOnTabClickListener((position) -> {
+            boolean needToUpdate;
+            switch (position) {
+                case 0:
+                    needToUpdate = type.equals(Constants.TRANSFER);
+                    type=Constants.COST;
+                    getItems();
+                    if(needToUpdate){
+                        updateUIToNormalType();
+                    }
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            btnFirstClass.setText(firstClassItems.get(0));
+                            btnSecondClass.setText(secondClassItems.get(0).get(0));
                         }
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                btnFirstClass.setText(firstClassItems.get(0));
-                                btnSecondClass.setText(secondClassItems.get(0).get(0));
-                            }
-                        }).start();
-                        break;
-                    case R.id.rbIncome:
-                        needToUpdate = type.equals(Constants.TRANSFER);
-                        type=Constants.INCOME;
-                        getItems();
-                        if(needToUpdate){
-                            updateUIToNormalType();
+                    }).start();
+                    break;
+                case 1:
+                    needToUpdate = type.equals(Constants.TRANSFER);
+                    type=Constants.INCOME;
+                    getItems();
+                    if(needToUpdate){
+                        updateUIToNormalType();
+                    }
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            btnFirstClass.setText(firstClassItems.get(0));
+                            btnSecondClass.setText(secondClassItems.get(0).get(0));
                         }
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                btnFirstClass.setText(firstClassItems.get(0));
-                                btnSecondClass.setText(secondClassItems.get(0).get(0));
-                            }
-                        }).start();
-                        break;
-                    case R.id.rbTransfer:
-                        needToUpdate = !type.equals(Constants.TRANSFER);
-                        type=Constants.TRANSFER;
-                        getAccounts();
-                        if(needToUpdate){
-                            updateUIToTransferType();
-                        }
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                btnFirstClass.setText(firstClassItems.get(0));
-                                btnSecondClass.setText(secondClassItems.get(0).get(0));
-                            }
-                        }).start();
-                        break;
-                }
+                    }).start();
+                    break;
+                case 2:
+                    needToUpdate = !type.equals(Constants.TRANSFER);
+                    type=Constants.TRANSFER;
+                    getAccounts();
+                    if(needToUpdate){
+                        updateUIToTransferType();
+                    }
+                    new Thread(() -> {
+                        btnFirstClass.setText(firstClassItems.get(0));
+                        btnSecondClass.setText(secondClassItems.get(0).get(0));
+                    }).start();
+                    break;
             }
         });
     }
@@ -458,7 +461,9 @@ public class NewBIllActivity extends AppCompatActivity {
         getItems();
         getComponents();
         setListener(onClick);
-        setRadioGroupListener();
+        setEasyIndicator();
+        TabSegment tabSegment = findViewById(R.id.tsType);
+        tabSegment.selectTab(0,true,false);
         if(uuid==null){
             btnFirstClass.setText(firstClassItems.get(0));
             btnSecondClass.setText(secondClassItems.get(0).get(0));
@@ -467,6 +472,7 @@ public class NewBIllActivity extends AppCompatActivity {
             btnSetStore.setText(getMostRecentStore());
             btnSetDate.setText(Constants.DATE_FORMAT_COMPLEX.format(new Date(System.currentTimeMillis())));
         }else{
+            if(type.equals(Constants.TRANSFER)){ getAccounts();}
             oldMoneyNum = bill.getNum();
             btnFirstClass.setText(bill.getFirst());
             btnSecondClass.setText(bill.getSecond());
@@ -478,12 +484,13 @@ public class NewBIllActivity extends AppCompatActivity {
             btnSetDate.setText(Constants.DATE_FORMAT_COMPLEX.format(Constants.DATE_FORMAT_SIMPLE.parse(bill.getDate())));
             TextView etMoneyNumber = findViewById(R.id.etMoneyNumber);
             etMoneyNumber.setText(bill.getNum().toPlainString());
-            RadioGroup rg = findViewById(R.id.rgType);
-            if(bill.getType().equals(Constants.COST)){type=Constants.COST;rg.check(R.id.rbExpenses);}
-            if(bill.getType().equals(Constants.TRANSFER)){updateUIToTransferType();type=Constants.TRANSFER;rg.check(R.id.rbTransfer);}
-            for (int i = 0; i < rg.getChildCount(); i++) {
-                rg.getChildAt(i).setEnabled(false);
-            }
+            tabSegment.reset();
+            if(bill.getType().equals(Constants.COST)){tabSegment.addTab(new TabSegment.Tab("支出"));type=Constants.COST;}
+            if(bill.getType().equals(Constants.INCOME)){tabSegment.addTab(new TabSegment.Tab("收入"));type=Constants.INCOME;}
+            if(bill.getType().equals(Constants.TRANSFER)){tabSegment.addTab(new TabSegment.Tab("转账"));updateUIToTransferType();type=Constants.TRANSFER;}
+            tabSegment.selectTab(0,true,false);
+            tabSegment.selectTab(TabSegment.MODE_FIXED);
+            tabSegment.notifyDataChanged();
         }
     }
 

@@ -5,15 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.login.SignUpActivity">
-
     <LinearLayout
         android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@drawable/top_and_bottom_edge">
-        <Button
+        android:background="@color/theme_yellow">
+        <ImageButton
             android:id="@+id/btnBack"
+            android:background="@color/xui_transparent"
             android:layout_width="50dp"
+            android:src="@drawable/ic_arrow_left"
             android:layout_height="match_parent"/>
     </LinearLayout>
     <TextView
@@ -137,6 +138,7 @@
         android:layout_below="@+id/tvAns"/>
     <Button
         android:text="下一步"
+        android:background="@drawable/btn_corners"
         android:textSize="20sp"
         android:id="@+id/btnNext"
         android:layout_width="200dp"

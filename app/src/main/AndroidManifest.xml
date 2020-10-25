@@ -21,7 +21,6 @@
         <activity android:name=".Setting.SettingActivity" />
         <activity android:name=".Graph.GraphActivity" />
         <activity android:name=".Account.CreateNewAccountActivity" />
-        <activity android:name=".Account.SelectNewAccountTypeActivity" />
         <activity android:name=".Account.AccountActivity" />
         <activity android:name=".Detail.DeatilActivity" />
         <activity

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.jile.Bean.User;
@@ -30,26 +31,18 @@ public class GetUsernameForGestureLoginActivity extends AppCompatActivity {
         Log.d("?", "onCreate: ");
         final Button btnNext = findViewById(R.id.btnNext);
         final EditText etUsername = findViewById(R.id.etUsername);
-        final Button btnBack = findViewById(R.id.btnBack);
+        final ImageButton btnBack = findViewById(R.id.btnBack);
         btnNext.setEnabled(false);
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+        btnBack.setOnClickListener(v -> finish());
+        btnNext.setOnClickListener(v -> {
+            if(checkIsUserExists(username)){
+                Bundle bundle = new Bundle();
+                bundle.putString("username",username);
+                startActivity(new Intent(GetUsernameForGestureLoginActivity.this,MyConfirmPatternActivity.class).putExtras(bundle));
+            }else{
+                Toast.makeText(GetUsernameForGestureLoginActivity.this,"用户名不存在",Toast.LENGTH_SHORT).show();
             }
-        });
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(checkIsUserExists(username)){
-                    Bundle bundle = new Bundle();
-                    bundle.putString("username",username);
-                    startActivity(new Intent(GetUsernameForGestureLoginActivity.this,MyConfirmPatternActivity.class).putExtras(bundle));
-                }else{
-                    Toast.makeText(GetUsernameForGestureLoginActivity.this,"用户名不存在",Toast.LENGTH_SHORT).show();
-                }
 
-            }
         });
 
         etUsername.addTextChangedListener(new TextWatcher() {

@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 
 import com.example.jile.Bean.Account;
 import com.example.jile.R;
+import com.example.jile.Util.TextUtil;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
         TextView tv2 = view.findViewById(R.id.tvMoney);
         im.setImageResource(account.getIconId());
         tv1.setText(account.getSelfname());
-        tv2.setText(account.getBalance().toString());
+        tv2.setText(TextUtil.simplifyMoney(account.getBalance().toPlainString()));
         return view;
     }
 

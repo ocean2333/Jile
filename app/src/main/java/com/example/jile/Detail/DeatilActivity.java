@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ import com.example.jile.New.NewBIllActivity;
 import com.example.jile.R;
 import com.example.jile.Util.BillMiddle;
 import com.example.jile.Util.DateUtil;
+import com.example.jile.Util.TextUtil;
 import com.xuexiang.xui.XUI;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.picker.widget.TimePickerView;
@@ -56,7 +58,8 @@ import java.util.List;
  * */
 public class DeatilActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private Button btnStartDateSelector,btnEndDateSelector,btnSearchTypeSelector,btnBack;
+    private Button btnStartDateSelector,btnEndDateSelector,btnSearchTypeSelector;
+    private ImageButton btnBack;
     private TextView tvBalance,tvIncome,tvCost;
     private Object searchType;
     private String firstClass;
@@ -274,9 +277,9 @@ public class DeatilActivity extends AppCompatActivity {
         BigDecimal cost,income;
         cost = getTotalCost(data);
         income = getTotalIncome(data);
-        tvBalance.setText(income.add(cost).toString());
-        tvIncome.setText(income.toString());
-        tvCost.setText(cost.toString());
+        tvBalance.setText(TextUtil.simplifyMoney(income.add(cost).toString()));
+        tvIncome.setText(TextUtil.simplifyMoney(income.toString()));
+        tvCost.setText(TextUtil.simplifyMoney(cost.toString()));
         List<LineElement> lle = new LinkedList<>();
         for(List<Bill> lb:data){
             List<View> lv = new LinkedList<>();
@@ -284,8 +287,9 @@ public class DeatilActivity extends AppCompatActivity {
                 lv.add(BillToViewAdapter(b));
             }
             LineElement le = new LineElement(getLineElementTitle(lb),
-                    getLineElementBalance(lb).toPlainString(),getLineElementIncome(lb).toPlainString()
-                    ,getLineElementCost(lb).toPlainString(),lv);
+                    TextUtil.simplifyMoney(getLineElementBalance(lb).toPlainString()),
+                    TextUtil.simplifyMoney(getLineElementIncome(lb).toPlainString()),
+                    TextUtil.simplifyMoney(getLineElementCost(lb).toPlainString()),lv);
             lle.add(le);
         }
         WidgetUtils.initRecyclerView(recyclerView);
@@ -312,31 +316,27 @@ public class DeatilActivity extends AppCompatActivity {
             Button btnModify = view.findViewById(R.id.btnModify);
             if(!bill.getType().equals(Constants.TRANSFER)){
                 im.setImageResource(bill.getIconId());
-
             }else{
                 im.setImageResource(R.drawable.icon_transfer);
             }
             try {
-                tvTime.setText(DateUtil.getShortDate(bill.getDate().toString()));
+                tvTime.setText(DateUtil.getShortDate(bill.getDate()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            tvDay.setText(DateUtil.getWeek(bill.getDate().toString()));
+            tvDay.setText(DateUtil.getWeek(bill.getDate()));
             if(!bill.getType().equals(Constants.TRANSFER)){
                 tvSecondClass.setText(bill.getSecond());
             }else{
                 tvSecondClass.setText("从 "+bill.getFirst()+" 转入 "+bill.getSecond());
             }
-            tvMoney.setText(bill.getNum().toString());
+            tvMoney.setText(TextUtil.simplifyMoney(bill.getNum().toString()));
             tvAccount.setText(bill.getAccountname());
-            btnModify.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("uuid",bill.getUuid());
-                    Intent intent = new Intent(DeatilActivity.this, NewBIllActivity.class).putExtras(bundle);
-                    startActivity(intent);
-                }
+            btnModify.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                bundle.putString("uuid",bill.getUuid());
+                Intent intent = new Intent(DeatilActivity.this, NewBIllActivity.class).putExtras(bundle);
+                startActivity(intent);
             });
             return view;
         }

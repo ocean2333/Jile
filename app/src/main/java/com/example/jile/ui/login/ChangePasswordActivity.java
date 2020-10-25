@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.jile.Bean.User;
@@ -26,7 +27,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
         final Bundle bundle = getIntent().getExtras();
-        final Button btnBack = findViewById(R.id.btnBack);
+        final ImageButton btnBack = findViewById(R.id.btnBack);
         final Button btnComplete = findViewById(R.id.btnComplete);
         final EditText etPassword = findViewById(R.id.etPassword);
         final EditText etRepeatPassword = findViewById(R.id.etRepeatPassword);

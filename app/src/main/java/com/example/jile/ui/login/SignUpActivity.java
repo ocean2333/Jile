@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.jile.Bean.Account;
@@ -26,7 +27,8 @@ import java.util.UUID;
 
 public class SignUpActivity extends AppCompatActivity {
     private EditText etUsername,etPassword,etRepeatPassword,etQuestion,etAns,etHint;
-    private Button btnBack,btnNext;
+    private ImageButton btnBack;
+    private Button btnNext;
     private boolean b1=false,b2=false,b3=false,b4=false,b5=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

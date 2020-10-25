@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
@@ -21,7 +22,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class CreateNewAccountActivity extends AppCompatActivity {
-    private Button btnConfirm,btnBack,btnCurrency,btnAccountType;
+    private ImageButton btnConfirm,btnBack;
+    private Button btnCurrency,btnAccountType;
     private List<String> currencyItems, chineseAccountTypeItems,accountTypeItems;
     private EditText etAccountName,etBalance,etNote;
     private String chineseAccountType,accountType,currency;

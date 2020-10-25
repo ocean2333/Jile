@@ -22,7 +22,9 @@
         android:singleLine="true"
         android:layout_height="match_parent"
         android:layout_weight="0.4"/>
-    <Button
+    <ImageButton
+        android:background="@color/xui_transparent"
+        android:src="@drawable/ic_arrow_right"
         android:id="@+id/btnToDetail"
         android:layout_width="50dp"
         android:layout_height="match_parent"/>

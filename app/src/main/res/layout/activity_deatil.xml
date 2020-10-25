@@ -5,16 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Detail.DeatilActivity">
+    tools:context=".Detail.DeatilActivity"
+    android:background="@color/gray">
     <LinearLayout
         android:id="@+id/ll_1"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:background="@drawable/top_and_bottom_edge">
-        <Button
+        android:background="@color/theme_yellow">
+        <ImageButton
+            android:src="@drawable/ic_arrow_left"
             android:id="@+id/btnBack"
-            android:background="@drawable/ic_arrow_right"
+            android:background="@color/xui_transparent"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.11"
@@ -87,7 +89,8 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="40dp"
+        android:background="@color/white">
         <Button
             android:id="@+id/btnDateStart"
             android:background="@android:color/transparent"
@@ -98,7 +101,7 @@
         <ImageView
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:src="@drawable/ic_arrow_right"
+            android:src="@drawable/ic_direction_right"
             android:layout_height="match_parent"/>
         <Button
             android:id="@+id/btnDateEnd"

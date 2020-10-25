@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.jile.Bean.User;
@@ -28,7 +29,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reset_password);
         final Button btnNext = findViewById(R.id.btnNext);
         final EditText etUsername = findViewById(R.id.etUsername);
-        final Button btnBack = findViewById(R.id.btnBack);
+        final ImageButton btnBack = findViewById(R.id.btnBack);
         btnNext.setEnabled(false);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override

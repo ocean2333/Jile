@@ -13,22 +13,25 @@
         android:layout_height="50dp"
         android:orientation="horizontal"
         android:background="@drawable/top_and_bottom_edge">
-        <Button
+        <ImageButton
+            android:src="@drawable/ic_arrow_left"
             android:id="@+id/btnBack"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.11"
-            android:text="《"/>
+            android:background="@color/theme_yellow"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.7"/>
-        <Button
+            android:layout_weight="0.7"
+            android:background="@color/theme_yellow"/>
+        <ImageButton
             android:id="@+id/btnCreateNewAccount"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.11"
-            android:text="+"/>
+            android:background="@color/theme_yellow"
+            android:src="@drawable/ic_add"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/ll_2"

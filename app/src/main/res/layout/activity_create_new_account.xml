@@ -10,10 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_weight="0"
-        android:background="@drawable/top_and_bottom_edge">
-        <Button
+        android:background="@color/theme_yellow">
+        <ImageButton
             android:id="@+id/btnBack"
             android:layout_width="0dp"
+            android:background="@color/xui_transparent"
+            android:src="@drawable/ic_arrow_left"
             android:layout_weight="0.1"
             android:layout_height="match_parent"/>
 
@@ -22,8 +24,10 @@
             android:layout_height="match_parent"
             android:layout_weight="0.63" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btnConfirm"
+            android:src="@drawable/ic_add"
+            android:background="@color/xui_transparent"
             android:layout_width="0dp"
             android:layout_weight="0.1"
             android:layout_height="match_parent"/>

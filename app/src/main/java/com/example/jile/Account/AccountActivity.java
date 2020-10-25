@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import com.example.jile.LogoActivity;
 import com.example.jile.MainView.MainActivity;
 import com.example.jile.Bean.Account;
 import com.example.jile.R;
+import com.example.jile.Util.TextUtil;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -26,7 +28,7 @@ import static com.example.jile.Constant.Constants.NET_ACCOUNT;
 import static com.example.jile.Constant.Constants.OTHER_ACCOUNT;
 
 public class AccountActivity extends AppCompatActivity {
-    private Button btnBack,btnCreateNewAccount;
+    private ImageButton btnBack,btnCreateNewAccount;
     private List<Account> cashAccount, bankAccount, netAccount,otherAccount;
     private String totalMoney,deltaMoney,cashMoney, otherMoney, bankMoney, netMoney;
     @Override
@@ -61,12 +63,12 @@ public class AccountActivity extends AppCompatActivity {
         cashMoneyTemp=getMoneysofAccount(cashAccount);
         bankMoneyTemp=getMoneysofAccount(bankAccount);
         otherMoneyTemp=getMoneysofAccount(otherAccount);
-        netMoney =netMoneyTemp.toString();
-        cashMoney=cashMoneyTemp.toString();
-        bankMoney =bankMoneyTemp.toString();
-        otherMoney =otherMoneyTemp.toString();
+        netMoney = TextUtil.simplifyMoney(netMoneyTemp.toPlainString());
+        cashMoney = TextUtil.simplifyMoney(cashMoneyTemp.toPlainString());
+        bankMoney = TextUtil.simplifyMoney(bankMoneyTemp.toPlainString());
+        otherMoney = TextUtil.simplifyMoney(otherMoneyTemp.toPlainString());
         deltaMoney="123.0";
-        totalMoney=netMoneyTemp.add(cashMoneyTemp.add(bankMoneyTemp.add(otherMoneyTemp))).toString();
+        totalMoney=TextUtil.simplifyMoney(netMoneyTemp.add(cashMoneyTemp.add(bankMoneyTemp.add(otherMoneyTemp))).toPlainString());
     }
 
     private void setListView(){

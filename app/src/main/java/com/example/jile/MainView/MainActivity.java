@@ -296,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
      * 向recycleView提供数据
      * */
     private List<Bill> getFiveMostRecentBillEachTime(int t){
-        int size=7;
+        int size=10;
         int count=0;
         hasMore=true;
         List<Bill> fiveMostRecentBill = new LinkedList<>();
@@ -366,8 +366,9 @@ public class MainActivity extends AppCompatActivity {
             mEnableLoadMore = false;
             disableMaterialLoadMore();
             // 加载更多的监听。
+            Log.d("TAG", "disEnableLoadMore: ");
             recyclerView.setLoadMoreListener(null);
-            recyclerView.loadMoreFinish(false, false);
+            recyclerView.loadMoreFinish(isEmpty, hasMore);
         }
     }
 
@@ -393,6 +394,7 @@ public class MainActivity extends AppCompatActivity {
                 // 第二个参数：表示是否还有更多数据。
                 if (recyclerView != null) {
                     recyclerView.loadMoreFinish(isEmpty, hasMore);
+                    disEnableLoadMore();
                 }
                 if (mIndex >= 1000) {
                     disEnableLoadMore();
@@ -413,6 +415,7 @@ public class MainActivity extends AppCompatActivity {
         OnClick onClick = new OnClick();
         setBtnListener(onClick);
         updateView();
+        initRecyclerView();
     }
 
     /**
@@ -433,10 +436,15 @@ public class MainActivity extends AppCompatActivity {
         tvCost.setText(TextUtil.simplifyMoney(cost));
         tvIncome.setText(TextUtil.simplifyMoney(income));
         getCostAndIncome(bills,"day");
-        tvIncomeToday.setText(todayincome);
-        tvCostToday.setText(todaycost);
+        tvIncomeToday.setText(TextUtil.simplifyMoney(todayincome));
+        tvCostToday.setText(TextUtil.simplifyMoney(todaycost));
         tvMonth.setText(DateUtil.getMonth());
+    }
+
+    private void initRecyclerView(){
         WidgetUtils.initRecyclerView(recyclerView);
+        View footerView = getLayoutInflater().inflate(R.layout.include_footview, recyclerView, false);
+        recyclerView.addFooterView(footerView);
         recyclerView.setAdapter(mAdapter = new BillRecyclerAdapter(getFiveMostRecentBillEachTime(mIndex),R.layout.adapter_bill,(v,p)->{
             Bundle bundle = new Bundle();
             TextView tvUuid = v.findViewById(R.id.tvUuid);

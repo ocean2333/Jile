@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:orientation="vertical">
-
         <TextView
             android:id="@+id/tvMonth"
             android:layout_width="match_parent"
@@ -114,7 +113,8 @@
         android:layout_height="75dp"
         android:orientation="horizontal"
         android:background="@drawable/top_and_bottom_edge"
-        android:padding="1dp">
+        android:padding="1dp"
+        android:layout_below="@id/ll_1">
         <Button
             android:id="@+id/btnToCalender"
             android:layout_width="75dp"
@@ -128,16 +128,18 @@
             android:text="今天"
             android:gravity="center_vertical|start"
             android:textSize="25sp"/>
-        <TextView
+        <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
             android:id="@+id/tvIncomeToday"
             android:layout_width="0dp"
             android:layout_weight="1.0"
             android:layout_height="match_parent"
             android:text="+0"
+            android:maxLines="1"
             android:gravity="center_vertical|start"
             android:textSize="25sp"/>
-        <TextView
+        <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
             android:id="@+id/tvCostToday"
+            android:maxLines="1"
             android:layout_width="0dp"
             android:layout_weight="1.0"
             android:layout_height="match_parent"
@@ -154,47 +156,60 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="340dp">
-
+        android:layout_height="600dp"
+        android:layout_below="@id/ll_2"
+        android:layout_above="@id/bottomButton">
         <com.yanzhenjie.recyclerview.SwipeRecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"
             tools:listitem="@android:layout/simple_list_item_2" />
-
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <LinearLayout
         android:id="@+id/bottomButton"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="95dp"
         android:orientation="horizontal"
-        tools:ignore="MissingConstraints">
+        android:gravity="bottom"
+        android:background="@color/white"
+        android:paddingVertical="10dp"
+        android:layout_alignParentBottom="true"
+        >
         <Button
             android:id="@+id/btnAccount"
+            android:background="@color/xui_transparent"
+            android:drawableTop="@drawable/ic_account"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="账户"/>
         <Button
             android:id="@+id/btnDetail"
-            android:layout_width="0dp"
+            android:background="@color/xui_transparent"
+            android:drawableTop="@drawable/ic_account_details"
+            android:layout_width="75dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0"
             android:text="流水"/>
         <Button
             android:id="@+id/btnNew"
-            android:layout_width="0dp"
+            android:layout_width="75dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.25"
-            android:text="+"/>
+            android:layout_weight="0"
+            android:paddingHorizontal="40dp"
+            android:background="@drawable/ic_add_circle"/>
         <Button
+            android:drawableTop="@drawable/ic_pie_graph"
+            android:background="@color/xui_transparent"
             android:id="@+id/btnGraph"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="图表"/>
         <Button
+            android:drawableTop="@drawable/ic_setting2"
+            android:background="@color/xui_transparent"
             android:id="@+id/btnSetting"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -202,4 +217,4 @@
             android:text="设置"/>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
