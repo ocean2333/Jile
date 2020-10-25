@@ -6,6 +6,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.example.jile.Constant.Constants;
 import com.example.jile.Detail.DeatilActivity;
 import com.example.jile.Detail.ExpandableListAdapter;
 import com.example.jile.R;
+import com.example.jile.Util.StatisticsMiddle;
 import com.example.jile.Util.ToastUtil;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -42,6 +44,7 @@ import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder;
 import com.xuexiang.xui.widget.picker.widget.listener.OnTimeSelectListener;
 import com.xuexiang.xui.widget.tabbar.EasyIndicator;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -50,6 +53,10 @@ import java.util.List;
 
 import static com.example.jile.Constant.Constants.COST;
 import static com.example.jile.Constant.Constants.INCOME;
+import static com.example.jile.Constant.Constants.SEARCH_TYPE_ACCOUNT;
+import static com.example.jile.Constant.Constants.SEARCH_TYPE_FIRST_CLASS;
+import static com.example.jile.Constant.Constants.SEARCH_TYPE_MONTH;
+import static com.example.jile.Constant.Constants.SEARCH_TYPE_SECOND_CLASS_IN_FIRST_CLASS;
 
 public class GraphActivity extends AppCompatActivity implements OnChartValueSelectedListener {
 
@@ -59,7 +66,7 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
     private PieChart mPieChart;
     private List<PieEntry> mGraphData ;
     private RecyclerView recyclerView;
-    public static String searchType ,billtype;
+    public static String searchType ,billtype,firstClass;
     private ExpandableLayout expandableLayout1;
     private XUIAlphaTextView expand_button;
     public static Date startDate,endDate;
@@ -75,10 +82,15 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
         XUI.initTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graphpie);
-        mGraphData=getpiebill(searchType,billtype,startDate,endDate);
+
         initViewPager();
         getComponents();
-        initChartStyle();
+        try {
+            initChartStyle();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         if(!mGraphData.isEmpty()){
             initPieChart();
             initBarChart();
@@ -91,6 +103,7 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
         btnBillDetail.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                searchType = SEARCH_TYPE_SECOND_CLASS_IN_FIRST_CLASS;
                 update();
                 return true;
             }
@@ -99,7 +112,7 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
 
     @SuppressLint("SetTextI18n")
     private void initBarChart() {
-        barListAdapter = new BarListAdapter(recyclerView,mGraphData);
+        barListAdapter = new BarListAdapter(recyclerView,mGraphData,this);
         WidgetUtils.initRecyclerView(recyclerView);
         recyclerView.setAdapter(barListAdapter);
         textView.setText("总计\n  "+getTotal(mGraphData));
@@ -168,7 +181,7 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
     @Override
     public void onValueSelected(Entry e, Highlight h) {
         PieEntry pe = (PieEntry)e;
-        searchType = pe.getLabel();
+        firstClass = pe.getLabel();
         btnBillDetail.setText(pe.getLabel()+" "+pe.getValue()+" >");
     }
 
@@ -194,40 +207,43 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
                     }
                     break;
                 case R.id.btnCostGraphByKind:
-                    searchType = "FirstClass";
+                    searchType = SEARCH_TYPE_FIRST_CLASS;
                     billtype = COST;
                     expand_button.setText(btnCostGraphByKind.getText());
                     update();
                     break;
                 case R.id.btnCostGraphByAccount:
-                    searchType = "Account";
+                    searchType = SEARCH_TYPE_ACCOUNT;
                     billtype = INCOME;
                     expand_button.setText(btnCostGraphByAccount.getText());
                     update();
                     break;
                 case R.id.btnIncomeGraphByAccount:
-                    searchType = "Account";
+                    searchType = SEARCH_TYPE_ACCOUNT;
                     billtype = INCOME;
                     expand_button.setText(btnIncomeGraphByAccount.getText());
                     update();
                     break;
                 case R.id.btnIncomeGraphByKind:
-                    searchType = "FirstClass";
+                    searchType = SEARCH_TYPE_FIRST_CLASS;
                     billtype = INCOME;
                     expand_button.setText(btnIncomeGraphByKind.getText());
                     update();
                     break;
                 case R.id.btnMonthIncome:
-                    searchType = "month";
+                    searchType = SEARCH_TYPE_MONTH;
                     billtype = INCOME;
                     expand_button.setText(btnMonthIncome.getText());
                     update();
                     break;
                 case R.id.btnMonthCost:
-                    searchType = "month";
+                    searchType = SEARCH_TYPE_MONTH;
                     billtype = COST;
                     expand_button.setText(btnMonthCost.getText());
                     update();
+                    break;
+                case R.id.btnBillDetail:
+                    DeatilActivity.startThisActivity(GraphActivity.this,searchType, firstClass,startDate,endDate);
                     break;
                 case R.id.btnSetEndDate:
                     TimePickerView mDateEndPicker = new TimePickerBuilder(GraphActivity.this, new OnTimeSelectListener() {
@@ -264,7 +280,11 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
     }
 
     public void update() {
-        mGraphData=getpiebill(searchType,billtype,startDate,endDate);
+        try {
+            mGraphData=StatisticsMiddle.getpiebill(searchType,billtype,firstClass,startDate,endDate,this);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         if(!mGraphData.isEmpty()){
             mGraphData.add(new PieEntry(30,"test"));
             mPieChart.setCenterText(new SpannableString("总计\n"+getTotal(mGraphData).toString()));
@@ -281,7 +301,11 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
         PieDataSet dataSet = new PieDataSet(mGraphData,"");
         ArrayList<Integer> colors = new ArrayList<Integer>();
         for (int i=0;i<=mGraphData.size();i++){
-            colors.add(ColorUtils.getRandomColor());
+            int newColor=ColorUtils.getRandomColor();
+            while(!ColorUtils.isColorDark(newColor)){
+                colors.add(newColor);
+                newColor=ColorUtils.getRandomColor();
+            }
         }
         dataSet.setColors(colors);
 
@@ -313,7 +337,7 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
 
 
 
-    protected void initChartStyle() {
+    protected void initChartStyle() throws ParseException {
         //使用百分百显示
         mPieChart.setUsePercentValues(true);
         mPieChart.getDescription().setEnabled(false);
@@ -323,17 +347,20 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
         mPieChart.setDragDecelerationFrictionCoef(0.95f);
 
         //设置初始值
-        searchType="FirstClass";
+        searchType=SEARCH_TYPE_FIRST_CLASS;
+        firstClass=null;
         billtype=COST;
         Calendar calendar = Calendar.getInstance();
         endDate = new Date(System.currentTimeMillis());
         calendar.setTime(endDate);
         calendar.add(Calendar.MONTH,-1);
         startDate=calendar.getTime();
-        mGraphData=getpiebill(searchType,billtype,startDate,endDate);
+        mGraphData= StatisticsMiddle.getpiebill(searchType,billtype,firstClass,startDate,endDate,this);
 
         //设置图标中心文字
+        mPieChart.setCenterTextSize(20);
         mPieChart.setCenterText(new SpannableString("总计\n"+getTotal(mGraphData).toString()));
+
         mPieChart.setDrawCenterText(true);
         //设置图标中心空白，空心
         mPieChart.setDrawHoleEnabled(true);
@@ -351,30 +378,6 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
         mPieChart.setHighlightPerTapEnabled(true);
 
         mPieChart.setOnChartValueSelectedListener(this);
-    }
-    /**
-     * 搜索时间区间内符合搜索要求的Bill并根据分类返回一个List
-     * new PieEntry(30f,"一月")
-     * 第一个为float的金额，第二个为string  "类型"
-     * 排序按百分比从大到小
-     * @param searchType 搜索类型，包括
-     *   月度收入形式： "month"
-     *              返回形式：在时间间隔不超过一年（30f,一月）
-     *              超过一年（30f，19年5月）
-     *   一级分类形式： “FirstClass”  ；
-     *   二级分类形式：    “食品” （输入一个一级分类的名称，返回所有所属二级分类信息）；
-     *                   若是输入为"SecondClass",返回所有二级分类信息；
-     *    账户形式     “Account”；
-     * @param startDate Date类型的时间，包括这一天
-     * @param endDate Date类型的时间，包括这一天
-     * */
-
-    public static List<PieEntry> getpiebill(String searchType, String billtype, Date startDate, Date endDate){
-        List<PieEntry> strings = new ArrayList<>();
-        strings.add(new PieEntry(1f,"yyf"));
-        strings.add(new PieEntry(1000f,"男生"));
-        strings.add(new PieEntry(70f,"女生"));
-        return strings;
     }
     /**
      * 统计符合要求的所有或收入
