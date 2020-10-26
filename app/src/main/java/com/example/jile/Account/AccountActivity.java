@@ -1,14 +1,17 @@
 package com.example.jile.Account;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,8 +21,14 @@ import com.example.jile.MainView.MainActivity;
 import com.example.jile.Bean.Account;
 import com.example.jile.R;
 import com.example.jile.Util.TextUtil;
+import com.xuexiang.xui.utils.WidgetUtils;
+import com.xuexiang.xui.widget.textview.autofit.AutoFitTextView;
+import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import static com.example.jile.Constant.Constants.BANK_ACCOUNT;
@@ -31,6 +40,7 @@ public class AccountActivity extends AppCompatActivity {
     private ImageButton btnBack,btnCreateNewAccount;
     private List<Account> cashAccount, bankAccount, netAccount,otherAccount;
     private String totalMoney,deltaMoney,cashMoney, otherMoney, bankMoney, netMoney;
+    private TextView tvCashNum,tvBankNum,tvNetNum,tvOtherNum;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,54 +82,61 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     private void setListView(){
-        ListView lvCash = findViewById(R.id.lvCash);
-        ListView lvBank = findViewById(R.id.lvBank);
-        ListView lvNet = findViewById(R.id.lvNet);
-        ListView lvOther = findViewById(R.id.lvOther);
+        List<LineElement> lel = new LinkedList<>();
+        String[] bigDecimals = new String[]{cashMoney,bankMoney,netMoney,otherMoney};
+        String[] s = new String[]{"现金账户","银行账户","网络账户","其他账户"};
+        List<List<Account>> lla = new ArrayList<>();
+        lla.add(cashAccount);
+        lla.add(bankAccount);
+        lla.add(netAccount);
+        lla.add(otherAccount);
+        for(int i=0;i<4;i++){
+            List<View> list = new LinkedList<>();
+            for(Account a:lla.get(i)){
+                list.add(transformAccountToView(a));
+            }
+            lel.add(new LineElement(s[i],bigDecimals[i],list));
+        }
+        SwipeRecyclerView ll_3 = findViewById(R.id.ll_3);
+        WidgetUtils.initRecyclerView(ll_3);
+        ll_3.setAdapter(new AccountTitleAdapter(lel,R.layout.adapter_ako_account));
+
+        /*tvCashNum = ll_3.getChildAt(0).findViewById(R.id.tvTitle);
+        tvBankNum = ll_3.getChildAt(1).findViewById(R.id.tvTitle);
+        tvNetNum = ll_3.getChildAt(2).findViewById(R.id.tvTitle);
+        tvOtherNum = ll_3.getChildAt(3).findViewById(R.id.tvTitle);
+        SwipeRecyclerView lvCash = ll_3.getChildAt(0).findViewById(R.id.lv);
+        SwipeRecyclerView lvBank = ll_3.getChildAt(1).findViewById(R.id.lv);
+        SwipeRecyclerView lvNet = ll_3.getChildAt(2).findViewById(R.id.lv);
+        SwipeRecyclerView lvOther = ll_3.getChildAt(3).findViewById(R.id.lv);
+        WidgetUtils.initRecyclerView(lvCash);
+        WidgetUtils.initRecyclerView(lvBank);
+        WidgetUtils.initRecyclerView(lvNet);
+        WidgetUtils.initRecyclerView(lvOther);
         if(netAccount !=null){
-            ArrayAdapter<Account> cardAdapter = new AccountAdapter(AccountActivity.this,R.layout.adapter_account, netAccount);
-            lvNet.setAdapter(cardAdapter);
-            lvNet.setOnItemClickListener(new AdapterView.OnItemClickListener()
-            {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                    Toast.makeText(AccountActivity.this,position,Toast.LENGTH_SHORT).show();
-                }
-            });
+            lvNet.setAdapter(new AccountAdapter(netAccount,R.layout.adapter_account,(v, p)->{
+                TextView tv = (TextView) v.findViewById(R.id.uuid);
+                startActivity(CreateNewAccountActivity.startThisActivity(this,tv.getText().toString()));
+            }));
         }
         if (cashAccount!=null){
-            ArrayAdapter<Account> cashAdapter = new AccountAdapter(AccountActivity.this,R.layout.adapter_account, cashAccount);
-            lvCash.setAdapter(cashAdapter);
-            lvCash.setOnItemClickListener(new AdapterView.OnItemClickListener()
-            {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                    Toast.makeText(AccountActivity.this,position,Toast.LENGTH_SHORT).show();
-                }
-            });
+            lvCash.setAdapter(new AccountAdapter(cashAccount,R.layout.adapter_account,(v, p)->{
+                TextView tv = (TextView) v.findViewById(R.id.uuid);
+                startActivity(CreateNewAccountActivity.startThisActivity(this,tv.getText().toString()));
+            }));
         }
         if (bankAccount !=null){
-            ArrayAdapter<Account> virtualAdapter = new AccountAdapter(AccountActivity.this,R.layout.adapter_account, bankAccount);
-            lvBank.setAdapter(virtualAdapter);
-            lvBank.setOnItemClickListener(new AdapterView.OnItemClickListener()
-            {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                    Toast.makeText(AccountActivity.this,position,Toast.LENGTH_SHORT).show();
-                }
-            });
+            lvBank.setAdapter(new AccountAdapter(bankAccount,R.layout.adapter_account,(v, p)->{
+                TextView tv = (TextView) v.findViewById(R.id.uuid);
+                startActivity(CreateNewAccountActivity.startThisActivity(this,tv.getText().toString()));
+            }));
         }
         if (otherAccount!=null){
-            ArrayAdapter<Account> wealthAdapter = new AccountAdapter(AccountActivity.this,R.layout.adapter_account, otherAccount);
-            lvOther.setAdapter(wealthAdapter);
-            lvOther.setOnItemClickListener(new AdapterView.OnItemClickListener()
-            {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                    Toast.makeText(AccountActivity.this,position,Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+            lvOther.setAdapter(new AccountAdapter(otherAccount,R.layout.adapter_account,(v, p)->{
+                TextView tv = (TextView) v.findViewById(R.id.uuid);
+                startActivity(CreateNewAccountActivity.startThisActivity(this,tv.getText().toString()));
+            }));
+        }*/
     }
 
     private void init(){
@@ -143,22 +160,36 @@ public class AccountActivity extends AppCompatActivity {
     private void updateView(){
         getAccounts();
         getMoneys();
+        setListView();
         TextView tvTotalMoney = findViewById(R.id.tvTotalWealthNum);
         TextView tvDelta = findViewById(R.id.tvCompareToLastMonth);
-        TextView tvCashNum = findViewById(R.id.tvCashNum);
-        TextView tvBankNum = findViewById(R.id.tvBankNum);
-        TextView tvNetNum = findViewById(R.id.tvNetNum);
-        TextView tvOtherNum = findViewById(R.id.tvOtherNum);
         tvTotalMoney.setText(totalMoney);
         if(deltaMoney.charAt(0)=='-'){
             tvDelta.setText("相比上个月减少"+(deltaMoney.split("-")[1]));
         }else{
             tvDelta.setText("相比上个月增加"+deltaMoney);
         }
-        tvNetNum.setText(netMoney);
-        tvCashNum.setText(cashMoney);
-        tvBankNum.setText(bankMoney);
-        tvOtherNum.setText(otherMoney);
-        setListView();
     }
+
+    private View transformAccountToView(Account account){
+        View view = LayoutInflater.from(this).inflate(R.layout.adapter_account,null);
+        if(account==null){
+            return null;
+        }else{
+            ImageView im = view.findViewById(R.id.imIcon);
+            TextView tvName = view.findViewById(R.id.tvName);
+            TextView tvMoney = view.findViewById(R.id.tvMoney);
+            ImageButton btnModify = view.findViewById(R.id.btnModify);
+            TextView uuid = view.findViewById(R.id.uuid);
+            im.setImageResource(account.getIconId());
+            tvName.setText(account.getSelfname());
+            tvMoney.setText(TextUtil.simplifyMoney(account.getBalance().toPlainString()));
+            uuid.setText(account.getUuid());
+            btnModify.setOnClickListener((v -> {
+                startActivity(CreateNewAccountActivity.startThisActivity(this,account.getUuid()));
+            }));
+        }
+        return view;
+    }
+
 }
