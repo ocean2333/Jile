@@ -75,7 +75,7 @@
                         android:layout_height="32dp"
                         android:layout_weight="1"
                         android:background="@color/newGray"
-                        app:srcCompat="@drawable/icon_cny" />
+                        app:srcCompat="@drawable/ic_pie_graph" />
 
                     <Button
                         android:id="@+id/btnCostGraphByKind"
@@ -98,7 +98,7 @@
                         android:layout_height="32dp"
                         android:layout_weight="1"
                         android:background="@color/newGray"
-                        app:srcCompat="@drawable/icon_cny" />
+                        app:srcCompat="@drawable/ic_pie_graph" />
                     <Button
                         android:id="@+id/btnCostGraphByAccount"
                         android:layout_width="match_parent"
@@ -120,7 +120,7 @@
                         android:layout_height="32dp"
                         android:layout_weight="1"
                         android:background="@color/newGray"
-                        app:srcCompat="@drawable/icon_cny" />
+                        app:srcCompat="@drawable/ic_pie_graph" />
                     <Button
                         android:id="@+id/btnMonthCost"
                         android:layout_width="match_parent"
@@ -156,7 +156,7 @@
                         android:layout_height="32dp"
                         android:layout_weight="1"
                         android:background="@color/newGray"
-                        app:srcCompat="@drawable/icon_cny" />
+                        app:srcCompat="@drawable/ic_pie_graph" />
                     <Button
                         android:id="@+id/btnIncomeGraphByKind"
                         android:layout_width="match_parent"
@@ -176,7 +176,7 @@
                         android:layout_height="32dp"
                         android:layout_weight="1"
                         android:background="@color/newGray"
-                        app:srcCompat="@drawable/icon_cny" />
+                        app:srcCompat="@drawable/ic_pie_graph" />
                     <Button
                         android:id="@+id/btnIncomeGraphByAccount"
                         android:layout_width="match_parent"
@@ -196,7 +196,7 @@
                         android:layout_height="32dp"
                         android:layout_weight="1"
                         android:background="@color/newGray"
-                        app:srcCompat="@drawable/icon_cny" />
+                        app:srcCompat="@drawable/ic_pie_graph" />
                     <Button
                         android:id="@+id/btnMonthIncome"
                         android:layout_width="match_parent"

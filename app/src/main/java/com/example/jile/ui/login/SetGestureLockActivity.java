@@ -68,7 +68,7 @@ public class SetGestureLockActivity extends SetPatternActivity {
 
     private User createNewUser(String patten){
         return new User(UUID.randomUUID().toString(),username,password,
-                question,ans,hint,R.drawable.icon_dollar,"",patten,"1500");
+                question,ans,hint,R.drawable.ic_user,"",patten,"1500");
     }
 
     //

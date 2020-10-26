@@ -17,7 +17,7 @@
             android:id="@+id/billImage"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/icon_dollar"
+            android:src="@drawable/ic_food"
             android:contentDescription="TODO" />
         <RelativeLayout
             android:layout_width="match_parent"

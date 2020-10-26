@@ -5,12 +5,14 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.jile.Bean.Account;
 import com.example.jile.Bean.FirstClass;
+import com.example.jile.Bean.Icon;
 import com.example.jile.Bean.Mem;
 import com.example.jile.Bean.SecondClass;
 import com.example.jile.Bean.Store;
 import com.example.jile.Constant.Constants;
 import com.example.jile.Database.Dao.AccountDao;
 import com.example.jile.Database.Dao.FirstClassDao;
+import com.example.jile.Database.Dao.IconDao;
 import com.example.jile.Database.Dao.MemDao;
 import com.example.jile.Database.Dao.SecondClassDao;
 import com.example.jile.Database.Dao.StoreDao;
@@ -64,7 +66,9 @@ public class NewTableHelper {
         db.execSQL(sql);
 
         sql = "create table "+mName+"_SecondClass"+"(uuid varchar,type varchar,firstclass varchar,name varchar)";
+        db.execSQL(sql);
 
+        sql = "create table "+mName+"_Icon"+"(uuid varchar,name varchar,type varchar,iconId integer)";
         db.execSQL(sql);
 
         db.close();
@@ -74,8 +78,9 @@ public class NewTableHelper {
         MemDao memDao = new MemDao(mContext,mName);
         FirstClassDao firstClassDao = new FirstClassDao(mContext,mName);
         SecondClassDao secondClassDao = new SecondClassDao(mContext,mName);
+        IconDao iconDao = new IconDao(mContext,mName);
         accountDao.insert(new Account(UUID.randomUUID().toString(),
-                Constants.CASH_ACCOUNT,"现金",new BigDecimal("0"),"CNY", R.drawable.icon_cny,""));
+                Constants.CASH_ACCOUNT,"现金",new BigDecimal("0"),"CNY", R.drawable.ic_cash,""));
         Store store = new Store(UUID.randomUUID().toString(),"家");
         storeDao.insert(store);
         store = new Store(UUID.randomUUID().toString(),"学校");
@@ -109,7 +114,27 @@ public class NewTableHelper {
             }
         }
 
-
+        Icon[] icons = new Icon[]{
+                new Icon(UUID.randomUUID().toString(),"理财产品",Constants.ACCOUNT,R.drawable.ic_money_management),
+                new Icon(UUID.randomUUID().toString(),"微信",Constants.ACCOUNT,R.drawable.ic_wechat),
+                new Icon(UUID.randomUUID().toString(),"现金",Constants.ACCOUNT,R.drawable.ic_cash),
+                new Icon(UUID.randomUUID().toString(),"信用卡",Constants.ACCOUNT,R.drawable.ic_credit_card),
+                new Icon(UUID.randomUUID().toString(),"虚拟账户",Constants.ACCOUNT,R.drawable.ic_virtal),
+                new Icon(UUID.randomUUID().toString(),"银行卡",Constants.ACCOUNT,R.drawable.ic_card),
+                new Icon(UUID.randomUUID().toString(),"支付宝",Constants.ACCOUNT,R.drawable.ic_paypal),
+                new Icon(UUID.randomUUID().toString(),"交通出行",Constants.COST,R.drawable.ic_traffic),
+                new Icon(UUID.randomUUID().toString(),"居家生活",Constants.COST,R.drawable.ic_life),
+                new Icon(UUID.randomUUID().toString(),"食品饮料",Constants.COST,R.drawable.ic_food),
+                new Icon(UUID.randomUUID().toString(),"休闲娱乐",Constants.COST,R.drawable.ic_entertainment),
+                new Icon(UUID.randomUUID().toString(),"学习培训",Constants.COST,R.drawable.ic_learning),
+                new Icon(UUID.randomUUID().toString(),"衣服饰品",Constants.COST,R.drawable.ic_clothes),
+                new Icon(UUID.randomUUID().toString(),"医疗保健",Constants.COST,R.drawable.ic_health),
+                new Icon(UUID.randomUUID().toString(),"其他收入",Constants.INCOME,R.drawable.ic_other_income),
+                new Icon(UUID.randomUUID().toString(),"职业收入",Constants.INCOME,R.drawable.ic_job_income)
+        };
+        for(Icon icon:icons){
+            iconDao.insert(icon);
+        }
         return  status;
     }
 }

@@ -59,7 +59,7 @@ public class BarListAdapter extends BaseRecyclerAdapter<PieEntry>{
         if(sum==0){
             sum=1;
         }
-        v.setEndProgress((int)(item.getValue()/sum*100));
+        v.setEndProgress((int)Math.abs(item.getValue()/sum*100));
         int newColor= ColorUtils.getRandomColor();
         v.setStartColor(newColor);
         v.setEndColor(newColor);

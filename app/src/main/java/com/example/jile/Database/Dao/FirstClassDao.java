@@ -29,7 +29,7 @@ public class FirstClassDao {
          * todo
          */
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String sql = "delete from "+mUsername+"_Mem"+" where uuid = "+"'"+firstclass.getUuid()+"'";
+        String sql = "delete from "+mUsername+"_FirstClass"+" where uuid = "+"'"+firstclass.getUuid()+"'";
         db.execSQL(sql);
         db.close();
     }

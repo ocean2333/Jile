@@ -86,7 +86,6 @@ public class ExpandableListAdapter extends BaseRecyclerAdapter<LineElement> {
         });
 
         boolean isSelected = position == mSelectPosition;
-        expandableLayout.setExpanded(isSelected, false);
         holder.select(R.id.fl_title, isSelected);
         holder.text(R.id.tvTitle, item.getTitle());
         holder.text(R.id.tvBalance, item.getBalance());

@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".Account.AccountActivity"
     android:orientation="vertical"
-    android:padding="1dp">
+    android:padding="1dp"
+    android:id="@+id/t"
+    android:background="@color/gray">
     <LinearLayout
         android:id="@+id/ll_1"
         android:layout_width="match_parent"
@@ -68,112 +70,13 @@
             android:gravity="center_vertical"
             android:textSize="15sp"/>
     </LinearLayout>
-    <com.yanzhenjie.recyclerview.SwipeRecyclerView
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ll_3"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"/>
-
-
-
-    <!--    <LinearLayout
-            android:id="@+id/llWealthTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/top_and_bottom_edge"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
-                    android:paddingVertical="5dp"
-                    android:text="银行账户" />
-
-                <TextView
-                    android:id="@+id/tvBankNum"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    android:paddingVertical="5dp"
-                    android:text="资产" />
-            </LinearLayout>
-            <com.yanzhenjie.recyclerview.SwipeRecyclerView
-                android:id="@+id/lvBank"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llNetTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/top_and_bottom_edge"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.2"
-                    android:paddingVertical="5dp"
-                    android:text="网络账户" />
-
-                <TextView
-                    android:id="@+id/tvNetNum"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    android:paddingVertical="5dp"
-                    android:text="资产" />
-            </LinearLayout>
-            <com.yanzhenjie.recyclerview.SwipeRecyclerView
-                android:id="@+id/lvNet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llOtherTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/top_and_bottom_edge"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
-                    android:paddingVertical="5dp"
-                    android:text="其他账户" />
-
-                <TextView
-                    android:id="@+id/tvOtherNum"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    android:paddingVertical="5dp"
-                    android:text="资产" />
-            </LinearLayout>
-            <com.yanzhenjie.recyclerview.SwipeRecyclerView
-                android:id="@+id/lvOther"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-    </com.yanzhenjie.recyclerview.SwipeRecyclerView>-->
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:overScrollMode="never"
+        android:background="@color/gray"/>
 
 </LinearLayout>

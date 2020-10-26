@@ -2,6 +2,8 @@ package com.example.jile.Account;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +16,9 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.example.jile.Bean.Account;
 import com.example.jile.Constant.Constants;
 import com.example.jile.LogoActivity;
+import com.example.jile.New.NewBIllActivity;
 import com.example.jile.R;
+import com.example.jile.Util.ToastUtil;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -24,20 +28,72 @@ import java.util.UUID;
 public class CreateNewAccountActivity extends AppCompatActivity {
     private ImageButton btnConfirm,btnBack;
     private Button btnCurrency,btnAccountType;
+    private ImageButton btnSelectIcon,btnDelete;
     private List<String> currencyItems, chineseAccountTypeItems,accountTypeItems;
     private EditText etAccountName,etBalance,etNote;
     private String chineseAccountType,accountType,currency;
+    private String uuid;
+    private Account account;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_account);
+        if(getIntent().getExtras()!=null){
+            uuid = getIntent().getExtras().getString("uuid",null);
+            account = LogoActivity.accountDao.querybyskey("uuid",uuid).get(0);
+        }
         getComponents();
-        chineseAccountType = chineseAccountTypeItems.get(0);
-        accountType = accountTypeItems.get(0);
-        currency = currencyItems.get(0);
-        etBalance.setText("0.00");
-        btnCurrency.setText(currencyItems.get(0));
-        btnAccountType.setText(chineseAccountTypeItems.get(0));
+        init();
+    }
+
+    private void getComponents(){
+        btnBack = findViewById(R.id.btnBack);
+        btnConfirm = findViewById(R.id.btnConfirm);
+        btnCurrency = findViewById(R.id.btnAccountType);
+        btnAccountType = findViewById(R.id.btnCurrency);
+        etAccountName = findViewById(R.id.etAccountName);
+        etBalance = findViewById(R.id.etBalance);
+        etNote = findViewById(R.id.etNote);
+        btnDelete = findViewById(R.id.btnDelete);
+        currencyItems = Arrays.asList("CNY");
+        chineseAccountTypeItems = Arrays.asList("现金账户","银行账户","网络账户","其他账户");
+        accountTypeItems = Arrays.asList(Constants.CASH_ACCOUNT,Constants.BANK_ACCOUNT,Constants.NET_ACCOUNT,Constants.OTHER_ACCOUNT);
+    }
+
+    private Account createNewAccount(){
+        return new Account(UUID.randomUUID().toString(), accountType,
+                etAccountName.getText().toString(), new BigDecimal(etBalance.getText().toString()),
+                currency,R.drawable.icon_dollar,
+                etNote.getText().toString());
+    }
+
+    private void addNewAccountToDB(Account account){
+        LogoActivity.accountDao.insert(account);
+    }
+
+    private void init(){
+        if(uuid==null){
+            chineseAccountType = chineseAccountTypeItems.get(0);
+            accountType = accountTypeItems.get(0);
+            currency = currencyItems.get(0);
+            etBalance.setText("0.00");
+            btnCurrency.setText(currencyItems.get(0));
+            btnAccountType.setText(chineseAccountTypeItems.get(0));
+            btnDelete.setVisibility(View.GONE);
+        }else{
+            chineseAccountType = chineseAccountTypeItems.get(accountTypeItems.indexOf(account.getType()));
+            accountType = account.getType();
+            currency = account.getCurrency();
+            etAccountName.setText(account.getSelfname());
+            etBalance.setText(account.getBalance().toPlainString());
+            btnCurrency.setText(currencyItems.get(0));
+            btnAccountType.setText(chineseAccountType);
+            etNote.setText(account.getNote());
+        }
+        setLinstener();
+    }
+
+    private void setLinstener(){
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,8 +103,16 @@ public class CreateNewAccountActivity extends AppCompatActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewAccountToDB(createNewAccount());
-                finish();
+                if(LogoActivity.accountDao.querybyskey("selfname",etAccountName.getText().toString()).size()>0){
+                    ToastUtil.showShortToast(CreateNewAccountActivity.this,"已经有同名的账户了呢");
+                }else{
+                    if(uuid==null){
+                        addNewAccountToDB(createNewAccount());
+                    }else{
+                        updateAccountInDB(createNewAccount());
+                    }
+                    finish();
+                }
             }
         });
         btnAccountType.setOnClickListener(new View.OnClickListener() {
@@ -82,30 +146,20 @@ public class CreateNewAccountActivity extends AppCompatActivity {
                 pvOptions2.show();
             }
         });
+        btnDelete.setOnClickListener((v -> {
+            ToastUtil.showShortToast(this,"assume it was been deleted");
+        }));
     }
 
-    private void getComponents(){
-        btnBack = findViewById(R.id.btnBack);
-        btnConfirm = findViewById(R.id.btnConfirm);
-        btnCurrency = findViewById(R.id.btnAccountType);
-        btnAccountType = findViewById(R.id.btnCurrency);
-        etAccountName = findViewById(R.id.etAccountName);
-        etBalance = findViewById(R.id.etBalance);
-        etNote = findViewById(R.id.etNote);
-        currencyItems = Arrays.asList("CNY");
-        chineseAccountTypeItems = Arrays.asList("现金账户","银行账户","网络账户","其他账户");
-        accountTypeItems = Arrays.asList(Constants.CASH_ACCOUNT,Constants.BANK_ACCOUNT,Constants.NET_ACCOUNT,Constants.OTHER_ACCOUNT);
+    public static Intent startThisActivity(Context context, String uuid){
+        Bundle bundle = new Bundle();
+        bundle.putString("uuid",uuid);
+        Intent intent = new Intent(context, CreateNewAccountActivity.class);
+        intent.putExtras(bundle);
+        return intent;
     }
 
-    // TODO 构造account(待测
-    private Account createNewAccount(){
-        return new Account(UUID.randomUUID().toString(), accountType,
-                etAccountName.getText().toString(), new BigDecimal(etBalance.getText().toString()),
-                currency,R.drawable.icon_dollar,
-                etNote.getText().toString());
-    }
-
-    private void addNewAccountToDB(Account account){
-        LogoActivity.accountDao.insert(account);
+    private void updateAccountInDB(Account account){
+        LogoActivity.accountDao.update(account);
     }
 }

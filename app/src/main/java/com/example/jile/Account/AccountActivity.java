@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -97,7 +98,7 @@ public class AccountActivity extends AppCompatActivity {
             }
             lel.add(new LineElement(s[i],bigDecimals[i],list));
         }
-        SwipeRecyclerView ll_3 = findViewById(R.id.ll_3);
+        RecyclerView ll_3 = findViewById(R.id.ll_3);
         WidgetUtils.initRecyclerView(ll_3);
         ll_3.setAdapter(new AccountTitleAdapter(lel,R.layout.adapter_ako_account));
 
@@ -188,6 +189,8 @@ public class AccountActivity extends AppCompatActivity {
             btnModify.setOnClickListener((v -> {
                 startActivity(CreateNewAccountActivity.startThisActivity(this,account.getUuid()));
             }));
+            LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,150);
+            view.setLayoutParams(params);
         }
         return view;
     }

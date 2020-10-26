@@ -14,6 +14,9 @@ public class FirstClass {
         this.name = name;
     }
 
+    public FirstClass(String string, String string1, String string2, int anInt) {
+    }
+
     public String getUuid() {
         return uuid;
     }
