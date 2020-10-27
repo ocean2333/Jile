@@ -54,6 +54,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.example.jile.Constant.Constants.COST;
+import static com.example.jile.Constant.Constants.GRAPH_COLOR;
 import static com.example.jile.Constant.Constants.INCOME;
 import static com.example.jile.Constant.Constants.SEARCH_TYPE_ACCOUNT;
 import static com.example.jile.Constant.Constants.SEARCH_TYPE_FIRST_CLASS;
@@ -62,7 +63,8 @@ import static com.example.jile.Constant.Constants.SEARCH_TYPE_SECOND_CLASS_IN_FI
 
 public class GraphActivity extends AppCompatActivity implements OnChartValueSelectedListener {
 
-    private EasyIndicator mGraph;
+
+    public static Float sumBill;
     private View view1,view2;
     private List<View> viewList;//view数组
     private PieChart mPieChart;
@@ -125,7 +127,8 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
         barListAdapter = new BarListAdapter(recyclerView,mGraphData,this);
         WidgetUtils.initRecyclerView(recyclerView);
         recyclerView.setAdapter(barListAdapter);
-        textView.setText("总计\n  "+getTotal(mGraphData));
+        sumBill=getTotal(mGraphData);
+        textView.setText("总计\n  "+sumBill);
     }
 
     private void initViewPager(){
@@ -290,7 +293,7 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
         }
     }
 
-    public  void update() {
+    public void update() {
         try {
             mGraphData=StatisticsMiddle.getpiebill(searchType,billtype,firstClass,startDate,endDate,this);
         } catch (ParseException e) {
@@ -298,33 +301,34 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
         }
         if(!mGraphData.isEmpty()){
             if(Float.compare(getTotal(mGraphData),0.0f)!=0){
-                mPieChart.setCenterText(new SpannableString("总计\n"+getTotal(mGraphData).toString()));
-                initPieChart();
+                sumBill=getTotal(mGraphData);
                 barListAdapter.refresh(mGraphData);
+                mPieChart.setCenterText(new SpannableString("总计\n"+sumBill.toString()));
+                initPieChart();
+                textView.setText("总计\n  "+sumBill);
             }
             else
                 ToastUtil.showShortToast(this,"总计为0");
         }
         else{
-            ToastUtil.showShortToast(this,"无符合目标数据");
+            mPieChart.setData(null);
+            barListAdapter.refresh(mGraphData);
+            textView.setText("无符合数据");
+            mPieChart.invalidate();
         }
 
     }
 
     private void initPieChart(){
-        mPieChart.setCenterText(new SpannableString("总计\n"+getTotal(mGraphData).toString()));
+        sumBill=getTotal(mGraphData);
+        mPieChart.setCenterText(new SpannableString("总计\n"+sumBill.toString()));
         PieDataSet dataSet = new PieDataSet(mGraphData,"");
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-        for (int i=0;i<=mGraphData.size();i++){
+        ArrayList<Integer> colors = GRAPH_COLOR;
+        while (colors.size()<mGraphData.size()){
             int newColor=ColorUtils.getRandomColor();
-            while(!ColorUtils.isColorDark(newColor)){
-                colors.add(newColor);
-                newColor=ColorUtils.getRandomColor();
-            }
+            colors.add(newColor);
         }
-        if(colors.size()!=0){
-            dataSet.setColors(colors);
-        }
+        dataSet.setColors(colors);
         PieData pieData = new PieData(dataSet);
         pieData.setDrawValues(true);
         pieData.setValueFormatter(new PercentFormatter(mPieChart));
@@ -358,6 +362,9 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
         mPieChart.getDescription().setEnabled(false);
         mPieChart.setExtraOffsets(5, 10, 5, 5);
 
+        //设置无数据显示
+        mPieChart.setNoDataText("无符合数据");
+        mPieChart.setNoDataTextColor(Color.BLACK);
         //设置拖拽的阻尼，0为立即停止
         mPieChart.setDragDecelerationFrictionCoef(0.95f);
 

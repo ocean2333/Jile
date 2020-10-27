@@ -10,7 +10,7 @@
         android:layout_height="180dp"
         android:paddingTop="68dp"
         android:textSize="40sp"
-        android:text="TextView" />
+        android:text="无有效数据" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bar_recycler_view"

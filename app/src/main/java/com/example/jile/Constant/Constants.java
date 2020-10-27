@@ -1,7 +1,9 @@
 package com.example.jile.Constant;
 
+import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 
+import java.util.ArrayList;
 import java.util.logging.SimpleFormatter;
 
 public class Constants {
@@ -33,4 +35,25 @@ public class Constants {
     public static final String SEARCH_TYPE_MEM = "M";
     public static final String SEARCH_TYPE_STORE = "S";
     public static final String SEARCH_TYPE_SECOND_CLASS_IN_FIRST_CLASS = "FCISC";
+    public static final ArrayList<Integer> GRAPH_COLOR = new ArrayList<Integer>(){
+        {
+            this.add(Color.parseColor("#f38181"));
+            this.add(Color.parseColor("#fce38a"));
+            this.add(Color.parseColor("#eaffd0"));
+            this.add(Color.parseColor("#95e1d3"));
+            this.add(Color.parseColor("#a8d8ea"));
+            this.add(Color.parseColor("#f38181"));
+            this.add(Color.parseColor("#aa96da"));
+            this.add(Color.parseColor("#fcbad3"));
+            this.add(Color.parseColor("#ffffd2"));
+            this.add(Color.parseColor("#ffb6b9"));
+            this.add(Color.parseColor("#fae3d9"));
+            this.add(Color.parseColor("#bbded6"));
+            this.add(Color.parseColor("#61c0bf"));
+            this.add(Color.parseColor("#a1eafb"));
+            this.add(Color.parseColor("#fdfdfd"));
+            this.add(Color.parseColor("#ffcef3"));
+            this.add(Color.parseColor("#cabbe9"));
+        }
+    };
 }
