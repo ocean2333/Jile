@@ -79,12 +79,6 @@ public class DeatilActivity extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        tvBalance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(DeatilActivity.this,"its a test",Toast.LENGTH_SHORT).show();
-            }
-        });
         btnBack.setOnClickListener((l)->finish());
     }
 
@@ -238,6 +232,7 @@ public class DeatilActivity extends AppCompatActivity {
                 case Constants.SEARCH_TYPE_FIRST_CLASS:
                     searchType = new FirstClass();
                     break;
+                case Constants.SEARCH_TYPE_SECOND_CLASS_IN_FIRST_CLASS:
                 case Constants.SEARCH_TYPE_SECOND_CLASS:
                     searchType = new SecondClass();
                     break;
