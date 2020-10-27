@@ -21,6 +21,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Math.abs;
+
 public class StatisticsMiddle {
     /**
      * 搜索时间区间内符合搜索要求的Bill并根据分类返回一个List
@@ -118,7 +120,7 @@ public class StatisticsMiddle {
                     }
                     String tis = bs.get(0).getDate();
                     String tism = new String(tis.substring(2,7));
-                    PieEntry pe = new PieEntry((float) itd,tism);
+                    PieEntry pe = new PieEntry((float) abs(itd),tism);
                     retu.add(pe);
                 }
                 Collections.sort(retu, new Comparator<PieEntry>() {
@@ -181,7 +183,7 @@ public class StatisticsMiddle {
                         itd=itd+bs2.getNum().doubleValue();
                     }
                     String tism = bs.get(0).getFirst();
-                    PieEntry pe = new PieEntry((float) itd,tism);
+                    PieEntry pe = new PieEntry((float) abs(itd),tism);
                     retu.add(pe);
                 }
                 Collections.sort(retu, new Comparator<PieEntry>() {
@@ -245,7 +247,7 @@ public class StatisticsMiddle {
                         itd=itd+bs2.getNum().doubleValue();
                     }
                     String tism = bs.get(0).getSecond();
-                    PieEntry pe = new PieEntry((float) itd,tism);
+                    PieEntry pe = new PieEntry((float) abs(itd),tism);
                     retu.add(pe);
                 }
                 Collections.sort(retu, new Comparator<PieEntry>() {
@@ -298,7 +300,7 @@ public class StatisticsMiddle {
 
                 Map<String,Integer> mp = new HashMap<>();
                 int index =0;
-                Iterator<Bill> reit = afterDeal.iterator();
+                Iterator<Bill> reit = aftertDeal.iterator();
 
                 while(reit.hasNext()){
                     Bill bill = (Bill)reit.next();
@@ -347,7 +349,7 @@ public class StatisticsMiddle {
                         itd=itd+bs2.getNum().doubleValue();
                     }
                     String tism = bs.get(0).getSecond();
-                    PieEntry pe = new PieEntry((float) itd,tism);
+                    PieEntry pe = new PieEntry((float) abs(itd),tism);
                     retu.add(pe);
                 }
                 Collections.sort(retu, new Comparator<PieEntry>() {
@@ -410,7 +412,7 @@ public class StatisticsMiddle {
                         itd=itd+bs2.getNum().doubleValue();
                     }
                     String tism = bs.get(0).getAccountname();
-                    PieEntry pe = new PieEntry((float) itd,tism);
+                    PieEntry pe = new PieEntry((float) abs(itd),tism);
                     retu.add(pe);
                 }
                 Collections.sort(retu, new Comparator<PieEntry>() {

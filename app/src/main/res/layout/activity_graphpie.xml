@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/newGray"
+
     >
 
     <androidx.viewpager.widget.ViewPager
@@ -32,10 +32,20 @@
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:windowBackground"
+        android:background="@color/theme_yellow"
         android:gravity="center"
         android:padding="16dp"
-        android:text="@string/GraphByKind" />
+        android:text="@string/GraphByKind"
+        />
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentLeft="true"
+        android:background="@color/xui_transparent"
+        android:src="@drawable/ic_arrow_left" />
+
 
     <com.xuexiang.xui.widget.layout.ExpandableLayout
         android:layout_below="@id/expand_button"
@@ -52,7 +62,7 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginVertical="5dp">
+                android:layout_marginVertical="2dp">
 
                 <TextView
                     android:id="@+id/textCostGraph"
@@ -74,15 +84,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="32dp"
                         android:layout_weight="1"
-                        android:background="@color/newGray"
-                        app:srcCompat="@drawable/ic_pie_graph" />
+                        android:background="@color/white"
+                        app:srcCompat="@drawable/icon_cny" />
 
                     <Button
                         android:id="@+id/btnCostGraphByKind"
                         android:layout_width="match_parent"
                         android:layout_height="21dp"
                         android:layout_weight="1"
-                        android:background="@color/newGray"
+                        android:background="@color/white"
+                        android:paddingBottom="2dp"
+                        android:textSize="13sp"
                         android:text="@string/CostGraphByKind" />
 
                 </LinearLayout>
@@ -97,14 +109,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="32dp"
                         android:layout_weight="1"
-                        android:background="@color/newGray"
-                        app:srcCompat="@drawable/ic_pie_graph" />
+                        android:background="@color/white"
+                        app:srcCompat="@drawable/icon_cny" />
                     <Button
                         android:id="@+id/btnCostGraphByAccount"
                         android:layout_width="match_parent"
                         android:layout_height="21dp"
                         android:layout_weight="1"
-                        android:background="@color/newGray"
+                        android:background="@color/white"
+                        android:textSize="13sp"
+                        android:paddingBottom="2dp"
                         android:text="@string/CostGraphByAccount" />
 
                 </LinearLayout>
@@ -119,14 +133,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="32dp"
                         android:layout_weight="1"
-                        android:background="@color/newGray"
-                        app:srcCompat="@drawable/ic_pie_graph" />
+                        android:background="@color/white"
+                        app:srcCompat="@drawable/icon_cny" />
                     <Button
                         android:id="@+id/btnMonthCost"
                         android:layout_width="match_parent"
                         android:layout_height="21dp"
                         android:layout_weight="1"
-                        android:background="@color/newGray"
+                        android:background="@color/white"
+                        android:textSize="13sp"
+                        android:paddingBottom="2dp"
                         android:text="@string/MonthCost" />
                 </LinearLayout>
 
@@ -155,14 +171,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="32dp"
                         android:layout_weight="1"
-                        android:background="@color/newGray"
-                        app:srcCompat="@drawable/ic_pie_graph" />
+                        android:background="@color/white"
+                        app:srcCompat="@drawable/icon_cny" />
                     <Button
                         android:id="@+id/btnIncomeGraphByKind"
                         android:layout_width="match_parent"
                         android:layout_height="21dp"
                         android:layout_weight="1"
-                        android:background="@color/newGray"
+                        android:background="@color/white"
+                        android:textSize="13sp"
+                        android:paddingBottom="2dp"
                         android:text="@string/IncomeGraphByKind" />
                 </LinearLayout>
                 <LinearLayout
@@ -175,14 +193,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="32dp"
                         android:layout_weight="1"
-                        android:background="@color/newGray"
-                        app:srcCompat="@drawable/ic_pie_graph" />
+                        android:background="@color/white"
+                        app:srcCompat="@drawable/icon_cny" />
                     <Button
                         android:id="@+id/btnIncomeGraphByAccount"
                         android:layout_width="match_parent"
                         android:layout_height="21dp"
+                        android:textSize="13sp"
                         android:layout_weight="1"
-                        android:background="@color/newGray"
+                        android:background="@color/white"
+                        android:paddingBottom="2dp"
                         android:text="@string/IncomeGraphByAccount" />
                 </LinearLayout>
                 <LinearLayout
@@ -195,14 +215,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="32dp"
                         android:layout_weight="1"
-                        android:background="@color/newGray"
-                        app:srcCompat="@drawable/ic_pie_graph" />
+                        android:background="@color/white"
+                        app:srcCompat="@drawable/icon_cny" />
                     <Button
                         android:id="@+id/btnMonthIncome"
                         android:layout_width="match_parent"
+                        android:textSize="13sp"
                         android:layout_height="21dp"
                         android:layout_weight="1"
-                        android:background="@color/newGray"
+                        android:background="@color/white"
+                        android:paddingBottom="2dp"
                         android:text="@string/MonthIncome" />
                 </LinearLayout>
 
@@ -217,7 +239,7 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@drawable/top_and_bottom_edge">
+        android:background="@color/theme_yellow">
         <Button
             android:layout_height="40dp"
             android:layout_width="wrap_content"
@@ -253,12 +275,6 @@
             app:indicator_textSize="14sp"
             app:indicator_width="0dp" />
     </RelativeLayout>
-
-    <Button
-        android:id="@+id/btnBack"
-        android:layout_width="57dp"
-        android:layout_height="wrap_content" />
-
 
 </RelativeLayout>
 
