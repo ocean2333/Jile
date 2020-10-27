@@ -1,8 +1,10 @@
 package com.example.jile.MainView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.jile.Bean.Bill;
 import com.example.jile.Constant.Constants;
@@ -19,6 +21,7 @@ import java.util.Collection;
 import static com.xuexiang.xui.XUI.getContext;
 
 public class BillRecyclerAdapter extends SmartRecyclerAdapter<Bill> {
+    Context mContext;
     public BillRecyclerAdapter(int layoutId) {
         super(layoutId);
     }
@@ -27,8 +30,9 @@ public class BillRecyclerAdapter extends SmartRecyclerAdapter<Bill> {
         super(collection, layoutId);
     }
 
-    public BillRecyclerAdapter(Collection<Bill> collection, int layoutId, SmartViewHolder.OnItemClickListener listener) {
+    public BillRecyclerAdapter(Collection<Bill> collection, int layoutId, SmartViewHolder.OnItemClickListener listener, Context context) {
         super(collection, layoutId, listener);
+        mContext = context;
     }
 
     @Override
@@ -48,14 +52,13 @@ public class BillRecyclerAdapter extends SmartRecyclerAdapter<Bill> {
         holder.text(R.id.tvMoney, model.getNum().toPlainString());
         holder.text(R.id.tvAccount,model.getAccountname());
         holder.text(R.id.tvUuid,model.getUuid());
-        /*Button btnModify =  holder.findViewById(R.id.btnModify);
+        ImageButton btnModify =  holder.findViewById(R.id.btnModify);
         btnModify.setOnClickListener((l)->{
             Bundle bundle = new Bundle();
             bundle.putString("uuid",model.getUuid());
             Intent intent = new Intent(getContext(), NewBIllActivity.class);
             intent.putExtras(bundle);
-
-            mainActivity.startActivity(intent);
-        });*/
+            mContext.startActivity(intent);
+        });
     }
 }

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="50dp" android:id="@+id/ll">
+    android:layout_height="50dp" android:id="@+id/ll"
+    android:background="@color/white">
     <ImageView
         android:id="@+id/imIcon"
         android:layout_width="50dp"
@@ -25,8 +26,12 @@
     <ImageButton
         android:background="@color/xui_transparent"
         android:src="@drawable/ic_arrow_right"
-        android:id="@+id/btnToDetail"
+        android:id="@+id/btnModify"
         android:layout_width="50dp"
         android:layout_height="match_parent"/>
+    <TextView
+        android:id="@+id/uuid"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
 
 </LinearLayout>

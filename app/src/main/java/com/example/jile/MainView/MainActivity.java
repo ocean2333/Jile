@@ -23,6 +23,7 @@ import com.example.jile.Constant.Constants;
 import com.example.jile.Database.Dao.AccountDao;
 import com.example.jile.Database.Dao.BillDao;
 import com.example.jile.Database.Dao.FirstClassDao;
+import com.example.jile.Database.Dao.IconDao;
 import com.example.jile.Database.Dao.MemDao;
 import com.example.jile.Database.Dao.SecondClassDao;
 import com.example.jile.Database.Dao.StoreDao;
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
      * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        XUI.initTheme(this);
+        //XUI.initTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String user = LogoActivity.sp.getString("loginUser",null);
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
             LogoActivity.firstClassDao = new FirstClassDao(this,user);
             LogoActivity.storeDao = new StoreDao(this,user);
             LogoActivity.secondClassDao = new SecondClassDao(this,user);
+            LogoActivity.iconDao = new IconDao(this,user);
         }else{
             Toast.makeText(this,"error in getLoginUser",Toast.LENGTH_SHORT).show();
         }
@@ -92,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         try {
             updateView();
+            autoRefresh();
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -167,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     break;
                 case R.id.btnSetting:
-                    LogoActivity.sp.edit().putString("loginUser",null).apply();
+                    //LogoActivity.sp.edit().putString("loginUser",null).apply();
                     intent = new Intent(MainActivity.this, SettingActivity.class);
                     startActivity(intent);
                     break;
@@ -229,7 +232,6 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    // TODO
     private static Bill[] getbillbytime(Bill[] bill,Date startDate,Date endDate) throws ParseException {
         Bill[] tempBill=new Bill[bill.length];
         List<Bill> lb = new ArrayList<>();
@@ -448,8 +450,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter = new BillRecyclerAdapter(getFiveMostRecentBillEachTime(mIndex),R.layout.adapter_bill,(v,p)->{
             Bundle bundle = new Bundle();
             TextView tvUuid = v.findViewById(R.id.tvUuid);
-            startActivity(NewBIllActivity.startThisActivity(this,tvUuid.getText().toString()));
-        }));
+            //startActivity(NewBIllActivity.startThisActivity(this,tvUuid.getText().toString()));
+        },this));
         swipeRefreshLayout.setColorSchemeColors(0xff0099cc, 0xffff4444, 0xff669900, 0xffaa66cc, 0xffff8800);
         swipeRefreshLayout.setOnRefreshListener(mRefreshListener);
         autoRefresh();

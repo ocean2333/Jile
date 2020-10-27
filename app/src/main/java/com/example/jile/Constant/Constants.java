@@ -21,6 +21,7 @@ public class Constants {
     public static final String COST = "cost";
     public static final String INCOME = "income";
     public static final String TRANSFER = "transfer";
+    public static final String ACCOUNT = "account";
 
     public static final String SEARCH_TYPE_DAY = "日";
     public static final String SEARCH_TYPE_WEEK = "周";

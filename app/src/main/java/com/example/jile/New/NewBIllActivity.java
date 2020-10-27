@@ -2,9 +2,12 @@ package com.example.jile.New;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -47,7 +50,7 @@ import java.util.UUID;
 
 public class NewBIllActivity extends AppCompatActivity {
     private Button btnFirstClass,btnSecondClass,btnSetDate,btnSelectAccount,btnSelectMember,btnSetStore;
-    private ImageButton btnBack,btnSave;
+    private ImageButton btnBack,btnSave,btnDelete;
     private List<String> firstClassItems,accountItems,memberItems,storeItems;
     private List<List<String>> secondClassItems;
     private String type= Constants.COST;
@@ -86,6 +89,7 @@ public class NewBIllActivity extends AppCompatActivity {
         btnSetStore = findViewById(R.id.btnSetStore);
         etMoneyNumber = findViewById(R.id.etMoneyNumber);
         etNote = findViewById(R.id.etNote);
+        btnDelete = findViewById(R.id.btnDelete);
     }
 
     //点击编辑框以外的地方关闭输入法
@@ -158,10 +162,17 @@ public class NewBIllActivity extends AppCompatActivity {
                     finish();
                     break;
                 case R.id.btnSave:
+                    BigDecimal num = new BigDecimal(etMoneyNumber.getText().toString());
                     if(btnFirstClass.getText().toString().equals(btnSecondClass.getText().toString())){
                         Toast.makeText(NewBIllActivity.this,"转入账户和转出账户不能相同！",Toast.LENGTH_SHORT).show();
                     }else if(etMoneyNumber.getText().toString().equals("")){
                          ToastUtil.showShortToast(NewBIllActivity.this,"金额不能为空");
+                    }else if(!num.abs().equals(num) && type.equals(Constants.INCOME)){
+                         ToastUtil.showShortToast(NewBIllActivity.this,"收入不能为负数");
+                    }else if(num.abs().equals(num) && type.equals(Constants.COST)){
+                        ToastUtil.showShortToast(NewBIllActivity.this,"支出不能为正数");
+                    }else if(!num.abs().equals(num) && type.equals(Constants.TRANSFER)){
+                        ToastUtil.showShortToast(NewBIllActivity.this,"转账不能为负数");
                     }else{
                         if(uuid==null){
                             try {addNewBillToDB(createNewBill());}catch(ParseException e){e.printStackTrace();}
@@ -218,6 +229,11 @@ public class NewBIllActivity extends AppCompatActivity {
                     pvOptions4.setPicker(storeItems);
                     pvOptions4.show();
                     break;
+                case R.id.btnDelete:
+                    Bill bill = LogoActivity.billDao.querybyskey("uuid", uuid).get(0);
+                    deleteBillInDB(bill);
+                    finish();
+                    break;
             }
         }
     }
@@ -231,8 +247,9 @@ public class NewBIllActivity extends AppCompatActivity {
         btnSelectMember.setOnClickListener(onClick);
         btnSelectAccount.setOnClickListener(onClick);
         btnSetStore.setOnClickListener(onClick);
+        btnDelete.setOnClickListener(onClick);
     }
-    // TODO 获得各级分类数据(待测
+
     private void getItems(){
         firstClassItems = new LinkedList<>();
         for(FirstClass f:LogoActivity.firstClassDao.query()){
@@ -304,6 +321,26 @@ public class NewBIllActivity extends AppCompatActivity {
     }
 
     /**
+     * 向数据库删除账单，同时更新Account的bablnce
+     * */
+    private void deleteBillInDB(Bill bill){
+        LogoActivity.billDao.delete(bill);
+        if(bill.getType().equals(Constants.INCOME)||bill.getType().equals(Constants.COST)){
+            List<Account> tempaccount =LogoActivity.accountDao.querybyskey("selfname",bill.getAccountname());
+            tempaccount.get(0).setBalance(tempaccount.get(0).getBalance().subtract(bill.getNum()));
+            LogoActivity.accountDao.update(tempaccount.get(0));
+        }
+        else if(bill.getType().equals(Constants.TRANSFER)){
+            List<Account> outaccount =LogoActivity.accountDao.querybyskey("selfname",bill.getFirst());
+            outaccount.get(0).setBalance(outaccount.get(0).getBalance().add(bill.getNum()));
+            LogoActivity.accountDao.update(outaccount.get(0));
+            List<Account> inaccount =LogoActivity.accountDao.querybyskey("selfname",bill.getSecond());
+            inaccount.get(0).setBalance(inaccount.get(0).getBalance().subtract(bill.getNum()));
+            LogoActivity.accountDao.update(inaccount.get(0));
+        }
+    }
+
+    /**
      * 在sharePreference中存储和获得最近去的店
      * */
     private String getMostRecentStore(){
@@ -328,13 +365,13 @@ public class NewBIllActivity extends AppCompatActivity {
                         btnSelectAccount.getText().toString(),btnFirstClass.getText().toString(),btnSecondClass.getText().toString(),
                         btnSelectMember.getText().toString(),btnSetStore.getText().toString(),
                         Constants.DATE_FORMAT_SIMPLE.format(Constants.DATE_FORMAT_COMPLEX.parse(btnSetDate.getText().toString())),
-                        R.drawable.icon_dollar,etNote.getText().toString());
+                        LogoActivity.iconDao.querybyskey("name",btnFirstClass.getText().toString()).get(0).getIconId(),etNote.getText().toString());
             }else{
                 return new Bill(uuid,type,new BigDecimal(etMoneyNumber.getText().toString()),
                         "",btnFirstClass.getText().toString(),btnSecondClass.getText().toString(),
                         btnSelectMember.getText().toString(),btnSetStore.getText().toString(),
                         Constants.DATE_FORMAT_SIMPLE.format(Constants.DATE_FORMAT_COMPLEX.parse(btnSetDate.getText().toString())),
-                        R.drawable.icon_transfer,etNote.getText().toString());
+                        R.drawable.ic_transfer,etNote.getText().toString());
             }
         }else{
             if(!type.equals(Constants.TRANSFER)){
@@ -342,13 +379,13 @@ public class NewBIllActivity extends AppCompatActivity {
                         btnSelectAccount.getText().toString(),btnFirstClass.getText().toString(),btnSecondClass.getText().toString(),
                         btnSelectMember.getText().toString(),btnSetStore.getText().toString(),
                         Constants.DATE_FORMAT_SIMPLE.format(Constants.DATE_FORMAT_COMPLEX.parse(btnSetDate.getText().toString())),
-                        R.drawable.icon_dollar,etNote.getText().toString());
+                        LogoActivity.iconDao.querybyskey("name",btnFirstClass.getText().toString()).get(0).getIconId(),etNote.getText().toString());
             }else{
                 return new Bill(UUID.randomUUID().toString(),type,new BigDecimal(etMoneyNumber.getText().toString()),
                         "",btnFirstClass.getText().toString(),btnSecondClass.getText().toString(),
                         btnSelectMember.getText().toString(),btnSetStore.getText().toString(),
                         Constants.DATE_FORMAT_SIMPLE.format(Constants.DATE_FORMAT_COMPLEX.parse(btnSetDate.getText().toString())),
-                        R.drawable.icon_transfer,etNote.getText().toString());
+                        R.drawable.ic_transfer,etNote.getText().toString());
             }
         }
 
@@ -453,6 +490,7 @@ public class NewBIllActivity extends AppCompatActivity {
     /**
      * 初始化activity，根据是否有bundle决定页面是否有初始值以及点击btnSave的动作
      * */
+    @SuppressLint("ResourceAsColor")
     private void init() throws ParseException {
         if(uuid!=null){
             bill = LogoActivity.billDao.querybyskey("uuid",uuid).get(0);
@@ -471,6 +509,7 @@ public class NewBIllActivity extends AppCompatActivity {
             btnSelectMember.setText(memberItems.get(0));
             btnSetStore.setText(getMostRecentStore());
             btnSetDate.setText(Constants.DATE_FORMAT_COMPLEX.format(new Date(System.currentTimeMillis())));
+            btnDelete.setVisibility(View.GONE);
         }else{
             if(type.equals(Constants.TRANSFER)){ getAccounts();}
             oldMoneyNum = bill.getNum();

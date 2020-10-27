@@ -6,13 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".Account.AccountActivity"
     android:orientation="vertical"
-    android:padding="1dp">
+    android:padding="1dp"
+    android:id="@+id/t"
+    android:background="@color/gray">
     <LinearLayout
         android:id="@+id/ll_1"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:background="@drawable/top_and_bottom_edge">
+        android:background="@color/theme_yellow">
         <ImageButton
             android:src="@drawable/ic_arrow_left"
             android:id="@+id/btnBack"
@@ -23,8 +25,9 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.7"
+            android:layout_weight="1"
             android:background="@color/theme_yellow"/>
+=
         <ImageButton
             android:id="@+id/btnCreateNewAccount"
             android:layout_width="0dp"
@@ -36,8 +39,7 @@
     <LinearLayout
         android:id="@+id/ll_2"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.3"
+        android:layout_height="200dp"
         android:paddingLeft="20dp"
         android:background="@drawable/top_and_bottom_edge"
         android:orientation="vertical">
@@ -68,151 +70,13 @@
             android:gravity="center_vertical"
             android:textSize="15sp"/>
     </LinearLayout>
-    <!--TODO 添加listview适配-->
-    <ScrollView
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ll_3"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_below="@id/ll_2"
-        android:layout_weight="0.75"
-        android:background="@drawable/top_and_bottom_edge"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-        <LinearLayout
-            android:id="@+id/llCashTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/top_and_bottom_edge"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
-                    android:paddingVertical="5dp"
-                    android:text="现金账户" />
-
-                <TextView
-                    android:id="@+id/tvCashNum"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    android:paddingVertical="5dp"
-                    android:text="资产" />
-            </LinearLayout>
-            <ListView
-                android:id="@+id/lvCash"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llWealthTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/top_and_bottom_edge"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
-                    android:paddingVertical="5dp"
-                    android:text="银行账户" />
-
-                <TextView
-                    android:id="@+id/tvBankNum"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    android:paddingVertical="5dp"
-                    android:text="资产" />
-            </LinearLayout>
-            <ListView
-                android:id="@+id/lvBank"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llNetTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/top_and_bottom_edge"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.2"
-                    android:paddingVertical="5dp"
-                    android:text="网络账户" />
-
-                <TextView
-                    android:id="@+id/tvNetNum"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    android:paddingVertical="5dp"
-                    android:text="资产" />
-            </LinearLayout>
-            <ListView
-                android:id="@+id/lvNet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llOtherTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/top_and_bottom_edge"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
-                    android:paddingVertical="5dp"
-                    android:text="其他账户" />
-
-                <TextView
-                    android:id="@+id/tvOtherNum"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
-                    android:paddingVertical="5dp"
-                    android:text="资产" />
-            </LinearLayout>
-            <ListView
-                android:id="@+id/lvOther"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:overScrollMode="never"
+        android:background="@color/gray"/>
 
 </LinearLayout>

@@ -12,30 +12,35 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.example.jile.Bean.Account;
+import com.example.jile.Bean.Bill;
 import com.example.jile.R;
 import com.example.jile.Util.TextUtil;
+import com.scwang.smartrefresh.layout.adapter.SmartRecyclerAdapter;
+import com.scwang.smartrefresh.layout.adapter.SmartViewHolder;
 
+import java.util.Collection;
 import java.util.List;
 
-public class AccountAdapter extends ArrayAdapter<Account> {
+public class AccountAdapter extends SmartRecyclerAdapter<Account> {
     private int resourceId;
-    public AccountAdapter(@NonNull Context context, int resource, @NonNull List<Account> objects) {
-        super(context, resource, objects);
-        resourceId = resource;
+
+    public AccountAdapter(int layoutId) {
+        super(layoutId);
     }
 
-    @SuppressLint("SetTextI18n")
+    public AccountAdapter(Collection<Account> collection, int layoutId) {
+        super(collection, layoutId);
+    }
+
+    public AccountAdapter(Collection<Account> collection, int layoutId, SmartViewHolder.OnItemClickListener listener) {
+        super(collection, layoutId, listener);
+    }
+
     @Override
-    public View getView(int position,View convertView,ViewGroup parent){
-        Account account = getItem(position);
-        View view = LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
-        ImageView im = view.findViewById(R.id.imIcon);
-        TextView tv1 = view.findViewById(R.id.tvName);
-        TextView tv2 = view.findViewById(R.id.tvMoney);
-        im.setImageResource(account.getIconId());
-        tv1.setText(account.getSelfname());
-        tv2.setText(TextUtil.simplifyMoney(account.getBalance().toPlainString()));
-        return view;
+    protected void onBindViewHolder(SmartViewHolder holder, Account model, int position) {
+        holder.image(R.id.imIcon,model.getIconId());
+        holder.text(R.id.tvName,model.getSelfname());
+        holder.text(R.id.tvMoney,TextUtil.simplifyMoney(model.getBalance().toPlainString()));
+        holder.text(R.id.uuid,model.getUuid());
     }
-
 }

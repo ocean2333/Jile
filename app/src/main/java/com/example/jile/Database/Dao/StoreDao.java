@@ -63,7 +63,7 @@ public class StoreDao
     }
     public List<Store> querybyskey(String keyname,String value){
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String sql = "select * from "+mUsername+"_Mem  where "+keyname+" = "+"'"+value+"'";
+        String sql = "select * from "+mUsername+"_Store  where "+keyname+" = "+"'"+value+"'";
         Cursor cursor = db.rawQuery(sql,null);
         List<Store> re = new LinkedList<Store>();
         /**

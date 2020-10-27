@@ -7,6 +7,7 @@
     tools:context=".New.NewBIllActivity"
     android:orientation="vertical">
     <LinearLayout
+        android:id="@+id/top_ll"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/theme_yellow">
@@ -19,6 +20,12 @@
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:layout_height="match_parent"/>
+        <ImageButton
+            android:background="@color/xui_transparent"
+            android:src="@drawable/ic_delete"
+            android:id="@+id/btnDelete"
+            android:layout_width="50dp"
             android:layout_height="match_parent"/>
         <ImageButton
             android:background="@color/xui_transparent"
@@ -69,6 +76,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.30"
                 android:text="分类"
+                android:drawableLeft="@drawable/ic_class"
                 android:gravity="center"
                 android:textSize="20sp"/>
             <LinearLayout
@@ -78,16 +86,18 @@
                 android:layout_height="match_parent">
                 <Button
                     android:id="@+id/btnFirstClass"
+                    android:background="@color/xui_transparent"
                     android:layout_width="0dp"
                     android:layout_weight="0.4"
                     android:layout_height="match_parent"/>
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_weight="0"
-                    android:src="@drawable/icon_rightarrow"
+                    android:src="@drawable/ic_arrow_right"
                     android:layout_height="match_parent"/>
                 <Button
                     android:id="@+id/btnSecondClass"
+                    android:background="@color/xui_transparent"
                     android:layout_width="0dp"
                     android:layout_weight="0.4"
                     android:layout_height="match_parent"/>
@@ -102,11 +112,13 @@
                 android:layout_width="0dp"
                 android:layout_weight="0.30"
                 android:layout_height="match_parent"
+                android:drawableLeft="@drawable/ic_account_big"
                 android:text="账户"
                 android:gravity="center"
                 android:textSize="20sp"/>
             <Button
                 android:id="@+id/btnSelectAccount"
+                android:background="@color/xui_transparent"
                 android:layout_width="0dp"
                 android:layout_weight="0.70"
                 android:layout_height="match_parent"/>
@@ -120,10 +132,12 @@
                 android:layout_weight="0.30"
                 android:layout_height="match_parent"
                 android:text="成员"
+                android:drawableLeft="@drawable/ic_mem"
                 android:gravity="center"
                 android:textSize="20sp"/>
             <Button
                 android:id="@+id/btnSelectMember"
+                android:background="@color/xui_transparent"
                 android:layout_width="0dp"
                 android:layout_weight="0.70"
                 android:layout_height="match_parent"/>
@@ -138,6 +152,7 @@
                 android:layout_weight="0.30"
                 android:layout_height="match_parent"
                 android:text="备注"
+                android:drawableLeft="@drawable/ic_note"
                 android:gravity="center"
                 android:textSize="20sp"/>
             <EditText
@@ -156,6 +171,7 @@
             <Button
                 android:layout_gravity="center_vertical|start"
                 android:layout_height="40dp"
+                android:background="@color/xui_transparent"
                 android:layout_width="wrap_content"
                 android:layout_centerVertical="true"
                 android:id="@+id/btnSetDate"
@@ -163,6 +179,7 @@
             <Button
                 android:layout_gravity="center_vertical|start"
                 android:layout_height="40dp"
+                android:background="@color/xui_transparent"
                 android:layout_width="100dp"
                 android:id="@+id/btnSetStore"
                 android:layout_centerVertical="true"

@@ -318,7 +318,7 @@ public class DeatilActivity extends AppCompatActivity {
             if(!bill.getType().equals(Constants.TRANSFER)){
                 im.setImageResource(bill.getIconId());
             }else{
-                im.setImageResource(R.drawable.icon_transfer);
+                im.setImageResource(R.drawable.ic_transfer);
             }
             try {
                 tvTime.setText(DateUtil.getShortDate(bill.getDate()));

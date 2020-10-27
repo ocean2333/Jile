@@ -10,6 +10,7 @@ import android.os.Bundle;
 import com.example.jile.Database.Dao.AccountDao;
 import com.example.jile.Database.Dao.BillDao;
 import com.example.jile.Database.Dao.FirstClassDao;
+import com.example.jile.Database.Dao.IconDao;
 import com.example.jile.Database.Dao.MemDao;
 import com.example.jile.Database.Dao.SecondClassDao;
 import com.example.jile.Database.Dao.StoreDao;
@@ -29,6 +30,7 @@ public class LogoActivity extends AppCompatActivity {
     public static FirstClassDao firstClassDao;
     public static SecondClassDao secondClassDao;
     public static StoreDao storeDao;
+    public static IconDao iconDao;
 
 
     @Override
