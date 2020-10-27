@@ -15,10 +15,13 @@
 
         <ImageView
             android:id="@+id/billImage"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/ic_food"
-            android:contentDescription="TODO" />
+            android:paddingTop="10dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+             />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

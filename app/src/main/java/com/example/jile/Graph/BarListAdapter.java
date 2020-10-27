@@ -31,20 +31,17 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.example.jile.Constant.Constants.SEARCH_TYPE_FIRST_CLASS;
+import static com.example.jile.Constant.Constants.SEARCH_TYPE_MONTH;
 import static com.example.jile.Constant.Constants.SEARCH_TYPE_SECOND_CLASS_IN_FIRST_CLASS;
 
 public class BarListAdapter extends BaseRecyclerAdapter<PieEntry>{
     private Context mContext;
     private RecyclerView mRecyclerView;
     private Collection<PieEntry> mData;
-    private float sum;
     public BarListAdapter(RecyclerView recyclerView, Collection<PieEntry> data,Context context) {
         super(data);
         mContext = context;
         mData = data;
-        for (PieEntry i:mData) {
-            sum+=i.getValue();
-        }
         mRecyclerView = recyclerView;
     }
 
@@ -59,18 +56,30 @@ public class BarListAdapter extends BaseRecyclerAdapter<PieEntry>{
         holder.text(R.id.billTitle,item.getLabel());
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         HorizontalProgressView v =  (HorizontalProgressView) holder.findView(R.id.hpv_language);
-        if(Float.compare(sum,0.0f)!=0){
-            v.setEndProgress((int)(item.getValue()/sum*100));
-            holder.text(R.id.billProportion,"  "+(int)(item.getValue()/sum*100)+"%");
+
+//TODO 若是进图条没有动在此进行测试
+        if(Float.compare(GraphActivity.sumBill,0.0f)!=0){
+            v.setEndProgress((int)(item.getValue()/GraphActivity.sumBill));
+            holder.text(R.id.billProportion,"  "+(int)(item.getValue()/GraphActivity.sumBill*100)+"%");
         }
-        else
-            v.setEndProgress(0);
+        else{
+            v.setEndProgress(100);
+        }
         int newColor= ColorUtils.getRandomColor();
         v.setStartColor(newColor);
         v.setEndColor(newColor);
         v.startProgressAnimation();
         ImageView iv =  (ImageView)(holder.findViewById(R.id.billImage));
-        iv.setImageResource(LogoActivity.iconDao.querybyskey("name",item.getLabel()).get(0).getIconId());
+        if(GraphActivity.searchType.equals(SEARCH_TYPE_MONTH)){
+        }
+        else if(GraphActivity.searchType.equals(SEARCH_TYPE_SECOND_CLASS_IN_FIRST_CLASS)){
+            iv.setImageResource(LogoActivity.iconDao.querybyskey("name",
+                    LogoActivity.secondClassDao.querybyskey("name",item.getLabel()).get(0).getFirstclass()).get(0).getIconId());
+        }
+        else {
+            iv.setImageResource(LogoActivity.iconDao.querybyskey("name",item.getLabel()).get(0).getIconId());
+        }
+
         Button button = (Button)holder.findView(R.id.billMoney);
         button.setText(decimalFormat.format(item.getValue())+" >");
         button.setOnClickListener(new View.OnClickListener() {
@@ -89,11 +98,11 @@ public class BarListAdapter extends BaseRecyclerAdapter<PieEntry>{
                     try {
                         List<PieEntry> tempData = StatisticsMiddle.getpiebill(GraphActivity.searchType,
                                 GraphActivity.billtype, GraphActivity.firstClass, GraphActivity.startDate, GraphActivity.endDate, mContext);
-                        sum=0;
+                        GraphActivity.sumBill= (float) 0;
                         for (PieEntry i:tempData) {
-                            sum+=i.getValue();
+                            GraphActivity.sumBill+=i.getValue();
                         }
-                        if(Float.compare(sum,0.0f)!=0){
+                        if(Float.compare(GraphActivity.sumBill,0.0f)!=0){
                             GraphRefersh(tempData);
                         }
                     } catch (ParseException e) {

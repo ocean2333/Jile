@@ -80,11 +80,12 @@
 
                     <ImageView
                         android:id="@+id/imageCostGraphByKind"
+                        android:padding="2dp"
                         android:layout_width="match_parent"
                         android:layout_height="32dp"
                         android:layout_weight="1"
                         android:background="@color/white"
-                        app:srcCompat="@drawable/ic_food" />
+                        app:srcCompat="@drawable/ic_firstclasscost" />
 
                     <Button
                         android:id="@+id/btnCostGraphByKind"
@@ -106,10 +107,11 @@
                     <ImageView
                         android:id="@+id/imageCostGraphByAccount"
                         android:layout_width="match_parent"
+                        android:padding="2dp"
                         android:layout_height="32dp"
                         android:layout_weight="1"
                         android:background="@color/white"
-                        app:srcCompat="@drawable/ic_food" />
+                        app:srcCompat="@drawable/ic_accountcost" />
                     <Button
                         android:id="@+id/btnCostGraphByAccount"
                         android:layout_width="match_parent"
@@ -130,10 +132,11 @@
                     <ImageView
                         android:id="@+id/imageMonthCost"
                         android:layout_width="match_parent"
+                        android:padding="1dp"
                         android:layout_height="32dp"
                         android:layout_weight="1"
                         android:background="@color/white"
-                        app:srcCompat="@drawable/ic_food" />
+                        app:srcCompat="@drawable/ic_monthcost" />
                     <Button
                         android:id="@+id/btnMonthCost"
                         android:layout_width="match_parent"
@@ -171,7 +174,7 @@
                         android:layout_height="32dp"
                         android:layout_weight="1"
                         android:background="@color/white"
-                        app:srcCompat="@drawable/ic_food" />
+                        app:srcCompat="@drawable/ic_firstclassincome" />
                     <Button
                         android:id="@+id/btnIncomeGraphByKind"
                         android:layout_width="match_parent"
@@ -191,9 +194,10 @@
                         android:id="@+id/imageIncomeGraphByAccount"
                         android:layout_width="match_parent"
                         android:layout_height="32dp"
+                        android:padding="2dp"
                         android:layout_weight="1"
                         android:background="@color/white"
-                        app:srcCompat="@drawable/ic_food" />
+                        app:srcCompat="@drawable/ic_accountincome" />
                     <Button
                         android:id="@+id/btnIncomeGraphByAccount"
                         android:layout_width="match_parent"
@@ -212,10 +216,11 @@
                     <ImageView
                         android:id="@+id/imageMonthIncome"
                         android:layout_width="match_parent"
+                        android:padding="1dp"
                         android:layout_height="32dp"
                         android:layout_weight="1"
                         android:background="@color/white"
-                        app:srcCompat="@drawable/ic_food" />
+                        app:srcCompat="@drawable/ic_monthincome" />
                     <Button
                         android:id="@+id/btnMonthIncome"
                         android:layout_width="match_parent"
@@ -239,7 +244,14 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/theme_yellow">
+        <ImageView
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_arrow_right"
+            android:id="@+id/lianjiefu"
+            android:layout_height="match_parent"/>
         <Button
+            android:layout_toStartOf="@+id/lianjiefu"
             android:layout_height="40dp"
             android:layout_width="wrap_content"
             android:layout_centerVertical="true"
@@ -247,12 +259,7 @@
             android:textSize="12sp"
             android:text="2020年12月12日"
             />
-        <ImageView
-            android:layout_toEndOf="@+id/btnSetStartDate"
-            android:layout_width="wrap_content"
-            android:src="@drawable/ic_arrow_right"
-            android:id="@+id/lianjiefu"
-            android:layout_height="match_parent"/>
+
         <Button
             android:layout_toEndOf="@+id/lianjiefu"
             android:layout_height="40dp"
@@ -262,17 +269,6 @@
             android:textSize="12sp"
             android:text="2020年12月12日"
             />
-        <com.xuexiang.xui.widget.tabbar.EasyIndicator
-            android:id="@+id/easy_indicator"
-            android:layout_toEndOf="@+id/btnSetEndDate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            app:indicator_line_show="true"
-            app:indicator_line_height="2dp"
-            app:indicator_height="42dp"
-            app:indicator_textSize="14sp"
-            app:indicator_width="0dp" />
     </RelativeLayout>
 
 </RelativeLayout>
