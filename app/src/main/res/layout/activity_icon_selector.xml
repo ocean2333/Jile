@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Util.IconSelectorActivity">
+    tools:context=".Util.IconSelectorActivity"
+    android:orientation="vertical">
     <LinearLayout
         android:id="@+id/top_ll"
         android:layout_width="match_parent"
@@ -20,11 +21,9 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"/>
-        <ImageButton
-            android:background="@color/xui_transparent"
-            android:src="@drawable/ic_check"
-            android:id="@+id/btnSave"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"/>
     </LinearLayout>
+    <com.yanzhenjie.recyclerview.SwipeRecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"/>
 </LinearLayout>

@@ -21,8 +21,8 @@ public class SecondClassDao {
     }
     public  void insert(SecondClass secondclass){
         SQLiteDatabase db = mHelper.getWritableDatabase();
-        String sql ="insert into " + mUsername+"_SecondClass(uuid,type,firstclass,name) values(?,?,?,?)";
-        db.execSQL(sql,new Object[]{secondclass.getUuid(),secondclass.getType(),secondclass.getFirstclass(),secondclass.getName()});
+        String sql ="insert into " + mUsername+"_SecondClass(uuid,type,firstclass,name,iconId) values(?,?,?,?,?)";
+        db.execSQL(sql,new Object[]{secondclass.getUuid(),secondclass.getType(),secondclass.getFirstclass(),secondclass.getName(),secondclass.getIconId()});
         db.close();
     }
     public  void delete(SecondClass secondclass){
@@ -53,10 +53,11 @@ public class SecondClassDao {
         int nameindex = cursor.getColumnIndex("name");
         int typeindex = cursor.getColumnIndex("type");
         int firstclassindex = cursor.getColumnIndex("firstclass");
+        int iconIdindex = cursor.getColumnIndex("iconId");
 
         while(cursor.moveToNext()){
 
-            SecondClass m = new SecondClass(cursor.getString(uuidindex),cursor.getString(typeindex),cursor.getString(firstclassindex),cursor.getString(nameindex));
+            SecondClass m = new SecondClass(cursor.getString(uuidindex),cursor.getString(typeindex),cursor.getString(firstclassindex),cursor.getString(nameindex),cursor.getInt(iconIdindex));
             re.add(m);
         }
         db.close();
@@ -74,9 +75,11 @@ public class SecondClassDao {
         int nameindex = cursor.getColumnIndex("name");
         int typeindex = cursor.getColumnIndex("type");
         int firstclassindex = cursor.getColumnIndex("firstclass");
+        int iconIdindex = cursor.getColumnIndex("iconId");
+
         while(cursor.moveToNext()){
 
-            SecondClass m = new SecondClass(cursor.getString(uuidindex),cursor.getString(typeindex),cursor.getString(firstclassindex),cursor.getString(nameindex));
+            SecondClass m = new SecondClass(cursor.getString(uuidindex),cursor.getString(typeindex),cursor.getString(firstclassindex),cursor.getString(nameindex),cursor.getInt(iconIdindex));
             re.add(m);
         }
         db.close();

@@ -62,10 +62,10 @@ public class NewTableHelper {
         sql = "create table "+mName+"_Store"+"(uuid varchar,type varchar,name varchar)";
         db.execSQL(sql);
 
-        sql = "create table "+mName+"_FirstClass"+"(uuid varchar,type varchar,name varchar)";
+        sql = "create table "+mName+"_FirstClass"+"(uuid varchar,type varchar,name varchar,iconId integer)";
         db.execSQL(sql);
 
-        sql = "create table "+mName+"_SecondClass"+"(uuid varchar,type varchar,firstclass varchar,name varchar)";
+        sql = "create table "+mName+"_SecondClass"+"(uuid varchar,type varchar,firstclass varchar,name varchar,iconId integer)";
         db.execSQL(sql);
 
         sql = "create table "+mName+"_Icon"+"(uuid varchar,name varchar,type varchar,iconId integer)";
@@ -79,6 +79,30 @@ public class NewTableHelper {
         FirstClassDao firstClassDao = new FirstClassDao(mContext,mName);
         SecondClassDao secondClassDao = new SecondClassDao(mContext,mName);
         IconDao iconDao = new IconDao(mContext,mName);
+
+
+        Icon[] icons = new Icon[]{
+                new Icon(UUID.randomUUID().toString(),"理财产品",Constants.ACCOUNT,R.drawable.ic_money_management),
+                new Icon(UUID.randomUUID().toString(),"微信",Constants.ACCOUNT,R.drawable.ic_wechat),
+                new Icon(UUID.randomUUID().toString(),"现金",Constants.ACCOUNT,R.drawable.ic_cash),
+                new Icon(UUID.randomUUID().toString(),"信用卡",Constants.ACCOUNT,R.drawable.ic_credit_card),
+                new Icon(UUID.randomUUID().toString(),"虚拟账户",Constants.ACCOUNT,R.drawable.ic_virtal),
+                new Icon(UUID.randomUUID().toString(),"银行卡",Constants.ACCOUNT,R.drawable.ic_card),
+                new Icon(UUID.randomUUID().toString(),"支付宝",Constants.ACCOUNT,R.drawable.ic_paypal),
+                new Icon(UUID.randomUUID().toString(),"交通出行",Constants.COST,R.drawable.ic_traffic),
+                new Icon(UUID.randomUUID().toString(),"居家生活",Constants.COST,R.drawable.ic_life),
+                new Icon(UUID.randomUUID().toString(),"食物饮料",Constants.COST,R.drawable.ic_food),
+                new Icon(UUID.randomUUID().toString(),"休闲娱乐",Constants.COST,R.drawable.ic_entertainment),
+                new Icon(UUID.randomUUID().toString(),"学习培训",Constants.COST,R.drawable.ic_learning),
+                new Icon(UUID.randomUUID().toString(),"衣服饰品",Constants.COST,R.drawable.ic_clothes),
+                new Icon(UUID.randomUUID().toString(),"医疗保健",Constants.COST,R.drawable.ic_health),
+                new Icon(UUID.randomUUID().toString(),"其他收入",Constants.INCOME,R.drawable.ic_other_income),
+                new Icon(UUID.randomUUID().toString(),"职业收入",Constants.INCOME,R.drawable.ic_job_income)
+        };
+        for(Icon icon:icons){
+            iconDao.insert(icon);
+        }
+
         accountDao.insert(new Account(UUID.randomUUID().toString(),
                 Constants.CASH_ACCOUNT,"现金",new BigDecimal("0"),"CNY", R.drawable.ic_cash,""));
         Store store = new Store(UUID.randomUUID().toString(),"家");
@@ -91,50 +115,29 @@ public class NewTableHelper {
 
         Map<String, List<String>> map = new HashMap<>();
         map.put("食物饮料",new LinkedList<String>(Arrays.asList(new String[]{"早中晚饭","零食饮料","水果"}) ));
-        map.put("衣服食品",new LinkedList<String>(Arrays.asList(new String[]{"衣帽裤袜","鞋子包包","化妆品","饰品"}) ));
+        map.put("衣服饰品",new LinkedList<String>(Arrays.asList(new String[]{"衣帽裤袜","鞋子包包","化妆品","饰品"}) ));
         map.put("居家生活",new LinkedList<String>(Arrays.asList(new String[]{"生活用品","房租水电","维修保养"}) ));
-        map.put("行车交通",new LinkedList<String>(Arrays.asList(new String[]{"公共交通","尊贵交通"}) ));
+        map.put("交通出行",new LinkedList<String>(Arrays.asList(new String[]{"公共交通","尊贵交通"}) ));
         map.put("休闲娱乐",new LinkedList<String>(Arrays.asList(new String[]{"运动健身","游戏","电影聚会"}) ));
         map.put("学习培训",new LinkedList<String>(Arrays.asList(new String[]{"学习资料","培训进修"}) ));
-        map.put("医疗保障",new LinkedList<String>(Arrays.asList(new String[]{"治疗","保健品"}) ));
+        map.put("医疗保健",new LinkedList<String>(Arrays.asList(new String[]{"治疗","保健品"}) ));
 
-        for(String x: new String[]{"食物饮料", "衣服食品", "居家生活", "行车交通", "休闲娱乐", "学习培训", "医疗保障"}){
-            firstClassDao.insert(new FirstClass(UUID.randomUUID().toString(),Constants.COST,x));
+        for(String x: new String[]{"食物饮料", "衣服饰品", "居家生活", "交通出行", "休闲娱乐", "学习培训", "医疗保健"}){
+            firstClassDao.insert(new FirstClass(UUID.randomUUID().toString(),Constants.COST,x,iconDao.querybyskey("name",x).get(0).getIconId()));
             for (String z:map.get(x)) {
-                secondClassDao.insert(new SecondClass(UUID.randomUUID().toString(),Constants.COST,x,z));
+                secondClassDao.insert(new SecondClass(UUID.randomUUID().toString(),Constants.COST,x,z,iconDao.querybyskey("name",x).get(0).getIconId()));
             }
         }
         map.clear();
         map.put("职业收入",new LinkedList<String>(Arrays.asList(new String[]{"工资收入","投资收入"}) ));
         map.put("其他收入",new LinkedList<String>(Arrays.asList(new String[]{"生活费","赠与收入"}) ));
         for(String x: new String[]{"职业收入", "其他收入"}){
-            firstClassDao.insert(new FirstClass(UUID.randomUUID().toString(),Constants.INCOME,x));
+            firstClassDao.insert(new FirstClass(UUID.randomUUID().toString(),Constants.INCOME,x,iconDao.querybyskey("name",x).get(0).getIconId()));
             for (String z:map.get(x)) {
-                secondClassDao.insert(new SecondClass(UUID.randomUUID().toString(),Constants.INCOME,x,z));
+                secondClassDao.insert(new SecondClass(UUID.randomUUID().toString(),Constants.INCOME,x,z,iconDao.querybyskey("name",x).get(0).getIconId()));
             }
         }
 
-        Icon[] icons = new Icon[]{
-                new Icon(UUID.randomUUID().toString(),"理财产品",Constants.ACCOUNT,R.drawable.ic_money_management),
-                new Icon(UUID.randomUUID().toString(),"微信",Constants.ACCOUNT,R.drawable.ic_wechat),
-                new Icon(UUID.randomUUID().toString(),"现金",Constants.ACCOUNT,R.drawable.ic_cash),
-                new Icon(UUID.randomUUID().toString(),"信用卡",Constants.ACCOUNT,R.drawable.ic_credit_card),
-                new Icon(UUID.randomUUID().toString(),"虚拟账户",Constants.ACCOUNT,R.drawable.ic_virtal),
-                new Icon(UUID.randomUUID().toString(),"银行卡",Constants.ACCOUNT,R.drawable.ic_card),
-                new Icon(UUID.randomUUID().toString(),"支付宝",Constants.ACCOUNT,R.drawable.ic_paypal),
-                new Icon(UUID.randomUUID().toString(),"交通出行",Constants.COST,R.drawable.ic_traffic),
-                new Icon(UUID.randomUUID().toString(),"居家生活",Constants.COST,R.drawable.ic_life),
-                new Icon(UUID.randomUUID().toString(),"食品饮料",Constants.COST,R.drawable.ic_food),
-                new Icon(UUID.randomUUID().toString(),"休闲娱乐",Constants.COST,R.drawable.ic_entertainment),
-                new Icon(UUID.randomUUID().toString(),"学习培训",Constants.COST,R.drawable.ic_learning),
-                new Icon(UUID.randomUUID().toString(),"衣服饰品",Constants.COST,R.drawable.ic_clothes),
-                new Icon(UUID.randomUUID().toString(),"医疗保健",Constants.COST,R.drawable.ic_health),
-                new Icon(UUID.randomUUID().toString(),"其他收入",Constants.INCOME,R.drawable.ic_other_income),
-                new Icon(UUID.randomUUID().toString(),"职业收入",Constants.INCOME,R.drawable.ic_job_income)
-        };
-        for(Icon icon:icons){
-            iconDao.insert(icon);
-        }
         return  status;
     }
 }

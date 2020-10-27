@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -72,7 +73,8 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
     public static Date startDate,endDate;
     private TextView textView;
     private GraphActivity.OnClick onClick = new GraphActivity.OnClick();
-    private Button btnback,btnCostGraphByKind,btnCostGraphByAccount,btnIncomeGraphByKind,
+    private ImageButton btnback;
+    private Button btnCostGraphByKind,btnCostGraphByAccount,btnIncomeGraphByKind,
             btnIncomeGraphByAccount,btnMonthIncome,btnMonthCost,btnBillDetail,
             btnSetStartDate,btnSetEndDate;
     private BarListAdapter barListAdapter;

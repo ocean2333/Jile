@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
@@ -18,6 +19,7 @@ import com.example.jile.Constant.Constants;
 import com.example.jile.LogoActivity;
 import com.example.jile.New.NewBIllActivity;
 import com.example.jile.R;
+import com.example.jile.Util.IconSelectorActivity;
 import com.example.jile.Util.ToastUtil;
 
 import java.math.BigDecimal;
@@ -56,6 +58,7 @@ public class CreateNewAccountActivity extends AppCompatActivity {
         etNote = findViewById(R.id.etNote);
         btnDelete = findViewById(R.id.btnDelete);
         currencyItems = Arrays.asList("CNY");
+        btnSelectIcon = findViewById(R.id.btnSelectIcon);
         chineseAccountTypeItems = Arrays.asList("现金账户","银行账户","网络账户","其他账户");
         accountTypeItems = Arrays.asList(Constants.CASH_ACCOUNT,Constants.BANK_ACCOUNT,Constants.NET_ACCOUNT,Constants.OTHER_ACCOUNT);
     }
@@ -149,6 +152,16 @@ public class CreateNewAccountActivity extends AppCompatActivity {
         btnDelete.setOnClickListener((v -> {
             ToastUtil.showShortToast(this,"assume it was been deleted");
         }));
+        btnSelectIcon.setOnClickListener(v->{
+            startActivityForResult(IconSelectorActivity.startThisActivity(this,Constants.ACCOUNT),0);
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode,int resultCode,Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ImageView iv = (ImageView) findViewById(R.id.ivIcon);
+        iv.setImageResource(data.getExtras().getInt("iconId"));
     }
 
     public static Intent startThisActivity(Context context, String uuid){

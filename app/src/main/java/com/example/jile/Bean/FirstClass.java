@@ -5,17 +5,26 @@ public class FirstClass {
     private String type;
     private String name;
 
-    public FirstClass(){
-
-    }
-    public FirstClass(String uuid, String type, String name) {
+    public FirstClass(String uuid, String type, String name, int iconId) {
         this.uuid = uuid;
         this.type = type;
         this.name = name;
+        this.iconId = iconId;
     }
 
-    public FirstClass(String string, String string1, String string2, int anInt) {
+    public int getIconId() {
+        return iconId;
     }
+
+    public void setIconId(int iconId) {
+        this.iconId = iconId;
+    }
+
+    private int iconId;
+    public FirstClass(){
+
+    }
+
 
     public String getUuid() {
         return uuid;

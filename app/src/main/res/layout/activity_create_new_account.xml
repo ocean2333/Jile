@@ -76,6 +76,7 @@
             android:textSize="18sp"
             android:gravity="center|start"/>
         <ImageView
+            android:id="@+id/ivIcon"
             android:layout_width="0dp"
             android:layout_weight="0.1"
             android:layout_height="match_parent"/>

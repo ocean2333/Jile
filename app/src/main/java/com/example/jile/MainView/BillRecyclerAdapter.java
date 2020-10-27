@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.jile.Bean.Bill;
 import com.example.jile.Constant.Constants;
@@ -51,7 +52,7 @@ public class BillRecyclerAdapter extends SmartRecyclerAdapter<Bill> {
         holder.text(R.id.tvMoney, model.getNum().toPlainString());
         holder.text(R.id.tvAccount,model.getAccountname());
         holder.text(R.id.tvUuid,model.getUuid());
-        Button btnModify =  holder.findViewById(R.id.btnModify);
+        ImageButton btnModify =  holder.findViewById(R.id.btnModify);
         btnModify.setOnClickListener((l)->{
             Bundle bundle = new Bundle();
             bundle.putString("uuid",model.getUuid());
