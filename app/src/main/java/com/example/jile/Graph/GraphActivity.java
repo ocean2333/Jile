@@ -290,7 +290,7 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
         }
     }
 
-    public  void update() {
+    public void update() {
         try {
             mGraphData=StatisticsMiddle.getpiebill(searchType,billtype,firstClass,startDate,endDate,this);
         } catch (ParseException e) {
@@ -306,6 +306,7 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
                 ToastUtil.showShortToast(this,"总计为0");
         }
         else{
+            initPieChart();
             ToastUtil.showShortToast(this,"无符合目标数据");
         }
 
