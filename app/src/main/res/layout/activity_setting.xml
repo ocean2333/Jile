@@ -20,17 +20,67 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:layout_height="55dp">
         <TextView
+            android:text="支出分类设置"
+            android:gravity="center_vertical"
+            android:textSize="20sp"
+            android:paddingHorizontal="30dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"/>
-        <Button
-            android:id="@+id/btnTo"
+        <ImageButton
+            android:id="@+id/btnToCostClassSetting"
             android:layout_width="70dp"
+            android:background="@color/xui_transparent"
+            android:src="@drawable/ic_arrow_right"
             android:layout_height="match_parent"/>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp">
+        <TextView
+            android:text="收入分类设置"
+            android:gravity="center_vertical"
+            android:textSize="20sp"
+            android:paddingHorizontal="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <ImageButton
+            android:id="@+id/btnToIncomeClassSetting"
+            android:layout_width="70dp"
+            android:background="@color/xui_transparent"
+            android:src="@drawable/ic_arrow_right"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp">
+        <TextView
+            android:text="主题设置"
+            android:gravity="center_vertical"
+            android:textSize="20sp"
+            android:paddingHorizontal="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <ImageButton
+            android:id="@+id/btnToThemeSetting"
+            android:layout_width="70dp"
+            android:background="@color/xui_transparent"
+            android:src="@drawable/ic_arrow_right"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+
 </LinearLayout>

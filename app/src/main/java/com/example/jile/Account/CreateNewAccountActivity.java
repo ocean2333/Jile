@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,6 +38,7 @@ public class CreateNewAccountActivity extends AppCompatActivity {
     private String chineseAccountType,accountType,currency;
     private String uuid;
     private Account account;
+    private Integer iconId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +69,7 @@ public class CreateNewAccountActivity extends AppCompatActivity {
     private Account createNewAccount(){
         return new Account(UUID.randomUUID().toString(), accountType,
                 etAccountName.getText().toString(), new BigDecimal(etBalance.getText().toString()),
-                currency,R.drawable.icon_dollar,
+                currency,iconId,
                 etNote.getText().toString());
     }
 
@@ -103,19 +106,37 @@ public class CreateNewAccountActivity extends AppCompatActivity {
                 finish();
             }
         });
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
+        etAccountName.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 if(LogoActivity.accountDao.querybyskey("selfname",etAccountName.getText().toString()).size()>0){
                     ToastUtil.showShortToast(CreateNewAccountActivity.this,"已经有同名的账户了呢");
+                    btnConfirm.setEnabled(false);
                 }else{
-                    if(uuid==null){
-                        addNewAccountToDB(createNewAccount());
-                    }else{
-                        updateAccountInDB(createNewAccount());
-                    }
-                    finish();
+                    btnConfirm.setEnabled(true);
                 }
+            }
+        });
+        btnConfirm.setOnClickListener(v -> {
+            if(iconId == null){
+                ToastUtil.showShortToast(this,"请选择一个图标");
+            }else{
+                if(uuid==null){
+                    addNewAccountToDB(createNewAccount());
+                }else{
+                    updateAccountInDB(createNewAccount());
+                }
+                finish();
             }
         });
         btnAccountType.setOnClickListener(new View.OnClickListener() {
@@ -161,6 +182,7 @@ public class CreateNewAccountActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode,int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ImageView iv = (ImageView) findViewById(R.id.ivIcon);
+        iconId = data.getExtras().getInt("iconId");
         iv.setImageResource(data.getExtras().getInt("iconId"));
     }
 

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jile.Account.AccountActivity;
+import com.example.jile.Bean.Icon;
 import com.example.jile.Bean.User;
 import com.example.jile.Constant.Constants;
 import com.example.jile.Database.Dao.AccountDao;
@@ -49,7 +50,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
+import static com.example.jile.LogoActivity.iconDao;
 import static com.xuexiang.xui.XUI.getContext;
 
 public class MainActivity extends AppCompatActivity {
@@ -75,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
             LogoActivity.firstClassDao = new FirstClassDao(this,user);
             LogoActivity.storeDao = new StoreDao(this,user);
             LogoActivity.secondClassDao = new SecondClassDao(this,user);
-            LogoActivity.iconDao = new IconDao(this,user);
+            iconDao = new IconDao(this,user);
+            upDateIconDao();
         }else{
             Toast.makeText(this,"error in getLoginUser",Toast.LENGTH_SHORT).show();
         }
@@ -213,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         edt.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_VARIATION_NORMAL);
         new AlertDialog.Builder(this)
                 .setTitle("请输入预算")
-                .setIcon(android.R.drawable.ic_dialog_info)
+                .setIcon(R.drawable.ic_prompt)
                 .setView(edt)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -455,6 +459,34 @@ public class MainActivity extends AppCompatActivity {
         swipeRefreshLayout.setColorSchemeColors(0xff0099cc, 0xffff4444, 0xff669900, 0xffaa66cc, 0xffff8800);
         swipeRefreshLayout.setOnRefreshListener(mRefreshListener);
         autoRefresh();
+    }
+
+    private void upDateIconDao(){
+        Icon[] icons = new Icon[]{
+                new Icon(UUID.randomUUID().toString(),"理财产品",Constants.ACCOUNT,R.drawable.ic_money_management),
+                new Icon(UUID.randomUUID().toString(),"微信",Constants.ACCOUNT,R.drawable.ic_wechat),
+                new Icon(UUID.randomUUID().toString(),"现金",Constants.ACCOUNT,R.drawable.ic_cash),
+                new Icon(UUID.randomUUID().toString(),"信用卡",Constants.ACCOUNT,R.drawable.ic_credit_card),
+                new Icon(UUID.randomUUID().toString(),"虚拟账户",Constants.ACCOUNT,R.drawable.ic_virtal),
+                new Icon(UUID.randomUUID().toString(),"银行卡",Constants.ACCOUNT,R.drawable.ic_card),
+                new Icon(UUID.randomUUID().toString(),"支付宝",Constants.ACCOUNT,R.drawable.ic_paypal),
+                new Icon(UUID.randomUUID().toString(),"交通出行",Constants.COST,R.drawable.ic_traffic),
+                new Icon(UUID.randomUUID().toString(),"居家生活",Constants.COST,R.drawable.ic_life),
+                new Icon(UUID.randomUUID().toString(),"食物饮料",Constants.COST,R.drawable.ic_food),
+                new Icon(UUID.randomUUID().toString(),"休闲娱乐",Constants.COST,R.drawable.ic_entertainment),
+                new Icon(UUID.randomUUID().toString(),"学习培训",Constants.COST,R.drawable.ic_learning),
+                new Icon(UUID.randomUUID().toString(),"衣服饰品",Constants.COST,R.drawable.ic_clothes),
+                new Icon(UUID.randomUUID().toString(),"医疗保健",Constants.COST,R.drawable.ic_health),
+                new Icon(UUID.randomUUID().toString(),"其他收入",Constants.INCOME,R.drawable.ic_other_income),
+                new Icon(UUID.randomUUID().toString(),"职业收入",Constants.INCOME,R.drawable.ic_job_income)
+        };
+        List<Icon> allIcon = iconDao.query();
+        for(Icon i:allIcon){
+            iconDao.delete(i);
+        }
+        for(Icon icon:icons){
+            iconDao.insert(icon);
+        }
     }
 }
 

@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 
 import com.example.jile.Bean.Bill;
 import com.example.jile.Constant.Constants;
+import com.example.jile.LogoActivity;
 import com.example.jile.New.NewBIllActivity;
 import com.example.jile.R;
 import com.example.jile.Util.DateUtil;
@@ -37,7 +38,7 @@ public class BillRecyclerAdapter extends SmartRecyclerAdapter<Bill> {
 
     @Override
     protected void onBindViewHolder(SmartViewHolder holder, Bill model, int position) {
-        holder.image(R.id.ivIcon,model.getIconId());
+        holder.image(R.id.ivIcon, LogoActivity.iconDao.querybyskey("name",model.getFirst()).get(0).getIconId());
         try {
             holder.text(R.id.tvTime,DateUtil.getShortDate(model.getDate()));
         } catch (ParseException e) {

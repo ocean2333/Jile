@@ -6,8 +6,8 @@
     <TextView
         android:layout_width="75dp"
         android:layout_height="match_parent"/>
-    <TextView
-        android:id="@+id/tvTitle"
+    <EditText
+        android:id="@+id/etTitle"
         android:layout_width="wrap_content"
         android:hint="请输入新分类名"
         android:gravity="center_vertical"
@@ -18,14 +18,15 @@
         android:layout_height="match_parent"
         android:layout_weight="1"/>
     <ImageButton
-        android:id="@+id/btnDelete"
+        android:id="@+id/btnUncheck"
         android:background="@color/xui_transparent"
-        android:src="@drawable/ic_delete"
+        android:src="@drawable/ic_close"
         android:layout_width="50dp"
         android:layout_height="match_parent"/>
-    <TextView
-        android:id="@+id/uuid"
-        android:layout_width="0dp"
-        android:layout_height="0dp"/>
-
+    <ImageButton
+        android:id="@+id/btnCheck"
+        android:background="@color/xui_transparent"
+        android:src="@drawable/ic_check"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"/>
 </LinearLayout>

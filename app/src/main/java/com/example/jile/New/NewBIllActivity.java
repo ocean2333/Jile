@@ -63,7 +63,7 @@ public class NewBIllActivity extends AppCompatActivity {
     private Bill bill;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        XUI.initTheme(this);
+        //XUI.initTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_bill);
         XUI.initTheme(this);

@@ -116,10 +116,11 @@
         android:background="@drawable/top_and_bottom_edge"
         android:padding="1dp"
         android:layout_below="@id/ll_1">
-        <Button
+        <ImageView
+            android:padding="12dp"
             android:id="@+id/btnToCalender"
             android:layout_width="75dp"
-            android:background="@drawable/ic_today"
+            android:src="@drawable/ic_today"
             android:layout_height="match_parent"/>
         <TextView
             android:id="@+id/tvDate"
@@ -174,7 +175,7 @@
         android:orientation="horizontal"
         android:gravity="bottom"
         android:background="@color/white"
-        android:paddingVertical="10dp"
+        android:paddingVertical="7dp"
         android:layout_alignParentBottom="true"
         >
         <Button
@@ -195,7 +196,7 @@
             android:text="流水"/>
         <Button
             android:id="@+id/btnNew"
-            android:layout_width="55dp"
+            android:layout_width="61dp"
             android:layout_height="match_parent"
             android:layout_weight="0"
             android:paddingHorizontal="40dp"

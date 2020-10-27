@@ -64,8 +64,9 @@ public class DeatilActivity extends AppCompatActivity {
     private Object searchType;
     private String firstClass;
     private Date startDate,endDate;
+    private int initSelection1=0,initSelection2=0;
     private List<String> firstClassItems = new LinkedList<>(Arrays.asList("时间","一级分类","二级分类","账户","成员","商家"));
-    private List<List<String>> secondClassItems = new LinkedList<>(Arrays.asList(new LinkedList<>(Arrays.asList("日","周","月","年")),new LinkedList<>(Arrays.asList("一级分类")),
+    private List<List<String>> secondClassItems = new LinkedList<>(Arrays.asList(new LinkedList<>(Arrays.asList("日","月","年")),new LinkedList<>(Arrays.asList("一级分类")),
             new LinkedList<>(Arrays.asList("所有二级分类")),new LinkedList<>(Arrays.asList("账户")),new LinkedList<>(Arrays.asList("成员")),new LinkedList<>(Arrays.asList("商家"))));
     private List<List<Bill>> data;
     @Override
@@ -144,7 +145,7 @@ public class DeatilActivity extends AppCompatActivity {
                     .setDividerColor(Color.BLACK)
                     .setTextColorCenter(Color.BLACK) //设置选中项文字颜色
                     .setContentTextSize(20)
-                    .setSelectOptions(0,0)
+                    .setSelectOptions(initSelection1,initSelection2)
                     .build();
             optionsPickerView.setPicker(firstClassItems,secondClassItems);
             optionsPickerView.show();
@@ -194,10 +195,15 @@ public class DeatilActivity extends AppCompatActivity {
                     .build();
             mDatePicker.show();
         });
-        searchType = Constants.SEARCH_TYPE_DAY;
         btnStartDateSelector.setText(Constants.DATE_FORMAT_YEAR_MONTH_DAY.format(startDate));
         btnEndDateSelector.setText(Constants.DATE_FORMAT_YEAR_MONTH_DAY.format(endDate));
-        btnSearchTypeSelector.setText(firstClassItems.get(0)+"-"+secondClassItems.get(0).get(0));
+        if(searchType==null){
+            searchType = Constants.SEARCH_TYPE_DAY;
+            btnSearchTypeSelector.setText(firstClassItems.get(0)+"-"+secondClassItems.get(0).get(0));
+        }else{
+            btnSearchTypeSelector.setText(firstClassItems.get(initSelection1)+"-"+secondClassItems.get(initSelection1).get(initSelection2));
+        }
+
     }
 
     /**
@@ -207,41 +213,63 @@ public class DeatilActivity extends AppCompatActivity {
         getComponent();
         if(getIntent().getExtras()!=null){
             String st=getIntent().getExtras().getString("searchType");
+            startDate=Constants.DATE_FORMAT_SIMPLE.parse(getIntent().getExtras().getString("startDate"));
+            endDate=Constants.DATE_FORMAT_SIMPLE.parse(getIntent().getExtras().getString("endDate"));
+            firstClass = getIntent().getExtras().getString("firstClass");
             switch (st){
                 case Constants.SEARCH_TYPE_DAY:
                     searchType = Constants.SEARCH_TYPE_DAY;
+                    initSelection1=0;
+                    initSelection2=0;
                     break;
                 case Constants.SEARCH_TYPE_WEEK:
                     searchType = Constants.SEARCH_TYPE_WEEK;
+                    initSelection1=0;
+                    initSelection2=1;
                     break;
                 case Constants.SEARCH_TYPE_MONTH:
                     searchType = Constants.SEARCH_TYPE_MONTH;
+                    initSelection1=0;
+                    initSelection2=1;
                     break;
                 case Constants.SEARCH_TYPE_YEAR:
                     searchType = Constants.SEARCH_TYPE_YEAR;
+                    initSelection1=0;
+                    initSelection2=2;
                     break;
                 case Constants.SEARCH_TYPE_ACCOUNT:
                     searchType = new Account();
+                    initSelection1=3;
+                    initSelection2=0;
                     break;
                 case Constants.SEARCH_TYPE_MEM:
                     searchType = new Mem();
+                    initSelection1=4;
+                    initSelection2=0;
                     break;
                 case Constants.SEARCH_TYPE_STORE:
                     searchType = new Store();
+                    initSelection1=5;
+                    initSelection2=0;
                     break;
                 case Constants.SEARCH_TYPE_FIRST_CLASS:
                     searchType = new FirstClass();
+                    initSelection1=1;
+                    initSelection2=0;
                     break;
                 case Constants.SEARCH_TYPE_SECOND_CLASS_IN_FIRST_CLASS:
                 case Constants.SEARCH_TYPE_SECOND_CLASS:
                     searchType = new SecondClass();
+                    initSelection1=2;
+                    if(firstClass!=null){
+                        initSelection2 = secondClassItems.get(2).indexOf(firstClass);
+                    }else{
+                        initSelection2=0;
+                    }
                     break;
                 default:
                     searchType = Constants.SEARCH_TYPE_DAY;
             }
-            startDate=Constants.DATE_FORMAT_SIMPLE.parse(getIntent().getExtras().getString("startDate"));
-            endDate=Constants.DATE_FORMAT_SIMPLE.parse(getIntent().getExtras().getString("endDate"));
-            firstClass = getIntent().getExtras().getString("firstClass");
         }
         setListener();
         update();

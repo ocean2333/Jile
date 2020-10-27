@@ -20,6 +20,8 @@
         android:layout_height="25dp"/>
     <ImageView
         android:id="@+id/ivIcon"
+        android:src="@drawable/ic_food"
+        android:padding="7dp"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:scaleType="centerInside"

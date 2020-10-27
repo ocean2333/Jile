@@ -7,6 +7,8 @@
         android:layout_width="0dp"
         android:background="@color/xui_transparent"
         android:scaleType="centerInside"
+        android:src="@drawable/ic_food"
+        android:padding="15dp"
         android:layout_height="match_parent"
         android:layout_weight="1"/>
     <ImageView
@@ -14,6 +16,7 @@
         android:layout_width="0dp"
         android:background="@color/xui_transparent"
         android:scaleType="centerInside"
+        android:padding="15dp"
         android:layout_height="match_parent"
         android:layout_weight="1"/>
     <ImageView
@@ -21,6 +24,7 @@
         android:layout_width="0dp"
         android:background="@color/xui_transparent"
         android:scaleType="centerInside"
+        android:padding="15dp"
         android:layout_height="match_parent"
         android:layout_weight="1"/>
     <ImageView
@@ -28,6 +32,7 @@
         android:layout_width="0dp"
         android:background="@color/xui_transparent"
         android:scaleType="centerInside"
+        android:padding="15dp"
         android:layout_height="match_parent"
         android:layout_weight="1"/>
 </LinearLayout>
