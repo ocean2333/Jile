@@ -52,13 +52,13 @@
                 android:id="@+id/hpv_language"
                 android:layout_width="285dp"
                 android:layout_height="30dp"
-                app:hpv_end_color="@color/yellowbill"
+                app:hpv_end_color="@color/xui_config_color_blue"
                 app:hpv_start_progress="1"
                 app:hpv_end_progress="80"
-                app:hpv_isTracked="true"
+                app:hpv_isTracked="false"
                 app:hpv_progress_duration="2600"
                 app:hpv_progress_textVisibility="false"
-                app:hpv_start_color="@color/purple"
+                app:hpv_start_color="@color/xui_config_color_blue"
                 app:hpv_track_width="8dp"
                 />
         </RelativeLayout>

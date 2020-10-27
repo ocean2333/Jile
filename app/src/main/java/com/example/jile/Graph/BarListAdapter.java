@@ -56,22 +56,23 @@ public class BarListAdapter extends BaseRecyclerAdapter<PieEntry>{
         holder.text(R.id.billTitle,item.getLabel());
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         HorizontalProgressView v =  (HorizontalProgressView) holder.findView(R.id.hpv_language);
-        if(sum==0){
-            sum=1;
+        if(Float.compare(sum,0.0f)!=0){
+            v.setEndProgress((int)(item.getValue()/sum*100));
+            holder.text(R.id.billProportion,"  "+(int)(item.getValue()/sum*100)+"%");
         }
-        v.setEndProgress((int)(item.getValue()/sum*100));
+        else
+            v.setEndProgress(0);
         int newColor= ColorUtils.getRandomColor();
         v.setStartColor(newColor);
         v.setEndColor(newColor);
         v.startProgressAnimation();
-        holder.text(R.id.billProportion,"  "+(int)(item.getValue()/sum*100)+"%");
         Button button = (Button)holder.findView(R.id.billMoney);
         button.setText(decimalFormat.format(item.getValue())+" >");
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DeatilActivity.startThisActivity(mContext,GraphActivity.searchType,
-                        GraphActivity.firstClass,GraphActivity.startDate,GraphActivity.endDate);
+                mContext.startActivity(DeatilActivity.startThisActivity(mContext,GraphActivity.searchType,
+                        GraphActivity.firstClass,GraphActivity.startDate,GraphActivity.endDate));
             }
         });
         button.setOnLongClickListener(new View.OnLongClickListener() {
@@ -81,7 +82,15 @@ public class BarListAdapter extends BaseRecyclerAdapter<PieEntry>{
                     GraphActivity.searchType=SEARCH_TYPE_SECOND_CLASS_IN_FIRST_CLASS;
                     GraphActivity.firstClass=item.getLabel();
                     try {
-                        GraphRefersh(StatisticsMiddle.getpiebill(GraphActivity.searchType,GraphActivity.billtype,GraphActivity.firstClass,GraphActivity.startDate,GraphActivity.endDate,mContext));
+                        List<PieEntry> tempData = StatisticsMiddle.getpiebill(GraphActivity.searchType,
+                                GraphActivity.billtype, GraphActivity.firstClass, GraphActivity.startDate, GraphActivity.endDate, mContext);
+                        sum=0;
+                        for (PieEntry i:tempData) {
+                            sum+=i.getValue();
+                        }
+                        if(Float.compare(sum,0.0f)!=0){
+                            GraphRefersh(tempData);
+                        }
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -89,7 +98,6 @@ public class BarListAdapter extends BaseRecyclerAdapter<PieEntry>{
                 return false;
             }
         });
-
     }
     private void GraphRefersh(List<PieEntry> item){
         this.refresh(item);

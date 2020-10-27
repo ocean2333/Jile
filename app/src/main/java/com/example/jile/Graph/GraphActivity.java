@@ -16,9 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.jile.Bean.FirstClass;
 import com.example.jile.Constant.Constants;
 import com.example.jile.Detail.DeatilActivity;
 import com.example.jile.Detail.ExpandableListAdapter;
@@ -60,7 +62,7 @@ import static com.example.jile.Constant.Constants.SEARCH_TYPE_SECOND_CLASS_IN_FI
 
 public class GraphActivity extends AppCompatActivity implements OnChartValueSelectedListener {
 
-    private EasyIndicator mGraph ;
+    private EasyIndicator mGraph;
     private View view1,view2;
     private List<View> viewList;//view数组
     private PieChart mPieChart;
@@ -72,7 +74,8 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
     public static Date startDate,endDate;
     private TextView textView;
     private GraphActivity.OnClick onClick = new GraphActivity.OnClick();
-    private Button btnback,btnCostGraphByKind,btnCostGraphByAccount,btnIncomeGraphByKind,
+    private ImageButton btnback;
+    private Button btnCostGraphByKind,btnCostGraphByAccount,btnIncomeGraphByKind,
             btnIncomeGraphByAccount,btnMonthIncome,btnMonthCost,btnBillDetail,
             btnSetStartDate,btnSetEndDate;
     private BarListAdapter barListAdapter;
@@ -90,21 +93,28 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         if(!mGraphData.isEmpty()){
-            initPieChart();
-            initBarChart();
+            if(Float.compare(getTotal(mGraphData),0.0f)!=0){
+                initPieChart();
+                initBarChart();
+            }
+            else{
+                ToastUtil.showShortToast(this,"总计为0");
+            }
         }
         else{
             ToastUtil.showShortToast(this,"无符合目标数据");
         }
         expandableLayout1.setOnExpansionChangedListener((expansion, state) -> Log.d("expandableLayout1", "State: " + state));
         setListener(onClick);
+
         btnBillDetail.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                searchType = SEARCH_TYPE_SECOND_CLASS_IN_FIRST_CLASS;
-                update();
+                if(searchType.equals(SEARCH_TYPE_FIRST_CLASS)){
+                    searchType = SEARCH_TYPE_SECOND_CLASS_IN_FIRST_CLASS;
+                    update();
+                }
                 return true;
             }
         });
@@ -214,7 +224,7 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
                     break;
                 case R.id.btnCostGraphByAccount:
                     searchType = SEARCH_TYPE_ACCOUNT;
-                    billtype = INCOME;
+                    billtype = COST;
                     expand_button.setText(btnCostGraphByAccount.getText());
                     update();
                     break;
@@ -243,7 +253,8 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
                     update();
                     break;
                 case R.id.btnBillDetail:
-                    DeatilActivity.startThisActivity(GraphActivity.this,searchType, firstClass,startDate,endDate);
+                    Log.d("TAG", "onClick: ");
+                    startActivity(DeatilActivity.startThisActivity(GraphActivity.this,searchType, firstClass,startDate,endDate));
                     break;
                 case R.id.btnSetEndDate:
                     TimePickerView mDateEndPicker = new TimePickerBuilder(GraphActivity.this, new OnTimeSelectListener() {
@@ -264,14 +275,14 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
                     TimePickerView mDateStartPicker = new TimePickerBuilder(GraphActivity.this, new OnTimeSelectListener() {
                         @Override
                         public void onTimeSelected(Date date, View v) {
-                            endDate = date;
+                            startDate = date;
                             btnSetStartDate.setText(Constants.DATE_FORMAT_YEAR_MONTH_DAY.format(date));
                             update();
                         }
                     })
                             .setType(true,true,true,false,false,false)
                             .setDate(calendar)
-                            .setTitleText("结束日期选择")
+                            .setTitleText("开始日期选择")
                             .build();
                     mDateStartPicker.show();
                     break;
@@ -279,17 +290,20 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
         }
     }
 
-    public void update() {
+    public  void update() {
         try {
             mGraphData=StatisticsMiddle.getpiebill(searchType,billtype,firstClass,startDate,endDate,this);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         if(!mGraphData.isEmpty()){
-            mGraphData.add(new PieEntry(30,"test"));
-            mPieChart.setCenterText(new SpannableString("总计\n"+getTotal(mGraphData).toString()));
-            initPieChart();
-            barListAdapter.refresh(mGraphData);
+            if(Float.compare(getTotal(mGraphData),0.0f)!=0){
+                mPieChart.setCenterText(new SpannableString("总计\n"+getTotal(mGraphData).toString()));
+                initPieChart();
+                barListAdapter.refresh(mGraphData);
+            }
+            else
+                ToastUtil.showShortToast(this,"总计为0");
         }
         else{
             ToastUtil.showShortToast(this,"无符合目标数据");
@@ -298,6 +312,7 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
     }
 
     private void initPieChart(){
+        mPieChart.setCenterText(new SpannableString("总计\n"+getTotal(mGraphData).toString()));
         PieDataSet dataSet = new PieDataSet(mGraphData,"");
         ArrayList<Integer> colors = new ArrayList<Integer>();
         for (int i=0;i<=mGraphData.size();i++){
@@ -307,14 +322,14 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
                 newColor=ColorUtils.getRandomColor();
             }
         }
-        dataSet.setColors(colors);
-
+        if(colors.size()!=0){
+            dataSet.setColors(colors);
+        }
         PieData pieData = new PieData(dataSet);
         pieData.setDrawValues(true);
         pieData.setValueFormatter(new PercentFormatter(mPieChart));
         pieData.setValueTextSize(12f);
         pieData.setValueTextColor(Color.WHITE);
-
         Description description = new Description();
         description.setText("");
         mPieChart.setDescription(description);
@@ -331,10 +346,10 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
         btnIncomeGraphByAccount.setOnClickListener(onClick);
         btnMonthIncome.setOnClickListener(onClick);
         btnMonthCost.setOnClickListener(onClick);
+        btnBillDetail.setOnClickListener(onClick);
         btnSetStartDate.setOnClickListener(onClick);
         btnSetEndDate.setOnClickListener(onClick);
     }
-
 
 
     protected void initChartStyle() throws ParseException {
@@ -356,10 +371,10 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
         calendar.add(Calendar.MONTH,-1);
         startDate=calendar.getTime();
         mGraphData= StatisticsMiddle.getpiebill(searchType,billtype,firstClass,startDate,endDate,this);
-
+        btnSetStartDate.setText(Constants.DATE_FORMAT_YEAR_MONTH_DAY.format(startDate));
+        btnSetEndDate.setText(Constants.DATE_FORMAT_YEAR_MONTH_DAY.format(endDate));
         //设置图标中心文字
         mPieChart.setCenterTextSize(20);
-        mPieChart.setCenterText(new SpannableString("总计\n"+getTotal(mGraphData).toString()));
 
         mPieChart.setDrawCenterText(true);
         //设置图标中心空白，空心
