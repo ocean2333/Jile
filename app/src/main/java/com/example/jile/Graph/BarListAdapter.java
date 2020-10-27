@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jile.Detail.DeatilActivity;
 import com.example.jile.Detail.LineElement;
+import com.example.jile.LogoActivity;
 import com.example.jile.R;
 import com.example.jile.Util.StatisticsMiddle;
 import com.example.jile.Util.TextUtil;
@@ -66,6 +68,8 @@ public class BarListAdapter extends BaseRecyclerAdapter<PieEntry>{
         v.setStartColor(newColor);
         v.setEndColor(newColor);
         v.startProgressAnimation();
+        ImageView iv =  (ImageView)(holder.findViewById(R.id.billImage));
+        iv.setImageResource(LogoActivity.iconDao.querybyskey("name",item.getLabel()).get(0).getIconId());
         Button button = (Button)holder.findView(R.id.billMoney);
         button.setText(decimalFormat.format(item.getValue())+" >");
         button.setOnClickListener(new View.OnClickListener() {
