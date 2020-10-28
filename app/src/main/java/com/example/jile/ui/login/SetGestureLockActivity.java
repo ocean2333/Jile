@@ -76,7 +76,7 @@ public class SetGestureLockActivity extends SetPatternActivity {
         LogoActivity.userDao.insert(user);
         NewTableHelper newTableHelper = new NewTableHelper(this,user.getName());
         newTableHelper.create();
-        Toast.makeText(SetGestureLockActivity.this,"got"+user.getName(),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(SetGestureLockActivity.this,"got"+user.getName(),Toast.LENGTH_SHORT).show();
     }
 }
 

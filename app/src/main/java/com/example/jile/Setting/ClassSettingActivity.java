@@ -34,8 +34,10 @@ import static android.view.View.GONE;
 public class ClassSettingActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private Integer iconId;
+    ClassAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeSettingActivity.setActivityTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_setting);
         String type = getIntent().getExtras().getString("type");
@@ -43,7 +45,7 @@ public class ClassSettingActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         WidgetUtils.initRecyclerView(recyclerView);
         List<FirstClass> firstClassList =  LogoActivity.firstClassDao.querybyskey("type",type);
-        recyclerView.setAdapter(new ClassAdapter(firstClassList,R.layout.adapter_firstclass,this));
+        recyclerView.setAdapter(adapter = new ClassAdapter(firstClassList,R.layout.adapter_firstclass,this));
         ImageButton btnAdd = findViewById(R.id.btnAdd);
         LinearLayout newFirstClassSetter = findViewById(R.id.newFirstClassLayout);
         newFirstClassSetter.setVisibility(GONE);
@@ -52,12 +54,13 @@ public class ClassSettingActivity extends AppCompatActivity {
         });
         ImageButton btnSelectIcon = findViewById(R.id.btnSelectIcon);
         btnSelectIcon.setOnClickListener(v->{
-            startActivity(IconSelectorActivity.startThisActivity(this, type));
+            startActivityForResult(IconSelectorActivity.startThisActivity(this, type),0);
         });
         ImageButton btnUncheck = findViewById(R.id.btnUncheck);
         btnUncheck.setOnClickListener(v->newFirstClassSetter.setVisibility(GONE));
         ImageButton btnCheck = findViewById(R.id.btnCheck);
         EditText et = findViewById(R.id.etTitle);
+        findViewById(R.id.btnBack).setOnClickListener(v->finish());
         et.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -85,6 +88,9 @@ public class ClassSettingActivity extends AppCompatActivity {
             }else{
                 LogoActivity.firstClassDao.insert(new FirstClass(UUID.randomUUID().toString(),
                         type,et.getText().toString(),iconId));
+                ((EditText)newFirstClassSetter.findViewById(R.id.etTitle)).setText("");
+                newFirstClassSetter.setVisibility(GONE);
+                adapter.refresh(LogoActivity.firstClassDao.querybyskey("type",type));
             }
         });
     }
@@ -93,6 +99,7 @@ public class ClassSettingActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode,int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ImageView iv = (ImageView) findViewById(R.id.ivIcon);
+        if(data==null) return;
         iconId = data.getExtras().getInt("iconId");
         iv.setImageResource(data.getExtras().getInt("iconId"));
     }
@@ -104,4 +111,5 @@ public class ClassSettingActivity extends AppCompatActivity {
         intent.putExtras(bundle);
         return intent;
     }
+
 }

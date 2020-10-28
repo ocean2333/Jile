@@ -27,11 +27,76 @@
         <item name="pl_successColor">?colorControlActivated</item>
     </style>
 
-    <style name="myAppTheme" parent="XUITheme.Phone">
+
+<!--    &lt;!&ndash; CheckBox，RadioButton，SwitchCompat等一般控件的选中效果默认采用该颜色 &ndash;&gt;
+    <item name="colorAccent">@color/xui_config_color_main_theme</item>
+    &lt;!&ndash;应用的主要色调，actionBar默认使用该颜色，Toolbar导航栏的底色&ndash;&gt;
+    <item name="colorPrimary">@color/xui_config_color_main_theme</item>
+    &lt;!&ndash;应用的主要暗色调，statusBarColor默认使用该颜色&ndash;&gt;
+    <item name="colorPrimaryDark">@color/xui_config_color_main_theme</item>
+
+    <item name="colorControlNormal">@color/xui_config_color_control_normal</item>-->
+
+    <style name="myAppThemeYellow" parent="XUITheme.Phone">
         <!-- 自定义自己的主题样式 -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/theme_yellow</item>
+        <item name="colorPrimaryDark">@color/theme_yellow</item>
+        <item name="colorAccent">@color/theme_yellow</item>
+        <item name="colorControlNormal">@color/liteGray</item>
+        <item name="bottomIconColor">@color/theme_yellow</item>
+        <!--应用的主要文字颜色，actionBar的标题文字默认使用该颜色-->
+        <item name="android:textColorPrimary">@color/xui_config_color_primary_text</item>
+    </style>
+
+    <style name="myAppThemeGreen" parent="XUITheme.Phone">
+        <!-- 自定义自己的主题样式 -->
+        <item name="colorPrimary">@color/theme_green</item>
+        <item name="colorPrimaryDark">@color/theme_green</item>
+        <item name="colorAccent">@color/theme_green</item>
+        <item name="colorControlNormal">@color/liteGray</item>
+        <item name="bottomIconColor">@color/theme_green</item>
+        <!--应用的主要文字颜色，actionBar的标题文字默认使用该颜色-->
+        <item name="android:textColorPrimary">@color/xui_config_color_primary_text</item>
+    </style>
+    <style name="myAppThemeRed" parent="XUITheme.Phone">
+        <!-- 自定义自己的主题样式 -->
+        <item name="colorPrimary">@color/theme_red</item>
+        <item name="colorPrimaryDark">@color/theme_red</item>
+        <item name="colorAccent">@color/theme_red</item>
+        <item name="colorControlNormal">@color/liteGray</item>
+        <item name="bottomIconColor">@color/theme_red</item>
+        <!--应用的主要文字颜色，actionBar的标题文字默认使用该颜色-->
+        <item name="android:textColorPrimary">@color/xui_config_color_primary_text</item>
+    </style>
+    <style name="myAppThemePink" parent="XUITheme.Phone">
+        <!-- 自定义自己的主题样式 -->
+        <item name="colorPrimary">@color/theme_pink</item>
+        <item name="colorPrimaryDark">@color/theme_pink</item>
+        <item name="colorAccent">@color/theme_pink</item>
+        <item name="colorControlNormal">@color/liteGray</item>
+        <item name="bottomIconColor">@color/theme_pink</item>
+        <!--应用的主要文字颜色，actionBar的标题文字默认使用该颜色-->
+        <item name="android:textColorPrimary">@color/xui_config_color_primary_text</item>
+    </style>
+    <style name="myAppThemeWhite" parent="XUITheme.Phone">
+        <!-- 自定义自己的主题样式 -->
+        <item name="colorPrimary">@color/theme_white</item>
+        <item name="colorPrimaryDark">@color/theme_white</item>
+        <item name="colorAccent">@color/theme_white</item>
+        <item name="colorControlNormal">@color/liteGray</item>
+        <item name="bottomIconColor">@color/xui_config_color_black</item>
+        <!--应用的主要文字颜色，actionBar的标题文字默认使用该颜色-->
+        <item name="android:textColorPrimary">@color/xui_config_color_primary_text</item>
+    </style>
+    <style name="myAppThemeBlue" parent="XUITheme.Phone">
+        <!-- 自定义自己的主题样式 -->
+        <item name="colorPrimary">@color/theme_blue</item>
+        <item name="colorPrimaryDark">@color/theme_blue</item>
+        <item name="colorAccent">@color/theme_blue</item>
+        <item name="colorControlNormal">@color/liteGray</item>
+        <item name="bottomIconColor">@color/theme_blue</item>
+        <!--应用的主要文字颜色，actionBar的标题文字默认使用该颜色-->
+        <item name="android:textColorPrimary">@color/xui_config_color_primary_text</item>
     </style>
 
 

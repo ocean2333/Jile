@@ -6,24 +6,31 @@
     <ImageView
         android:padding="10dp"
         android:id="@+id/ivIcon"
-        android:layout_width="75dp"
-        android:layout_height="75dp"/>
+        android:layout_width="65dp"
+        android:layout_height="65dp"/>
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:text="这是测试文字"
         android:gravity="center_vertical"
         android:paddingHorizontal="10dp"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:layout_toEndOf="@+id/ivIcon"
-        android:layout_height="75dp"/>
+        android:layout_height="65dp"/>
+    <ImageButton
+        android:id="@+id/btnDelete"
+        android:background="@color/xui_transparent"
+        android:src="@drawable/ic_delete"
+        android:layout_toStartOf="@id/btnAdd"
+        android:layout_width="65dp"
+        android:layout_height="65dp"/>
     <ImageButton
         android:id="@+id/btnAdd"
         android:background="@color/xui_transparent"
         android:src="@drawable/ic_add"
         android:layout_alignParentEnd="true"
-        android:layout_width="75dp"
-        android:layout_height="75dp"/>
+        android:layout_width="65dp"
+        android:layout_height="65dp"/>
     <TextView
         android:id="@+id/uuid"
         android:layout_width="0dp"

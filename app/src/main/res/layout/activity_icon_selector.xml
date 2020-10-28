@@ -10,7 +10,7 @@
         android:id="@+id/top_ll"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/theme_yellow">
+        android:background="?attr/colorPrimary">
         <ImageButton
             android:src="@drawable/ic_arrow_left"
             android:background="@color/xui_transparent"

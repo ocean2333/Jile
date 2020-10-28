@@ -7,9 +7,10 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:paddingTop="68dp"
+        android:layout_height="250dp"
+        android:paddingTop="100dp"
         android:textSize="40sp"
+        android:background="@drawable/pic_background"
         android:text="无有效数据" />
 
     <androidx.recyclerview.widget.RecyclerView

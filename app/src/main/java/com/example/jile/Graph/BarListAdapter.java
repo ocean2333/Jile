@@ -59,7 +59,7 @@ public class BarListAdapter extends BaseRecyclerAdapter<PieEntry>{
 
 //TODO 若是进图条没有动在此进行测试
         if(Float.compare(GraphActivity.sumBill,0.0f)!=0){
-            v.setEndProgress((int)(item.getValue()/GraphActivity.sumBill));
+            v.setEndProgress((int)(item.getValue()/GraphActivity.sumBill*100));
             holder.text(R.id.billProportion,"  "+(int)(item.getValue()/GraphActivity.sumBill*100)+"%");
         }
         else{

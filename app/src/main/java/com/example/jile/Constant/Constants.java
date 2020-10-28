@@ -35,6 +35,7 @@ public class Constants {
     public static final String SEARCH_TYPE_MEM = "M";
     public static final String SEARCH_TYPE_STORE = "S";
     public static final String SEARCH_TYPE_SECOND_CLASS_IN_FIRST_CLASS = "FCISC";
+
     public static final ArrayList<Integer> GRAPH_COLOR = new ArrayList<Integer>(){
         {
             this.add(Color.parseColor("#f38181"));
@@ -56,4 +57,12 @@ public class Constants {
             this.add(Color.parseColor("#cabbe9"));
         }
     };
+
+    public static final String THEME_YELLOW = "咸蛋黄";
+    public static final String THEME_BLUE = "天空蓝";
+    public static final String THEME_RED = "烈艳红";
+    public static final String THEME_PINK = "少女粉";
+    public static final String THEME_GREEN = "早苗绿";
+    public static final String THEME_WHITE = "简洁白";
+
 }

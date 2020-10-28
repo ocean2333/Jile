@@ -9,7 +9,7 @@
         android:id="@+id/top_ll"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/theme_yellow">
+        android:background="?attr/colorPrimary">
         <ImageButton
             android:src="@drawable/ic_arrow_left"
             android:background="@color/xui_transparent"
@@ -53,9 +53,10 @@
             android:id="@+id/etMoneyNumber"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="0.00"
+            android:hint="0.00"
+            android:maxLength="10"
             android:textSize="60sp"
-            android:inputType="numberSigned|numberDecimal"
+            android:inputType="numberDecimal"
             android:singleLine="true"/>
     </LinearLayout>
     <LinearLayout

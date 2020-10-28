@@ -31,6 +31,7 @@ import com.example.jile.Bean.Store;
 import com.example.jile.Constant.Constants;
 import com.example.jile.LogoActivity;
 import com.example.jile.R;
+import com.example.jile.Setting.ThemeSettingActivity;
 import com.example.jile.Util.ToastUtil;
 import com.xuexiang.xui.XUI;
 import com.xuexiang.xui.widget.picker.widget.TimePickerView;
@@ -64,6 +65,7 @@ public class NewBIllActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //XUI.initTheme(this);
+        ThemeSettingActivity.setActivityTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_bill);
         XUI.initTheme(this);
@@ -162,18 +164,12 @@ public class NewBIllActivity extends AppCompatActivity {
                     finish();
                     break;
                 case R.id.btnSave:
-                    BigDecimal num = new BigDecimal(etMoneyNumber.getText().toString());
                     if(btnFirstClass.getText().toString().equals(btnSecondClass.getText().toString())){
                         Toast.makeText(NewBIllActivity.this,"转入账户和转出账户不能相同！",Toast.LENGTH_SHORT).show();
                     }else if(etMoneyNumber.getText().toString().equals("")){
                          ToastUtil.showShortToast(NewBIllActivity.this,"金额不能为空");
-                    }else if(!num.abs().equals(num) && type.equals(Constants.INCOME)){
-                         ToastUtil.showShortToast(NewBIllActivity.this,"收入不能为负数");
-                    }else if(num.abs().equals(num) && type.equals(Constants.COST)){
-                        ToastUtil.showShortToast(NewBIllActivity.this,"支出不能为正数");
-                    }else if(!num.abs().equals(num) && type.equals(Constants.TRANSFER)){
-                        ToastUtil.showShortToast(NewBIllActivity.this,"转账不能为负数");
                     }else{
+                        BigDecimal num = new BigDecimal(etMoneyNumber.getText().toString());
                         if(uuid==null){
                             try {addNewBillToDB(createNewBill());}catch(ParseException e){e.printStackTrace();}
                         }else{
@@ -323,7 +319,7 @@ public class NewBIllActivity extends AppCompatActivity {
     /**
      * 向数据库删除账单，同时更新Account的bablnce
      * */
-    private void deleteBillInDB(Bill bill){
+    public static void deleteBillInDB(Bill bill){
         LogoActivity.billDao.delete(bill);
         if(bill.getType().equals(Constants.INCOME)||bill.getType().equals(Constants.COST)){
             List<Account> tempaccount =LogoActivity.accountDao.querybyskey("selfname",bill.getAccountname());
@@ -359,15 +355,17 @@ public class NewBIllActivity extends AppCompatActivity {
      * 根据Button控件和EditText控件的值构造bill，有转账和非转账两种构造方法
      * */
     private Bill createNewBill() throws ParseException {
+        BigDecimal num = new BigDecimal(etMoneyNumber.getText().toString());
+        if(type.equals(Constants.COST)) num = num.abs().negate();
         if(uuid!=null){
             if(!type.equals(Constants.TRANSFER)){
-                return new Bill(uuid,type,new BigDecimal(etMoneyNumber.getText().toString()),
+                return new Bill(uuid,type,num,
                         btnSelectAccount.getText().toString(),btnFirstClass.getText().toString(),btnSecondClass.getText().toString(),
                         btnSelectMember.getText().toString(),btnSetStore.getText().toString(),
                         Constants.DATE_FORMAT_SIMPLE.format(Constants.DATE_FORMAT_COMPLEX.parse(btnSetDate.getText().toString())),
                         LogoActivity.iconDao.querybyskey("name",btnFirstClass.getText().toString()).get(0).getIconId(),etNote.getText().toString());
             }else{
-                return new Bill(uuid,type,new BigDecimal(etMoneyNumber.getText().toString()),
+                return new Bill(uuid,type,num,
                         "",btnFirstClass.getText().toString(),btnSecondClass.getText().toString(),
                         btnSelectMember.getText().toString(),btnSetStore.getText().toString(),
                         Constants.DATE_FORMAT_SIMPLE.format(Constants.DATE_FORMAT_COMPLEX.parse(btnSetDate.getText().toString())),
@@ -375,13 +373,13 @@ public class NewBIllActivity extends AppCompatActivity {
             }
         }else{
             if(!type.equals(Constants.TRANSFER)){
-                return new Bill(UUID.randomUUID().toString(),type,new BigDecimal(etMoneyNumber.getText().toString()),
+                return new Bill(UUID.randomUUID().toString(),type,num,
                         btnSelectAccount.getText().toString(),btnFirstClass.getText().toString(),btnSecondClass.getText().toString(),
                         btnSelectMember.getText().toString(),btnSetStore.getText().toString(),
                         Constants.DATE_FORMAT_SIMPLE.format(Constants.DATE_FORMAT_COMPLEX.parse(btnSetDate.getText().toString())),
                         LogoActivity.iconDao.querybyskey("name",btnFirstClass.getText().toString()).get(0).getIconId(),etNote.getText().toString());
             }else{
-                return new Bill(UUID.randomUUID().toString(),type,new BigDecimal(etMoneyNumber.getText().toString()),
+                return new Bill(UUID.randomUUID().toString(),type,num,
                         "",btnFirstClass.getText().toString(),btnSecondClass.getText().toString(),
                         btnSelectMember.getText().toString(),btnSetStore.getText().toString(),
                         Constants.DATE_FORMAT_SIMPLE.format(Constants.DATE_FORMAT_COMPLEX.parse(btnSetDate.getText().toString())),
@@ -478,13 +476,6 @@ public class NewBIllActivity extends AppCompatActivity {
         ll_2.setVisibility(View.VISIBLE);
         Button btnSelectAccount =  ll_2.findViewById(R.id.btnSelectAccount);
         btnSelectAccount.setText(accountItems.get(0));
-        /*LinearLayout ll = findViewById(R.id.ll);
-        LayoutInflater mInflater = LayoutInflater.from(this);
-        View mView = mInflater.inflate(R.layout.adapter_class,null);
-        Button btnAccount = mView.findViewById(R.id.btnSelectAccount);
-        btnAccount.setText(accountItems.get(0));
-        btnAccount.setOnClickListener(new OnClick());
-        ll.addView(mView,1);*/
     }
 
     /**

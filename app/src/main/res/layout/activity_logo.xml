@@ -8,16 +8,39 @@
     android:padding="15dp"
     android:background="@color/colorPrimary">
     <ImageView
-        android:id="@+id/im_logo"
-        android:background="@color/xui_transparent"
-        android:src="@mipmap/ic_launcher_round"
+        android:id="@+id/logo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_launcher_round"
+        android:layout_marginTop="80dp"/>
     <TextView
         android:id="@+id/tv_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/logo"
+        android:layout_marginTop="50dp"
         android:text="@string/app_name"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:layout_centerHorizontal="true"/>
+    <TextView
+        android:id="@+id/tv_slogan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo"
+        android:layout_marginTop="200dp"
+        android:text="今天你记了吗？"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        tools:ignore="MissingPrefix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        fontPath="fonts/fzzy.ttf"
+        android:layout_marginTop="200dp"
+        android:text="农夫山泉荣誉出品"
+        android:textSize="15sp"
+        android:layout_centerHorizontal="true"/>
+
 </RelativeLayout>

@@ -55,6 +55,7 @@ public class BillMiddle {
         while (it.hasNext()) {
             Bill bill = (Bill) it.next();
             Date billDate = Constants.DATE_FORMAT_SIMPLE.parse(bill.getDate());
+            if(bill.getType().equals(Constants.TRANSFER)) continue;
             if(billDate.getTime()<=DateEnd.getTime()&&billDate.getTime()>=DateStart.getTime()){
                 afterDeal.add(bill);
             }
@@ -132,6 +133,7 @@ public class BillMiddle {
         while (it.hasNext()) {
             Bill bill = (Bill) it.next();
             Date billDate = Constants.DATE_FORMAT_SIMPLE.parse(bill.getDate());
+            if(bill.getType().equals(Constants.TRANSFER)) continue;
             if(billDate.getTime()<=DateEnd.getTime()&&billDate.getTime()>=DateStart.getTime()){
                 afterDeal.add(bill);
             }
@@ -209,6 +211,7 @@ public class BillMiddle {
         while (it.hasNext()) {
             Bill bill = (Bill) it.next();
             Date billDate = Constants.DATE_FORMAT_SIMPLE.parse(bill.getDate());
+            if(bill.getType().equals(Constants.TRANSFER)) continue;
             if(billDate.getTime()<=DateEnd.getTime()&&billDate.getTime()>=DateStart.getTime()){
                 afterDeal.add(bill);
             }
@@ -286,6 +289,7 @@ public class BillMiddle {
         while (it.hasNext()) {
             Bill bill = (Bill) it.next();
             Date billDate = Constants.DATE_FORMAT_SIMPLE.parse(bill.getDate());
+            if(bill.getType().equals(Constants.TRANSFER)) continue;
             if(billDate.getTime()<=DateEnd.getTime()&&billDate.getTime()>=DateStart.getTime()){
                 afterDeal.add(bill);
             }
@@ -364,6 +368,7 @@ public class BillMiddle {
         while (it.hasNext()) {
             Bill bill = (Bill) it.next();
             Date billDate = Constants.DATE_FORMAT_SIMPLE.parse(bill.getDate());
+            if(bill.getType().equals(Constants.TRANSFER)) continue;
             if(billDate.getTime()<=DateEnd.getTime()&&billDate.getTime()>=DateStart.getTime()){
                 afterDeal.add(bill);
             }
@@ -443,6 +448,7 @@ public class BillMiddle {
         while (it.hasNext()) {
             Bill bill = (Bill) it.next();
             Date billDate = Constants.DATE_FORMAT_SIMPLE.parse(bill.getDate());
+            if(bill.getType().equals(Constants.TRANSFER)) continue;
             if(billDate.getTime()<=DateEnd.getTime()&&billDate.getTime()>=DateStart.getTime() ){
                 afterDeal.add(bill);
             }
@@ -479,6 +485,7 @@ public class BillMiddle {
                 Calendar tmp = startCalendar;
                 while (swit.hasNext()) {
                     Bill bill = (Bill) swit.next();
+                    if(bill.getType().equals(Constants.TRANSFER)) continue;
                     Date billDate = Constants.DATE_FORMAT_SIMPLE.parse(bill.getDate());
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(billDate);
@@ -512,6 +519,7 @@ public class BillMiddle {
                 Calendar tmp = startCalendar;
                 while (swit.hasNext()) {
                     Bill bill = (Bill) swit.next();
+                    if(bill.getType().equals(Constants.TRANSFER)) continue;
                     Date billDate = Constants.DATE_FORMAT_SIMPLE.parse(bill.getDate());
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(billDate);
@@ -542,6 +550,7 @@ public class BillMiddle {
                 Calendar tmp = startCalendar;
                 while (swit.hasNext()) {
                     Bill bill = (Bill) swit.next();
+                    if(bill.getType().equals(Constants.TRANSFER)) continue;
                     Date billDate = Constants.DATE_FORMAT_SIMPLE.parse(bill.getDate());
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(billDate);

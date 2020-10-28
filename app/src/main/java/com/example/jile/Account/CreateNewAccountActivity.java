@@ -12,15 +12,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.example.jile.Bean.Account;
+import com.example.jile.Bean.Bill;
 import com.example.jile.Constant.Constants;
 import com.example.jile.LogoActivity;
 import com.example.jile.New.NewBIllActivity;
 import com.example.jile.R;
+import com.example.jile.Setting.ThemeSettingActivity;
 import com.example.jile.Util.IconSelectorActivity;
 import com.example.jile.Util.ToastUtil;
 
@@ -41,6 +44,7 @@ public class CreateNewAccountActivity extends AppCompatActivity {
     private Integer iconId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeSettingActivity.setActivityTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_account);
         if(getIntent().getExtras()!=null){
@@ -67,10 +71,17 @@ public class CreateNewAccountActivity extends AppCompatActivity {
     }
 
     private Account createNewAccount(){
-        return new Account(UUID.randomUUID().toString(), accountType,
-                etAccountName.getText().toString(), new BigDecimal(etBalance.getText().toString()),
-                currency,iconId,
-                etNote.getText().toString());
+        if(uuid==null){
+            return new Account(UUID.randomUUID().toString(), accountType,
+                    etAccountName.getText().toString(), new BigDecimal(etBalance.getText().toString()),
+                    currency,iconId,
+                    etNote.getText().toString());
+        }else{
+            return new Account(uuid, accountType,
+                    etAccountName.getText().toString(), new BigDecimal(etBalance.getText().toString()),
+                    currency,iconId,
+                    etNote.getText().toString());
+        }
     }
 
     private void addNewAccountToDB(Account account){
@@ -95,6 +106,8 @@ public class CreateNewAccountActivity extends AppCompatActivity {
             btnCurrency.setText(currencyItems.get(0));
             btnAccountType.setText(chineseAccountType);
             etNote.setText(account.getNote());
+            iconId = account.getIconId();
+            ((ImageView)findViewById(R.id.ivIcon)).setImageResource(account.getIconId());
         }
         setLinstener();
     }
@@ -171,7 +184,18 @@ public class CreateNewAccountActivity extends AppCompatActivity {
             }
         });
         btnDelete.setOnClickListener((v -> {
-            ToastUtil.showShortToast(this,"assume it was been deleted");
+            Account account = LogoActivity.accountDao.querybyskey("uuid",uuid).get(0);
+            for(Bill b:LogoActivity.billDao.querybyskey("accountname",account.getSelfname())){
+                NewBIllActivity.deleteBillInDB(b);
+            }
+            for(Bill b:LogoActivity.billDao.querybyskey("first",account.getSelfname())){
+                NewBIllActivity.deleteBillInDB(b);
+            }
+            for(Bill b:LogoActivity.billDao.querybyskey("second",account.getSelfname())){
+                NewBIllActivity.deleteBillInDB(b);
+            }
+            LogoActivity.accountDao.delete(account);
+            finish();
         }));
         btnSelectIcon.setOnClickListener(v->{
             startActivityForResult(IconSelectorActivity.startThisActivity(this,Constants.ACCOUNT),0);
@@ -182,6 +206,7 @@ public class CreateNewAccountActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode,int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ImageView iv = (ImageView) findViewById(R.id.ivIcon);
+        if(data==null) return;
         iconId = data.getExtras().getInt("iconId");
         iv.setImageResource(data.getExtras().getInt("iconId"));
     }

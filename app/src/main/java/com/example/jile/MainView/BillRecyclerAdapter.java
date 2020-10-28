@@ -38,7 +38,11 @@ public class BillRecyclerAdapter extends SmartRecyclerAdapter<Bill> {
 
     @Override
     protected void onBindViewHolder(SmartViewHolder holder, Bill model, int position) {
-        holder.image(R.id.ivIcon, LogoActivity.iconDao.querybyskey("name",model.getFirst()).get(0).getIconId());
+        if(model.getType().equals(Constants.TRANSFER)){
+            holder.image(R.id.ivIcon, R.drawable.ic_transfer);
+        }else{
+            holder.image(R.id.ivIcon, LogoActivity.iconDao.querybyskey("name",model.getFirst()).get(0).getIconId());
+        }
         try {
             holder.text(R.id.tvTime,DateUtil.getShortDate(model.getDate()));
         } catch (ParseException e) {

@@ -21,6 +21,7 @@ import com.example.jile.LogoActivity;
 import com.example.jile.MainView.MainActivity;
 import com.example.jile.Bean.Account;
 import com.example.jile.R;
+import com.example.jile.Setting.ThemeSettingActivity;
 import com.example.jile.Util.TextUtil;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.xuexiang.xui.widget.textview.autofit.AutoFitTextView;
@@ -44,6 +45,7 @@ public class AccountActivity extends AppCompatActivity {
     private TextView tvCashNum,tvBankNum,tvNetNum,tvOtherNum;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeSettingActivity.setActivityTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         init();
@@ -102,42 +104,6 @@ public class AccountActivity extends AppCompatActivity {
         WidgetUtils.initRecyclerView(ll_3);
         ll_3.setAdapter(new AccountTitleAdapter(lel,R.layout.adapter_ako_account));
 
-        /*tvCashNum = ll_3.getChildAt(0).findViewById(R.id.tvTitle);
-        tvBankNum = ll_3.getChildAt(1).findViewById(R.id.tvTitle);
-        tvNetNum = ll_3.getChildAt(2).findViewById(R.id.tvTitle);
-        tvOtherNum = ll_3.getChildAt(3).findViewById(R.id.tvTitle);
-        SwipeRecyclerView lvCash = ll_3.getChildAt(0).findViewById(R.id.lv);
-        SwipeRecyclerView lvBank = ll_3.getChildAt(1).findViewById(R.id.lv);
-        SwipeRecyclerView lvNet = ll_3.getChildAt(2).findViewById(R.id.lv);
-        SwipeRecyclerView lvOther = ll_3.getChildAt(3).findViewById(R.id.lv);
-        WidgetUtils.initRecyclerView(lvCash);
-        WidgetUtils.initRecyclerView(lvBank);
-        WidgetUtils.initRecyclerView(lvNet);
-        WidgetUtils.initRecyclerView(lvOther);
-        if(netAccount !=null){
-            lvNet.setAdapter(new AccountAdapter(netAccount,R.layout.adapter_account,(v, p)->{
-                TextView tv = (TextView) v.findViewById(R.id.uuid);
-                startActivity(CreateNewAccountActivity.startThisActivity(this,tv.getText().toString()));
-            }));
-        }
-        if (cashAccount!=null){
-            lvCash.setAdapter(new AccountAdapter(cashAccount,R.layout.adapter_account,(v, p)->{
-                TextView tv = (TextView) v.findViewById(R.id.uuid);
-                startActivity(CreateNewAccountActivity.startThisActivity(this,tv.getText().toString()));
-            }));
-        }
-        if (bankAccount !=null){
-            lvBank.setAdapter(new AccountAdapter(bankAccount,R.layout.adapter_account,(v, p)->{
-                TextView tv = (TextView) v.findViewById(R.id.uuid);
-                startActivity(CreateNewAccountActivity.startThisActivity(this,tv.getText().toString()));
-            }));
-        }
-        if (otherAccount!=null){
-            lvOther.setAdapter(new AccountAdapter(otherAccount,R.layout.adapter_account,(v, p)->{
-                TextView tv = (TextView) v.findViewById(R.id.uuid);
-                startActivity(CreateNewAccountActivity.startThisActivity(this,tv.getText().toString()));
-            }));
-        }*/
     }
 
     private void init(){
@@ -163,13 +129,7 @@ public class AccountActivity extends AppCompatActivity {
         getMoneys();
         setListView();
         TextView tvTotalMoney = findViewById(R.id.tvTotalWealthNum);
-        TextView tvDelta = findViewById(R.id.tvCompareToLastMonth);
         tvTotalMoney.setText(totalMoney);
-        if(deltaMoney.charAt(0)=='-'){
-            tvDelta.setText("相比上个月减少"+(deltaMoney.split("-")[1]));
-        }else{
-            tvDelta.setText("相比上个月增加"+deltaMoney);
-        }
     }
 
     private View transformAccountToView(Account account){

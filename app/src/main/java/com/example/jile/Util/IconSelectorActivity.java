@@ -11,6 +11,7 @@ import com.example.jile.Bean.Icon;
 import com.example.jile.Constant.Constants;
 import com.example.jile.LogoActivity;
 import com.example.jile.R;
+import com.example.jile.Setting.ThemeSettingActivity;
 import com.xuexiang.xui.XUI;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
@@ -24,6 +25,7 @@ public class IconSelectorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         XUI.initTheme(this);
+        ThemeSettingActivity.setActivityTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_icon_selector);
         if(getIntent().getExtras()==null){

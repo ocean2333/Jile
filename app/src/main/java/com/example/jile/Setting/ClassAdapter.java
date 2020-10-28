@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -16,11 +17,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.jile.Bean.Bill;
 import com.example.jile.Bean.FirstClass;
 import com.example.jile.Bean.SecondClass;
 import com.example.jile.LogoActivity;
+import com.example.jile.New.NewBIllActivity;
 import com.example.jile.R;
+import com.example.jile.ui.login.LoginActivity;
 import com.scwang.smartrefresh.layout.adapter.SmartRecyclerAdapter;
 import com.scwang.smartrefresh.layout.adapter.SmartViewHolder;
 
@@ -28,11 +33,15 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.UUID;
 
+import static android.view.View.GONE;
+
 public class ClassAdapter extends SmartRecyclerAdapter<FirstClass> {
     Context mContext;
-
-    public ClassAdapter(Collection<FirstClass> collection, int layoutId,Context context) {
+    ClassAdapter mAdapter;
+    Collection<FirstClass> mCollection;
+    public ClassAdapter(Collection<FirstClass> collection, int layoutId, Context context) {
         super(collection, layoutId);
+        mCollection = collection;
         mContext = context;
     }
 
@@ -44,6 +53,13 @@ public class ClassAdapter extends SmartRecyclerAdapter<FirstClass> {
         ImageButton ib = holder.findViewById(R.id.btnAdd);
         LinearLayout ll = holder.findViewById(R.id.ll);
         ll.removeAllViews();
+        ImageButton imageButton = ((ImageButton)holder.findViewById(R.id.btnDelete));
+        imageButton.setOnClickListener(v->{
+            LogoActivity.firstClassDao.delete(LogoActivity.firstClassDao.querybyskey("uuid",model.getUuid()).get(0));
+            mCollection.remove(model);
+            this.refresh(mCollection);
+        });
+        if(!isNoChild(model.getUuid())) imageButton.setVisibility(GONE);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,200);
         for(SecondClass s:LogoActivity.secondClassDao.querybyskey("firstclass",model.getName())){
             View view = LayoutInflater.from(mContext).inflate(R.layout.adapter_secondclass,null);
@@ -57,8 +73,11 @@ public class ClassAdapter extends SmartRecyclerAdapter<FirstClass> {
                         .setTitle("确认删除")
                         .setIcon(R.drawable.ic_prompt)
                         .setPositiveButton("确定", (arg0, arg1) -> {
+                            for(Bill b:LogoActivity.billDao.querybyskey("second",((TextView)view.findViewById(R.id.tvTitle)).getText().toString())){
+                                NewBIllActivity.deleteBillInDB(b);
+                            }
                             LogoActivity.secondClassDao.delete(LogoActivity.secondClassDao.querybyskey("uuid",s.getUuid()).get(0));
-                            view.setVisibility(View.GONE);
+                            view.setVisibility(GONE);
                         })
                         .setNegativeButton("取消", null)
                         .show();
@@ -108,20 +127,26 @@ public class ClassAdapter extends SmartRecyclerAdapter<FirstClass> {
                 tv.setText(uuid);
                 childView.findViewById(R.id.btnDelete).setOnClickListener(v2->{
                     new AlertDialog.Builder(mContext)
-                            .setTitle("请输入预算")
+                            .setTitle("是否删除该分类")
                             .setIcon(R.drawable.ic_prompt)
                             .setPositiveButton("确定", (arg0, arg1) -> {
                                 LogoActivity.secondClassDao.delete(LogoActivity.secondClassDao.querybyskey("uuid",uuid).get(0));
-                                childView.setVisibility(View.GONE);
+                                if(isNoChild(model.getUuid())) imageButton.setVisibility(View.VISIBLE);
+                                childView.setVisibility(GONE);
                             })
                             .setNegativeButton("取消", null)
                             .show();
                 });
-                view.setVisibility(View.GONE);
+                view.setVisibility(GONE);
                 ll.addView(childView,0);
                 ib.setEnabled(true);
             });
             ll.addView(view,0);
         });
+    }
+
+    private boolean isNoChild(String uuid){
+        int childNum = LogoActivity.secondClassDao.querybyskey("firstclass",LogoActivity.firstClassDao.querybyskey("uuid",uuid).get(0).getName()).size();
+        return childNum == 0;
     }
 }

@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.jile.Bean.User;
 import com.example.jile.LogoActivity;
 import com.example.jile.R;
+import com.example.jile.Setting.ThemeSettingActivity;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private boolean b1,b2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeSettingActivity.setActivityTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
         final Bundle bundle = getIntent().getExtras();

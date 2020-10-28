@@ -110,6 +110,8 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
                 }
                 if(loginResult.getFailure()!=null){
+                    List<User> lu = LogoActivity.userDao.querybyskey("name",usernameEditText.getText().toString());
+                    hint = lu.size()!=0?lu.get(0).getTips():null;
                     if(hint==null){
                         Toast.makeText(LoginActivity.this,"登陆失败,用户不存在",Toast.LENGTH_SHORT).show();
                     }else{
@@ -218,5 +220,25 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    /**
+     * 禁止使用返回键返回并替换为再按一次退出
+     */
+    private long exitTime = 0;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK
+                && event.getAction() == KeyEvent.ACTION_DOWN){
+            if((System.currentTimeMillis()-exitTime) > 2000){
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                //finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

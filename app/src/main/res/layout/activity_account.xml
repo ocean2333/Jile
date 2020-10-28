@@ -6,34 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".Account.AccountActivity"
     android:orientation="vertical"
-    android:padding="1dp"
-    android:id="@+id/t"
-    android:background="@color/gray">
+    android:id="@+id/t">
     <LinearLayout
         android:id="@+id/ll_1"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:background="@color/theme_yellow">
+        android:background="?attr/colorPrimary">
         <ImageButton
             android:src="@drawable/ic_arrow_left"
             android:id="@+id/btnBack"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.11"
-            android:background="@color/theme_yellow"/>
+            android:background="?attr/colorPrimary"/>
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/theme_yellow"/>
-=
+            android:background="?attr/colorPrimary"/>
         <ImageButton
             android:id="@+id/btnCreateNewAccount"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.11"
-            android:background="@color/theme_yellow"
+            android:background="?attr/colorPrimary"
             android:src="@drawable/ic_add"/>
     </LinearLayout>
     <LinearLayout
@@ -41,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:paddingLeft="20dp"
-        android:background="@drawable/top_and_bottom_edge"
+        android:background="@drawable/pic_background"
         android:orientation="vertical">
         <TextView
             android:id="@+id/tvRawWealth"
@@ -49,7 +46,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:text="净资产"
-
+            android:background="@color/xui_transparent"
             android:gravity="center_vertical"
             android:textSize="25sp"/>
         <TextView
@@ -61,14 +58,7 @@
 
             android:gravity="center_vertical"
             android:textSize="45sp"/>
-        <TextView
-            android:id="@+id/tvCompareToLastMonth"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="较上个月.."
-            android:gravity="center_vertical"
-            android:textSize="15sp"/>
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

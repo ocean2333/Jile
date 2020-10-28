@@ -1,17 +1,23 @@
 package com.example.jile.MainView;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.IntRange;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.Activity;
+import android.app.StatusBarManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -35,9 +41,12 @@ import com.example.jile.LogoActivity;
 import com.example.jile.New.NewBIllActivity;
 import com.example.jile.R;
 import com.example.jile.Setting.SettingActivity;
+import com.example.jile.Setting.SettingClassSelectTypeActivity;
+import com.example.jile.Setting.ThemeSettingActivity;
 import com.example.jile.Util.DateUtil;
 import com.example.jile.Util.TextUtil;
-import com.xuexiang.xui.XUI;
+import com.example.jile.Util.ThemeUtil;
+import com.xuexiang.xui.utils.StatusBarUtils;
 import com.xuexiang.xui.utils.WidgetUtils;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 
@@ -53,6 +62,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.example.jile.LogoActivity.iconDao;
+import static com.example.jile.Util.ThemeUtil.getColorPrimary;
 import static com.xuexiang.xui.XUI.getContext;
 
 public class MainActivity extends AppCompatActivity {
@@ -62,12 +72,14 @@ public class MainActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeRefreshLayout;
     private static Bill[] bills;
     private SwipeRecyclerView recyclerView;
+    public String theme;
     /**
      * 获得登录信息并初始化Dao 初始化界面
      * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //XUI.initTheme(this);
+        ThemeSettingActivity.setActivityTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String user = LogoActivity.sp.getString("loginUser",null);
@@ -96,6 +108,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if(!theme.equals(ThemeSettingActivity.theme)){
+            ThemeSettingActivity.setActivityTheme(this);
+            recreate();
+            //changeTheme();
+        }
         try {
             updateView();
             autoRefresh();
@@ -174,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     break;
                 case R.id.btnSetting:
-                    //LogoActivity.sp.edit().putString("loginUser",null).apply();
                     intent = new Intent(MainActivity.this, SettingActivity.class);
                     startActivity(intent);
                     break;
@@ -488,6 +504,17 @@ public class MainActivity extends AppCompatActivity {
             iconDao.insert(icon);
         }
     }
+
+    public void changeTheme() {
+        int cpmd = ThemeUtil.getColorPrimary(getTheme());
+        getWindow().setStatusBarColor(cpmd);
+        changeComponent(cpmd);
+    }
+
+    private void changeComponent(@ColorInt int color){
+        ((TextView)findViewById(R.id.tvMonth)).setBackgroundColor(color);
+    }
+
 }
 
 

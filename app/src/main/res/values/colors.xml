@@ -3,9 +3,19 @@
     <color name="colorPrimary">#fbda01</color>
     <color name="colorPrimaryDark">#BFA600</color>
     <color name="colorAccent">#FFE436</color>
-    <color name="gray">#E3E1E1</color>
-    <color name="white">#ffffff</color>
+
+    <color name="theme_white">#ffffff</color>
+    <color name="theme_green">#00CD00</color>
     <color name="theme_yellow">#fbda01</color>
+    <color name="theme_blue">#0090FB</color>
+    <color name="theme_pink">#FB5555</color>
+    <color name="theme_red">#FB0101</color>
+
+    <color name="theme_color">#fbda01</color>
+
+    <color name="liteGray">#EDEDED</color>
+    <color name="gray">#B1B1B1</color>
+    <color name="white">#ffffff</color>
     <color name="newGray">#E6E6E6</color>
     <color name="yellowbill">#FBFB7C</color>
     <color name="purple">#7907C6</color>

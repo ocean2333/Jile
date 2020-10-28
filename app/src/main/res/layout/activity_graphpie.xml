@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     >
 
     <androidx.viewpager.widget.ViewPager
@@ -32,7 +31,7 @@
         style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/theme_yellow"
+        android:background="?attr/colorPrimary"
         android:gravity="center"
         android:padding="16dp"
         android:text="@string/GraphByKind"
@@ -53,20 +52,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:el_duration="1000"
-        app:el_expanded="true">
+        app:el_expanded="false">
 
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="120dp">
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="60dp">
 
                 <TextView
                     android:id="@+id/textCostGraph"
-                    android:paddingLeft="5dp"
-                    android:paddingTop="5dp"
+                    android:gravity="center"
                     android:layout_width="39dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/rb_bg_selector"
@@ -78,19 +76,11 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <ImageView
-                        android:id="@+id/imageCostGraphByKind"
-                        android:padding="2dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="1"
-                        android:background="@color/white"
-                        app:srcCompat="@drawable/ic_firstclasscost" />
-
                     <Button
+                        android:drawableTop="@drawable/ic_firstclasscost"
                         android:id="@+id/btnCostGraphByKind"
                         android:layout_width="match_parent"
-                        android:layout_height="21dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@color/white"
                         android:paddingBottom="2dp"
@@ -104,18 +94,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-                    <ImageView
-                        android:id="@+id/imageCostGraphByAccount"
-                        android:layout_width="match_parent"
-                        android:padding="2dp"
-                        android:layout_height="32dp"
-                        android:layout_weight="1"
-                        android:background="@color/white"
-                        app:srcCompat="@drawable/ic_accountcost" />
                     <Button
+                        android:drawableTop="@drawable/ic_accountcost"
                         android:id="@+id/btnCostGraphByAccount"
                         android:layout_width="match_parent"
-                        android:layout_height="21dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@color/white"
                         android:textSize="13sp"
@@ -129,18 +112,11 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical">
-                    <ImageView
-                        android:id="@+id/imageMonthCost"
-                        android:layout_width="match_parent"
-                        android:padding="1dp"
-                        android:layout_height="32dp"
-                        android:layout_weight="1"
-                        android:background="@color/white"
-                        app:srcCompat="@drawable/ic_monthcost" />
                     <Button
+                        android:drawableTop="@drawable/ic_monthcost"
                         android:id="@+id/btnMonthCost"
                         android:layout_width="match_parent"
-                        android:layout_height="21dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@color/white"
                         android:textSize="13sp"
@@ -152,12 +128,11 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="60dp">
 
                 <TextView
                     android:id="@+id/textIncomeGraph"
-                    android:paddingLeft="5dp"
-                    android:paddingTop="5dp"
+                    android:gravity="center"
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/rb_bg_selector"
@@ -168,21 +143,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-                    <ImageView
-                        android:id="@+id/imageIncomeGraphByKind"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="1"
-                        android:background="@color/white"
-                        app:srcCompat="@drawable/ic_firstclassincome" />
                     <Button
+                        android:drawableTop="@drawable/ic_firstclassincome"
                         android:id="@+id/btnIncomeGraphByKind"
                         android:layout_width="match_parent"
-                        android:layout_height="21dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@color/white"
                         android:textSize="13sp"
-                        android:paddingBottom="2dp"
                         android:text="@string/IncomeGraphByKind" />
                 </LinearLayout>
                 <LinearLayout
@@ -190,18 +158,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-                    <ImageView
-                        android:id="@+id/imageIncomeGraphByAccount"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:padding="2dp"
-                        android:layout_weight="1"
-                        android:background="@color/white"
-                        app:srcCompat="@drawable/ic_accountincome" />
+
                     <Button
+                        android:drawableTop="@drawable/ic_accountincome"
                         android:id="@+id/btnIncomeGraphByAccount"
                         android:layout_width="match_parent"
-                        android:layout_height="21dp"
+                        android:layout_height="match_parent"
                         android:textSize="13sp"
                         android:layout_weight="1"
                         android:background="@color/white"
@@ -213,19 +175,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-                    <ImageView
-                        android:id="@+id/imageMonthIncome"
-                        android:layout_width="match_parent"
-                        android:padding="1dp"
-                        android:layout_height="32dp"
-                        android:layout_weight="1"
-                        android:background="@color/white"
-                        app:srcCompat="@drawable/ic_monthincome" />
                     <Button
+                        android:drawableTop="@drawable/ic_monthincome"
                         android:id="@+id/btnMonthIncome"
                         android:layout_width="match_parent"
                         android:textSize="13sp"
-                        android:layout_height="21dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@color/white"
                         android:paddingBottom="2dp"
@@ -243,7 +198,7 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/theme_yellow">
+        android:background="?attr/colorPrimary">
         <ImageView
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"

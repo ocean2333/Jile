@@ -25,6 +25,7 @@ import com.example.jile.Constant.Constants;
 import com.example.jile.Detail.DeatilActivity;
 import com.example.jile.Detail.ExpandableListAdapter;
 import com.example.jile.R;
+import com.example.jile.Setting.ThemeSettingActivity;
 import com.example.jile.Util.StatisticsMiddle;
 import com.example.jile.Util.ToastUtil;
 import com.github.mikephil.charting.charts.PieChart;
@@ -46,6 +47,7 @@ import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder;
 import com.xuexiang.xui.widget.picker.widget.listener.OnTimeSelectListener;
 import com.xuexiang.xui.widget.tabbar.EasyIndicator;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -84,7 +86,8 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        XUI.initTheme(this);
+       // XUI.initTheme(this);
+        ThemeSettingActivity.setActivityTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graphpie);
 
@@ -105,6 +108,7 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
             }
         }
         else{
+            barListAdapter = new BarListAdapter(recyclerView,mGraphData,this);
             ToastUtil.showShortToast(this,"无符合目标数据");
         }
         expandableLayout1.setOnExpansionChangedListener((expansion, state) -> Log.d("expandableLayout1", "State: " + state));
@@ -128,7 +132,7 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
         WidgetUtils.initRecyclerView(recyclerView);
         recyclerView.setAdapter(barListAdapter);
         sumBill=getTotal(mGraphData);
-        textView.setText("总计\n  "+sumBill);
+        textView.setText("  总计\n  "+new BigDecimal(sumBill.toString()).toPlainString());
     }
 
     private void initViewPager(){
@@ -173,6 +177,7 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
         btnback = findViewById(R.id.btnBack);
         expandableLayout1 = findViewById(R.id.expandable_layout_1);
         expand_button = findViewById(R.id.expand_button);
+
         btnCostGraphByKind=findViewById(R.id.btnCostGraphByKind);
         btnCostGraphByAccount=findViewById(R.id.btnCostGraphByAccount);
         btnIncomeGraphByKind=findViewById(R.id.btnIncomeGraphByKind);
@@ -194,8 +199,10 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
     @Override
     public void onValueSelected(Entry e, Highlight h) {
         PieEntry pe = (PieEntry)e;
-        firstClass = pe.getLabel();
-        btnBillDetail.setText(pe.getLabel()+" "+pe.getValue()+" >");
+        if(searchType.equals(SEARCH_TYPE_FIRST_CLASS)) {
+            firstClass = pe.getLabel();
+        }
+        btnBillDetail.setText(pe.getLabel()+" "+ BigDecimal.valueOf(pe.getValue()).toPlainString()+" >");
     }
 
     @Override
@@ -303,9 +310,9 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
             if(Float.compare(getTotal(mGraphData),0.0f)!=0){
                 sumBill=getTotal(mGraphData);
                 barListAdapter.refresh(mGraphData);
-                mPieChart.setCenterText(new SpannableString("总计\n"+sumBill.toString()));
+                mPieChart.setCenterText(new SpannableString("总计\n"+new BigDecimal(sumBill.toString()).toPlainString()));
                 initPieChart();
-                textView.setText("总计\n  "+sumBill);
+                textView.setText("总计\n  "+new BigDecimal(sumBill.toString()).toPlainString());
             }
             else
                 ToastUtil.showShortToast(this,"总计为0");
@@ -321,7 +328,7 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
 
     private void initPieChart(){
         sumBill=getTotal(mGraphData);
-        mPieChart.setCenterText(new SpannableString("总计\n"+sumBill.toString()));
+        mPieChart.setCenterText(new SpannableString("总计\n"+new BigDecimal(sumBill.toString()).toPlainString()));
         PieDataSet dataSet = new PieDataSet(mGraphData,"");
         ArrayList<Integer> colors = GRAPH_COLOR;
         while (colors.size()<mGraphData.size()){

@@ -3,10 +3,13 @@ package com.example.jile;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 
+import com.example.jile.Constant.Constants;
 import com.example.jile.Database.Dao.AccountDao;
 import com.example.jile.Database.Dao.BillDao;
 import com.example.jile.Database.Dao.FirstClassDao;
@@ -17,6 +20,8 @@ import com.example.jile.Database.Dao.StoreDao;
 import com.example.jile.Database.Dao.UserDao;
 import com.example.jile.Database.DatabaseHelper;
 import com.example.jile.MainView.MainActivity;
+import com.example.jile.Setting.ThemeSettingActivity;
+import com.example.jile.Util.ThemeUtil;
 import com.example.jile.ui.login.LoginActivity;
 import com.idescout.sql.SqlScoutServer;
 import com.xuexiang.xui.XUI;
@@ -35,9 +40,12 @@ public class LogoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        XUI.getInstance().initFontStyle("fonts/fzzy.ttf");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logo);
         sp = getSharedPreferences("login",MODE_PRIVATE);
+        ThemeSettingActivity.theme = sp.getString("theme", Constants.THEME_YELLOW);
+        ThemeUtil.setModel(sp.getString("theme", Constants.THEME_YELLOW));
         userDao = new UserDao(this);
         new Thread(new Runnable() {
             @Override
@@ -60,6 +68,7 @@ public class LogoActivity extends AppCompatActivity {
         }).start();
 
     }
+
 
     //
     private boolean isLogin(){

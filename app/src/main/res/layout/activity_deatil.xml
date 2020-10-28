@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Detail.DeatilActivity"
-    android:background="@color/gray">
+    tools:context=".Detail.DeatilActivity">
     <LinearLayout
         android:id="@+id/ll_1"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:background="@color/theme_yellow">
+        android:background="?attr/colorPrimary">
         <ImageButton
             android:src="@drawable/ic_arrow_left"
             android:id="@+id/btnBack"
@@ -34,13 +32,14 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:orientation="vertical"
-        android:background="@drawable/top_and_bottom_edge">
+        android:background="@drawable/pic_background">
         <TextView
             android:layout_width="match_parent"
             android:text="结余"
             android:textSize="25sp"
             android:gravity="bottom"
             android:paddingLeft="20dp"
+            android:background="@color/xui_transparent"
             android:paddingBottom="10dp"
             android:layout_height="75dp"/>
         <TextView
@@ -94,18 +93,19 @@
         <Button
             android:id="@+id/btnDateStart"
             android:background="@android:color/transparent"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:text="2020年12月12日"
             android:layout_width="120dp"
             android:layout_height="match_parent"/>
         <ImageView
             android:layout_width="0dp"
+            android:paddingVertical="10dp"
             android:layout_weight="1"
             android:src="@drawable/ic_direction_right"
             android:layout_height="match_parent"/>
         <Button
             android:id="@+id/btnDateEnd"
-            android:textSize="15sp"
+            android:textSize="13sp"
             android:background="@android:color/transparent"
             android:text="2020年12月12日"
             android:layout_width="120dp"

@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.jile.Bean.User;
 import com.example.jile.LogoActivity;
 import com.example.jile.R;
+import com.example.jile.Setting.ThemeSettingActivity;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class AnsQuestionActivity extends AppCompatActivity {
     private String ans;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeSettingActivity.setActivityTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ans_question);
         final ImageButton btnBack = findViewById(R.id.btnBack);

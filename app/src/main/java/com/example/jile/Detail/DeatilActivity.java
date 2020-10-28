@@ -32,6 +32,7 @@ import com.example.jile.Constant.Constants;
 import com.example.jile.LogoActivity;
 import com.example.jile.New.NewBIllActivity;
 import com.example.jile.R;
+import com.example.jile.Setting.ThemeSettingActivity;
 import com.example.jile.Util.BillMiddle;
 import com.example.jile.Util.DateUtil;
 import com.example.jile.Util.TextUtil;
@@ -71,7 +72,8 @@ public class DeatilActivity extends AppCompatActivity {
     private List<List<Bill>> data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        XUI.initTheme(this);
+        //XUI.initTheme(this);
+        ThemeSettingActivity.setActivityTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deatil);
         recyclerView = findViewById(R.id.recycler_view);

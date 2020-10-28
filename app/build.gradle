@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -34,6 +33,8 @@ dependencies {
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+    implementation 'androidx.preference:preference:1.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -58,7 +59,12 @@ dependencies {
     implementation 'com.yanzhenjie.recyclerview:x:1.3.2'
     //数据导出
     implementation 'org.apache.commons:commons-csv:1.5'
-
     implementation 'junit:junit:4.12'
     implementation 'net.sourceforge.javacsv:javacsv:2.0'
+     //ButterKnife
+    implementation 'com.jakewharton:butterknife:10.2.3'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
+    //工具类
+    implementation 'com.github.xuexiangjys.XUtil:xutil-core:1.1.8'
+    implementation 'com.github.xuexiangjys.XUtil:xutil-sub:1.1.8'
 }

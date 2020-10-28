@@ -50,6 +50,7 @@ public class StatisticsMiddle {
         List<List<Bill>> res = new LinkedList<>();
         while (it.hasNext()) {
             Bill bill = (Bill) it.next();
+            if(bill.getType().equals(Constants.TRANSFER)) continue;
             Date billDate = Constants.DATE_FORMAT_SIMPLE.parse(bill.getDate());
             if(!bill.getType().equals(billtype)) continue;
             if(billDate.getTime()<=DateEnd.getTime()&&billDate.getTime()>=DateStart.getTime() ){
@@ -88,6 +89,7 @@ public class StatisticsMiddle {
                 Calendar tmp = startCalendar;
                 while (swit.hasNext()) {
                     Bill bill = (Bill) swit.next();
+                    if(bill.getType().equals(Constants.TRANSFER)) continue;
                     Date billDate = Constants.DATE_FORMAT_SIMPLE.parse(bill.getDate());
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(billDate);
@@ -139,6 +141,7 @@ public class StatisticsMiddle {
 
                 while(reit.hasNext()){
                     Bill bill = (Bill)reit.next();
+                    if(bill.getType().equals(Constants.TRANSFER)) continue;
                     if(mp.containsKey(bill.getFirst())){
                         int c = mp.get(bill.getFirst());
                         List<Bill> a = res.get(c);
@@ -202,6 +205,7 @@ public class StatisticsMiddle {
 
                 while(reit.hasNext()){
                     Bill bill = (Bill)reit.next();
+                    if(bill.getType().equals(Constants.TRANSFER)) continue;
                     if(mp.containsKey(bill.getSecond())){
                         int c = mp.get(bill.getSecond());
                         List<Bill> a = res.get(c);
@@ -267,6 +271,7 @@ public class StatisticsMiddle {
                 List<List<Bill>> rtes = new LinkedList<>();
                 while (iet.hasNext()) {
                     Bill bill = (Bill) iet.next();
+                    if(bill.getType().equals(Constants.TRANSFER)) continue;
                     Date billDate = Constants.DATE_FORMAT_SIMPLE.parse(bill.getDate());
                     if(!bill.getType().equals(billtype)) continue;
                     if(!bill.getFirst().equals(firstClass)) continue;
@@ -304,6 +309,7 @@ public class StatisticsMiddle {
 
                 while(reit.hasNext()){
                     Bill bill = (Bill)reit.next();
+                    if(bill.getType().equals(Constants.TRANSFER)) continue;
                     if(mp.containsKey(bill.getSecond())){
                         int c = mp.get(bill.getSecond());
                         List<Bill> a = res.get(c);
@@ -368,6 +374,7 @@ public class StatisticsMiddle {
 
                 while(reit.hasNext()){
                     Bill bill = (Bill)reit.next();
+                    if(bill.getType().equals(Constants.TRANSFER)) continue;
                     if(mp.containsKey(bill.getAccountname())){
                         int c = mp.get(bill.getAccountname());
                         List<Bill> a = res.get(c);
