@@ -32,6 +32,8 @@ import com.example.jile.Constant.Constants;
 import com.example.jile.LogoActivity;
 import com.example.jile.R;
 import com.example.jile.Setting.ThemeSettingActivity;
+import com.example.jile.Util.MoneyWatcher;
+import com.example.jile.Util.TextUtil;
 import com.example.jile.Util.ToastUtil;
 import com.xuexiang.xui.XUI;
 import com.xuexiang.xui.widget.picker.widget.TimePickerView;
@@ -39,6 +41,7 @@ import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder;
 import com.xuexiang.xui.widget.picker.widget.listener.OnTimeSelectListener;
 import com.xuexiang.xui.widget.tabbar.EasyIndicator;
 import com.xuexiang.xui.widget.tabbar.TabSegment;
+import com.xuexiang.xui.widget.toast.XToast;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -164,34 +167,50 @@ public class NewBIllActivity extends AppCompatActivity {
                     finish();
                     break;
                 case R.id.btnSave:
-                    if(btnFirstClass.getText().toString().equals(btnSecondClass.getText().toString())){
-                        Toast.makeText(NewBIllActivity.this,"转入账户和转出账户不能相同！",Toast.LENGTH_SHORT).show();
+                    if(btnFirstClass.getText().toString().equals("")|| btnSecondClass.getText().toString().equals("")) {
+                        XToast.info(NewBIllActivity.this,"请选择正确的分类").show();
+                    } else if(btnFirstClass.getText().toString().equals(btnSecondClass.getText().toString())){
+                        XToast.info(NewBIllActivity.this,"转入账户和转出账户不能相同！").show();
                     }else if(etMoneyNumber.getText().toString().equals("")){
                          ToastUtil.showShortToast(NewBIllActivity.this,"金额不能为空");
                     }else{
                         BigDecimal num = new BigDecimal(etMoneyNumber.getText().toString());
-                        if(uuid==null){
-                            try {addNewBillToDB(createNewBill());}catch(ParseException e){e.printStackTrace();}
+                        if(num.compareTo(new BigDecimal("0.01"))<0){
+                            XToast.info(NewBIllActivity.this,"请输入更大的金额").show();
+                        }else if(num.compareTo(new BigDecimal("1000000000"))>0){
+                            XToast.info(NewBIllActivity.this,"请输入更小的金额").show();
+                        }else if(uuid==null){
+                            try {addNewBillToDB(createNewBill());finish();}catch(ParseException e){e.printStackTrace();}
                         }else{
-                            try {updateBillInDB(createNewBill());}catch(ParseException e){e.printStackTrace();}
+                            try {updateBillInDB(createNewBill());finish();}catch(ParseException e){e.printStackTrace();}
                         }
-                        modifyMostRecentStore(btnSetStore.getText().toString());
-                        finish();
                     }
                     break;
                 case R.id.btnFirstClass:
                 case R.id.btnSecondClass:
-                    pvOptions = new OptionsPickerBuilder(NewBIllActivity.this, new OnOptionsSelectListener() {
-                        @Override
-                        public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
-                            //返回的分别是三个级别的选中位置
-                            btnFirstClass.setText(firstClassItems.get(options1));
-                            btnSecondClass.setText(secondClassItems.get(options1).get(option2));
-                        }
-                    })      .setSelectOptions(initSelection1,initSelection2)
-                            .build();
-                    pvOptions.setPicker(firstClassItems,secondClassItems);
-                    pvOptions.show();
+                    if(firstClassItems.size()==0){XToast.info(NewBIllActivity.this,"无可用一级分类").show();}
+                    else{
+                        pvOptions = new OptionsPickerBuilder(NewBIllActivity.this, new OnOptionsSelectListener() {
+                            @Override
+                            public void onOptionsSelect(int options1, int option2, int options3 ,View v) {
+                                //返回的分别是三个级别的选中位置
+                                if(firstClassItems.size()==0){
+                                    XToast.info(NewBIllActivity.this,"一级分类为空，无法记账").show();
+                                    btnFirstClass.setText("");
+                                }else if(secondClassItems.get(options1).size()==0){
+                                    XToast.info(NewBIllActivity.this,"二级分类为空，无法选择此分类").show();
+                                    btnFirstClass.setText(firstClassItems.get(options1));
+                                    btnSecondClass.setText("");
+                                }else{
+                                    btnFirstClass.setText(firstClassItems.get(options1));
+                                    btnSecondClass.setText(secondClassItems.get(options1).get(option2));
+                                }
+                            }
+                        })      .setSelectOptions(initSelection1,initSelection2)
+                                .build();
+                        pvOptions.setPicker(firstClassItems,secondClassItems);
+                        pvOptions.show();
+                    }
                     break;
                 case R.id.btnSelectAccount:
                     pvOptions2 = new OptionsPickerBuilder(NewBIllActivity.this, new OnOptionsSelectListener() {
@@ -244,6 +263,7 @@ public class NewBIllActivity extends AppCompatActivity {
         btnSelectAccount.setOnClickListener(onClick);
         btnSetStore.setOnClickListener(onClick);
         btnDelete.setOnClickListener(onClick);
+        etMoneyNumber.addTextChangedListener(new MoneyWatcher());
     }
 
     private void getItems(){
@@ -337,25 +357,10 @@ public class NewBIllActivity extends AppCompatActivity {
     }
 
     /**
-     * 在sharePreference中存储和获得最近去的店
-     * */
-    private String getMostRecentStore(){
-        String recentStore = LogoActivity.sp.getString("recentStore",null);
-        if(recentStore==null){
-            return storeItems.get(0);
-        }else{
-            return recentStore;
-        }
-    }
-    private void modifyMostRecentStore(String s){
-        LogoActivity.sp.edit().putString("recentStore",s).apply();
-    }
-
-    /**
      * 根据Button控件和EditText控件的值构造bill，有转账和非转账两种构造方法
      * */
     private Bill createNewBill() throws ParseException {
-        BigDecimal num = new BigDecimal(etMoneyNumber.getText().toString());
+        BigDecimal num = new BigDecimal(TextUtil.simplifyMoney(etMoneyNumber.getText().toString()));
         if(type.equals(Constants.COST)) num = num.abs().negate();
         if(uuid!=null){
             if(!type.equals(Constants.TRANSFER)){
@@ -423,13 +428,7 @@ public class NewBIllActivity extends AppCompatActivity {
                     if(needToUpdate){
                         updateUIToNormalType();
                     }
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            btnFirstClass.setText(firstClassItems.get(0));
-                            btnSecondClass.setText(secondClassItems.get(0).get(0));
-                        }
-                    }).start();
+                    updateClassItems();
                     break;
                 case 1:
                     needToUpdate = type.equals(Constants.TRANSFER);
@@ -438,13 +437,7 @@ public class NewBIllActivity extends AppCompatActivity {
                     if(needToUpdate){
                         updateUIToNormalType();
                     }
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            btnFirstClass.setText(firstClassItems.get(0));
-                            btnSecondClass.setText(secondClassItems.get(0).get(0));
-                        }
-                    }).start();
+                    updateClassItems();
                     break;
                 case 2:
                     needToUpdate = !type.equals(Constants.TRANSFER);
@@ -453,13 +446,30 @@ public class NewBIllActivity extends AppCompatActivity {
                     if(needToUpdate){
                         updateUIToTransferType();
                     }
-                    new Thread(() -> {
-                        btnFirstClass.setText(firstClassItems.get(0));
-                        btnSecondClass.setText(secondClassItems.get(0).get(0));
-                    }).start();
+                    updateClassItems();
                     break;
             }
         });
+    }
+
+    private void updateClassItems(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(firstClassItems.size()==0){
+                    //XToast.info(NewBIllActivity.this,"一级分类为空，无法记账").show();
+                    btnFirstClass.setText("");
+                    btnSecondClass.setText("");
+                }else if(secondClassItems.get(0).size()==0){
+                    //XToast.info(NewBIllActivity.this,"二级分类为空，无法选择此分类").show();
+                    btnFirstClass.setText(firstClassItems.get(0));
+                    btnSecondClass.setText("");
+                }else{
+                    btnFirstClass.setText(firstClassItems.get(0));
+                    btnSecondClass.setText(secondClassItems.get(0).get(0));
+                }
+            }
+        }).start();
     }
 
     private void updateUIToTransferType(){
@@ -493,12 +503,15 @@ public class NewBIllActivity extends AppCompatActivity {
         setEasyIndicator();
         TabSegment tabSegment = findViewById(R.id.tsType);
         tabSegment.selectTab(0,true,false);
+        if(firstClassItems.size()==0){
+            XToast.info(this,"无可用分类").show();
+        }
         if(uuid==null){
             btnFirstClass.setText(firstClassItems.get(0));
             btnSecondClass.setText(secondClassItems.get(0).get(0));
             btnSelectAccount.setText(accountItems.get(0));
             btnSelectMember.setText(memberItems.get(0));
-            btnSetStore.setText(getMostRecentStore());
+            btnSetStore.setText(storeItems.get(0));
             btnSetDate.setText(Constants.DATE_FORMAT_COMPLEX.format(new Date(System.currentTimeMillis())));
             btnDelete.setVisibility(View.GONE);
         }else{

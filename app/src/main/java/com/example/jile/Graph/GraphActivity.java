@@ -60,6 +60,7 @@ import static com.example.jile.Constant.Constants.GRAPH_COLOR;
 import static com.example.jile.Constant.Constants.INCOME;
 import static com.example.jile.Constant.Constants.SEARCH_TYPE_ACCOUNT;
 import static com.example.jile.Constant.Constants.SEARCH_TYPE_FIRST_CLASS;
+import static com.example.jile.Constant.Constants.SEARCH_TYPE_MEM;
 import static com.example.jile.Constant.Constants.SEARCH_TYPE_MONTH;
 import static com.example.jile.Constant.Constants.SEARCH_TYPE_SECOND_CLASS_IN_FIRST_CLASS;
 
@@ -81,6 +82,7 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
     private ImageButton btnback;
     private Button btnCostGraphByKind,btnCostGraphByAccount,btnIncomeGraphByKind,
             btnIncomeGraphByAccount,btnMonthIncome,btnMonthCost,btnBillDetail,
+            btnMenCost,btnMenIncome,
             btnSetStartDate,btnSetEndDate;
     private BarListAdapter barListAdapter;
     @SuppressLint("SetTextI18n")
@@ -184,6 +186,8 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
         btnIncomeGraphByAccount=findViewById(R.id.btnIncomeGraphByAccount);
         btnMonthIncome=findViewById(R.id.btnMonthIncome);
         btnMonthCost=findViewById(R.id.btnMonthCost);
+        btnMenCost=findViewById(R.id.btnMenCost);
+        btnMenIncome=findViewById(R.id.btnMenIncome);
         btnSetStartDate=findViewById(R.id.btnSetStartDate);
         btnSetEndDate=findViewById(R.id.btnSetEndDate);
 
@@ -203,10 +207,12 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
             firstClass = pe.getLabel();
         }
         btnBillDetail.setText(pe.getLabel()+" "+ BigDecimal.valueOf(pe.getValue()).toPlainString()+" >");
+        btnBillDetail.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onNothingSelected() {
+        btnBillDetail.setVisibility(View.GONE);
         btnBillDetail.setText("");
     }
 
@@ -262,6 +268,18 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
                     expand_button.setText(btnMonthCost.getText());
                     update();
                     break;
+                case R.id.btnMenCost:
+                    searchType = SEARCH_TYPE_MEM;
+                    billtype = COST;
+                    expand_button.setText(btnMenCost.getText());
+                    update();
+                    break;
+                case R.id.btnMenIncome:
+                    searchType = SEARCH_TYPE_MEM;
+                    billtype = INCOME;
+                    expand_button.setText(btnMenIncome.getText());
+                    update();
+                    break;
                 case R.id.btnBillDetail:
                     Log.d("TAG", "onClick: ");
                     startActivity(DeatilActivity.startThisActivity(GraphActivity.this,searchType, firstClass,startDate,endDate));
@@ -301,6 +319,7 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
     }
 
     public void update() {
+        btnBillDetail.setVisibility(View.GONE);
         try {
             mGraphData=StatisticsMiddle.getpiebill(searchType,billtype,firstClass,startDate,endDate,this);
         } catch (ParseException e) {
@@ -357,6 +376,8 @@ public class GraphActivity extends AppCompatActivity implements OnChartValueSele
         btnIncomeGraphByAccount.setOnClickListener(onClick);
         btnMonthIncome.setOnClickListener(onClick);
         btnMonthCost.setOnClickListener(onClick);
+        btnMenCost.setOnClickListener(onClick);
+        btnMenIncome.setOnClickListener(onClick);
         btnBillDetail.setOnClickListener(onClick);
         btnSetStartDate.setOnClickListener(onClick);
         btnSetEndDate.setOnClickListener(onClick);

@@ -44,6 +44,7 @@ import com.example.jile.Setting.SettingActivity;
 import com.example.jile.Setting.SettingClassSelectTypeActivity;
 import com.example.jile.Setting.ThemeSettingActivity;
 import com.example.jile.Util.DateUtil;
+import com.example.jile.Util.MoneyWatcher;
 import com.example.jile.Util.TextUtil;
 import com.example.jile.Util.ThemeUtil;
 import com.xuexiang.xui.utils.StatusBarUtils;
@@ -231,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText edt = new EditText(this);
         edt.setMinLines(1);
         edt.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_VARIATION_NORMAL);
+        edt.addTextChangedListener(new MoneyWatcher());
         new AlertDialog.Builder(this)
                 .setTitle("请输入预算")
                 .setIcon(R.drawable.ic_prompt)
@@ -238,6 +240,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
                         String b = edt.getText().toString();
+                        b = "0";
                         setBudgetThisMonth(new BigDecimal(b));
                         new Thread(new Runnable() {
                             @Override

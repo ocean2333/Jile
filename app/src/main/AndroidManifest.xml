@@ -10,7 +10,9 @@
         android:roundIcon="@drawable/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/myAppThemeYellow">
-        <activity android:name=".Setting.ImageCropActivity"></activity>
+        <activity android:name=".Setting.AboutActivity"></activity>
+        <activity android:name=".Setting.NewMemAndStoreActivity" />
+        <activity android:name=".Setting.ImageCropActivity" />
         <activity android:name=".Setting.SettingActivity" />
         <activity android:name=".Setting.ThemeSettingActivity" />
         <activity android:name=".Util.IconSelectorActivity" />

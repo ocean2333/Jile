@@ -121,12 +121,13 @@
         android:background="@drawable/top_and_bottom_edge"
         android:padding="1dp"
         android:layout_below="@id/ll_1">
+
         <ImageView
-            android:padding="12dp"
             android:id="@+id/btnToCalender"
-            android:layout_width="75dp"
-            android:src="@drawable/ic_today"
-            android:layout_height="match_parent"/>
+            android:layout_width="79dp"
+            android:layout_height="75dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_today" />
         <TextView
             android:id="@+id/tvDate"
             android:layout_width="0dp"
@@ -160,11 +161,18 @@
             android:layout_height="match_parent"
             android:background="@drawable/ic_arrow_right"/>
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_3"
+        android:layout_below="@id/ll_2"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/white"
+        android:orientation="horizontal" />
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
-        android:layout_below="@id/ll_2"
+        android:layout_height="590dp"
+        android:layout_below="@id/ll_3"
         android:layout_above="@id/bottomButton">
         <com.yanzhenjie.recyclerview.SwipeRecyclerView
             android:id="@+id/recycler_view"

@@ -303,9 +303,9 @@ public class DeatilActivity extends AppCompatActivity {
         BigDecimal cost,income;
         cost = getTotalCost(data);
         income = getTotalIncome(data);
-        tvBalance.setText(TextUtil.simplifyMoney(income.add(cost).toString()));
-        tvIncome.setText(TextUtil.simplifyMoney(income.toString()));
-        tvCost.setText(TextUtil.simplifyMoney(cost.toString()));
+        tvBalance.setText(TextUtil.simplifyMoney(income.add(cost).toPlainString()));
+        tvIncome.setText(TextUtil.simplifyMoney(income.toPlainString()));
+        tvCost.setText(TextUtil.simplifyMoney(cost.toPlainString()));
         List<LineElement> lle = new LinkedList<>();
         for(List<Bill> lb:data){
             List<View> lv = new LinkedList<>();

@@ -13,7 +13,8 @@ public class TextUtil {
         if(s1.length == 1){
             return s;
         }else if(s1.length == 2){
-            return s1[0]+"."+s1[1].substring(0,s1[1].length()-1);
+            int end = Math.min(s1[1].length(), 2);
+            return s1[0]+"."+s1[1].substring(0,end);
         }else{
             return "error string here";
         }

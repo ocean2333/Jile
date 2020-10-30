@@ -26,7 +26,9 @@ import com.example.jile.New.NewBIllActivity;
 import com.example.jile.R;
 import com.example.jile.Setting.ThemeSettingActivity;
 import com.example.jile.Util.IconSelectorActivity;
+import com.example.jile.Util.MoneyWatcher;
 import com.example.jile.Util.ToastUtil;
+import com.xuexiang.xui.widget.toast.XToast;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -142,8 +144,18 @@ public class CreateNewAccountActivity extends AppCompatActivity {
             }
         });
         btnConfirm.setOnClickListener(v -> {
+            if(etBalance.getText().toString().equals("")){
+                XToast.info(CreateNewAccountActivity.this,"余额不能为空").show();
+            }
+            BigDecimal bd = new BigDecimal(etBalance.getText().toString());
             if(iconId == null){
-                ToastUtil.showShortToast(this,"请选择一个图标");
+                XToast.info(CreateNewAccountActivity.this,"请选择一个图标").show();
+            }else if(etAccountName.getText().toString().length()>10){
+                XToast.info(CreateNewAccountActivity.this,"账户名过长").show();
+            }else if(bd.abs().compareTo(new BigDecimal("0.01"))<0||bd.abs().compareTo(new BigDecimal("0"))==0){
+                XToast.info(CreateNewAccountActivity.this,"余额过小").show();
+            }else if(bd.abs().compareTo(new BigDecimal("1000000000"))>0){
+                XToast.info(CreateNewAccountActivity.this,"余额过大").show();
             }else{
                 if(uuid==null){
                     addNewAccountToDB(createNewAccount());
@@ -185,22 +197,28 @@ public class CreateNewAccountActivity extends AppCompatActivity {
             }
         });
         btnDelete.setOnClickListener((v -> {
-            Account account = LogoActivity.accountDao.querybyskey("uuid",uuid).get(0);
-            for(Bill b:LogoActivity.billDao.querybyskey("accountname",account.getSelfname())){
-                NewBIllActivity.deleteBillInDB(b);
+            if(LogoActivity.accountDao.query().size()==1){
+                XToast.info(this,"不能删除最后一个账户").show();
+            }else{
+                Account account = LogoActivity.accountDao.querybyskey("uuid",uuid).get(0);
+                for(Bill b:LogoActivity.billDao.querybyskey("accountname",account.getSelfname())){
+                    NewBIllActivity.deleteBillInDB(b);
+                }
+                for(Bill b:LogoActivity.billDao.querybyskey("first",account.getSelfname())){
+                    NewBIllActivity.deleteBillInDB(b);
+                }
+                for(Bill b:LogoActivity.billDao.querybyskey("second",account.getSelfname())){
+                    NewBIllActivity.deleteBillInDB(b);
+                }
+                LogoActivity.accountDao.delete(account);
+                finish();
             }
-            for(Bill b:LogoActivity.billDao.querybyskey("first",account.getSelfname())){
-                NewBIllActivity.deleteBillInDB(b);
-            }
-            for(Bill b:LogoActivity.billDao.querybyskey("second",account.getSelfname())){
-                NewBIllActivity.deleteBillInDB(b);
-            }
-            LogoActivity.accountDao.delete(account);
-            finish();
+
         }));
         btnSelectIcon.setOnClickListener(v->{
             startActivityForResult(IconSelectorActivity.startThisActivity(this,Constants.ACCOUNT),0);
         });
+        etBalance.addTextChangedListener(new MoneyWatcher());
     }
 
     @Override
@@ -221,6 +239,14 @@ public class CreateNewAccountActivity extends AppCompatActivity {
     }
 
     private void updateAccountInDB(Account account){
+        Account oldAccount = LogoActivity.accountDao.querybyskey("uuid",account.getUuid()).get(0);
         LogoActivity.accountDao.update(account);
+        if(!oldAccount.getSelfname().equals(account.getSelfname())){
+            List<Bill> lb = LogoActivity.billDao.querybyskey("accountname",oldAccount.getSelfname());
+            for(Bill b:lb){
+                b.setAccountname(account.getSelfname());
+                LogoActivity.billDao.update(b);
+            }
+        }
     }
 }

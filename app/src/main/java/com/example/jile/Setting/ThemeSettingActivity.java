@@ -31,7 +31,7 @@ public class ThemeSettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theme_setting);
         LinearLayout rootLL = findViewById(R.id.rootLL);
-
+        findViewById(R.id.btnBack).setOnClickListener(v->finish());
         for(int i=2;i<8;i++){
             LinearLayout ll = (LinearLayout) rootLL.getChildAt(i);
             ImageView iv = (ImageView) ll.getChildAt(2);

@@ -35,7 +35,9 @@
         android:gravity="center"
         android:padding="16dp"
         android:text="@string/GraphByKind"
+        android:drawableRight="@drawable/tic_arrow_down"
         />
+
 
     <ImageButton
         android:id="@+id/btnBack"
@@ -123,6 +125,22 @@
                         android:paddingBottom="2dp"
                         android:text="@string/MonthCost" />
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <Button
+                        android:drawableTop="@drawable/ic_mencost"
+                        android:id="@+id/btnMenCost"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:textSize="13sp"
+                        android:paddingBottom="2dp"
+                        android:text="@string/Menincome" />
+                </LinearLayout>
 
             </TableRow>
 
@@ -132,10 +150,10 @@
 
                 <TextView
                     android:id="@+id/textIncomeGraph"
-                    android:gravity="center"
-                    android:layout_width="20dp"
+                    android:layout_width="39dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/rb_bg_selector"
+                    android:gravity="center"
                     android:text="@string/IncomeGraph" />
 
                 <LinearLayout
@@ -160,15 +178,15 @@
                     android:orientation="vertical">
 
                     <Button
-                        android:drawableTop="@drawable/ic_accountincome"
                         android:id="@+id/btnIncomeGraphByAccount"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:textSize="13sp"
                         android:layout_weight="1"
                         android:background="@color/white"
+                        android:drawableTop="@drawable/ic_accountincome"
                         android:paddingBottom="2dp"
-                        android:text="@string/IncomeGraphByAccount" />
+                        android:text="@string/IncomeGraphByAccount"
+                        android:textSize="13sp" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_weight="1"
@@ -186,13 +204,28 @@
                         android:paddingBottom="2dp"
                         android:text="@string/MonthIncome" />
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <Button
+                        android:drawableTop="@drawable/ic_menincome"
+                        android:id="@+id/btnMenIncome"
+                        android:layout_width="match_parent"
+                        android:textSize="13sp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:paddingBottom="2dp"
+                        android:text="@string/Men" />
+                </LinearLayout>
 
             </TableRow>
 
         </TableLayout>
 
     </com.xuexiang.xui.widget.layout.ExpandableLayout>
-
     <RelativeLayout
         android:id="@+id/endlayout"
         android:layout_alignParentBottom="true"

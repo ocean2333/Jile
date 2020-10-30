@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Setting.NewMemAndStoreActivity"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/ll_top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="?attr/colorPrimary">
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:background="@color/xui_transparent"
+            android:layout_width="50dp"
+            android:src="@drawable/ic_arrow_left"
+            android:layout_height="match_parent"/>
+        <ImageButton
+            android:id="@+id/btnAdd"
+            android:background="@color/xui_transparent"
+            android:layout_width="50dp"
+            android:src="@drawable/ic_add"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/newItem"
+            android:orientation="horizontal" android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white">
+            <TextView
+                android:layout_width="75dp"
+                android:layout_height="match_parent"/>
+            <EditText
+                android:id="@+id/etTitle"
+                android:layout_width="wrap_content"
+                android:hint="新的一级分类"
+                android:gravity="center_vertical"
+                android:textSize="25sp"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+            <ImageButton
+                android:id="@+id/btnUncheck"
+                android:background="@color/xui_transparent"
+                android:src="@drawable/ic_close"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"/>
+            <ImageButton
+                android:id="@+id/btnCheck"
+                android:background="@color/xui_transparent"
+                android:src="@drawable/ic_check"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+    <com.yanzhenjie.recyclerview.SwipeRecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

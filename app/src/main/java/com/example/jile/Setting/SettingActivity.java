@@ -68,7 +68,7 @@ public class SettingActivity extends AppCompatActivity {
                 .setNegativeButton("取消", null)
                 .show());
         about.setOnClickListener(v->{
-
+            startActivity(new Intent(SettingActivity.this,AboutActivity.class));
         });
         btnBack.setOnClickListener(v->finish());
     }

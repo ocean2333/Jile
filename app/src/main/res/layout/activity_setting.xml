@@ -44,6 +44,7 @@
         android:id="@+id/tvData"
         android:layout_width="match_parent"
         android:layout_height="55dp"
+        android:visibility="gone"
         android:text="数据导入导出"
         android:gravity="center"
         android:textSize="17sp"
@@ -53,6 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:text="隐私设置"
+        android:visibility="gone"
         android:gravity="center"
         android:textSize="17sp"
         android:background="@drawable/selectionline"/>
