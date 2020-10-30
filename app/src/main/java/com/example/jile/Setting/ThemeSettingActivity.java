@@ -3,6 +3,7 @@ package com.example.jile.Setting;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.StatusBarManager;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;

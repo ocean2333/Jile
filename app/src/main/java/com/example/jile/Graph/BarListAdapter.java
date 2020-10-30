@@ -77,7 +77,8 @@ public class BarListAdapter extends BaseRecyclerAdapter<PieEntry>{
                     LogoActivity.secondClassDao.querybyskey("name",item.getLabel()).get(0).getFirstclass()).get(0).getIconId());
         }
         else {
-            iv.setImageResource(LogoActivity.iconDao.querybyskey("name",item.getLabel()).get(0).getIconId());
+            int iconId = LogoActivity.accountDao.querybyskey("selfname",item.getLabel()).get(0).getIconId();
+            iv.setImageResource(iconId);
         }
 
         Button button = (Button)holder.findView(R.id.billMoney);

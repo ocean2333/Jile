@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.jile.LogoActivity;
@@ -14,6 +15,7 @@ import com.example.jile.ui.login.LoginActivity;
 public class SettingActivity extends AppCompatActivity {
     private TextView themeSetting,classSetting,data,privacy,switchAccount,about;
     public String theme;
+    private ImageButton btnBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ThemeSettingActivity.setActivityTheme(this);
@@ -40,6 +42,7 @@ public class SettingActivity extends AppCompatActivity {
         privacy = findViewById(R.id.tvPrivacy);
         switchAccount = findViewById(R.id.tvSwitchAccount);
         about = findViewById(R.id.tvAbout);
+        btnBack = findViewById(R.id.btnBack);
     }
 
     private void setListener(){
@@ -55,19 +58,18 @@ public class SettingActivity extends AppCompatActivity {
         privacy.setOnClickListener(v->{
 
         });
-        switchAccount.setOnClickListener(v->{
-            new AlertDialog.Builder(this)
-                    .setTitle("退出登录并返回到登陆界面？")
-                    .setIcon(R.drawable.ic_prompt)
-                    .setPositiveButton("确定", (arg0, arg1) -> {
-                        LogoActivity.sp.edit().putString("loginUser",null).apply();
-                        startActivity(new Intent(SettingActivity.this, LoginActivity.class));
-                    })
-                    .setNegativeButton("取消", null)
-                    .show();
-        });
+        switchAccount.setOnClickListener(v-> new AlertDialog.Builder(this)
+                .setTitle("退出登录并返回到登陆界面？")
+                .setIcon(R.drawable.ic_prompt)
+                .setPositiveButton("确定", (arg0, arg1) -> {
+                    LogoActivity.sp.edit().putString("loginUser",null).apply();
+                    startActivity(new Intent(SettingActivity.this, LoginActivity.class));
+                })
+                .setNegativeButton("取消", null)
+                .show());
         about.setOnClickListener(v->{
 
         });
+        btnBack.setOnClickListener(v->finish());
     }
 }
