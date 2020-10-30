@@ -90,11 +90,13 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/white">
-        <Button
+        <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
             android:id="@+id/btnDateStart"
             android:background="@android:color/transparent"
-            android:textSize="13sp"
+            android:textSize="20sp"
+            android:maxLines="1"
             android:text="2020年12月12日"
+            android:gravity="center"
             android:layout_width="120dp"
             android:layout_height="match_parent"/>
         <ImageView
@@ -103,18 +105,22 @@
             android:layout_weight="1"
             android:src="@drawable/ic_direction_right"
             android:layout_height="match_parent"/>
-        <Button
+        <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
             android:id="@+id/btnDateEnd"
-            android:textSize="13sp"
+            android:textSize="20sp"
+            android:maxLines="1"
+            android:gravity="center"
             android:background="@android:color/transparent"
             android:text="2020年12月12日"
             android:layout_width="120dp"
             android:layout_height="match_parent"/>
-        <Button
+        <com.xuexiang.xui.widget.textview.autofit.AutoFitTextView
+            android:maxLines="1"
+            android:gravity="center"
             android:id="@+id/btnSearchType"
             android:background="@android:color/transparent"
             android:layout_width="125dp"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:text="这是一个分类"
             android:layout_height="match_parent"/>
     </LinearLayout>

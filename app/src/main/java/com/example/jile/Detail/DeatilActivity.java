@@ -59,7 +59,7 @@ import java.util.List;
  * */
 public class DeatilActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private Button btnStartDateSelector,btnEndDateSelector,btnSearchTypeSelector;
+    private AutoFitTextView btnStartDateSelector,btnEndDateSelector,btnSearchTypeSelector;
     private ImageButton btnBack;
     private TextView tvBalance,tvIncome,tvCost;
     private Object searchType;
