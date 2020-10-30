@@ -38,6 +38,7 @@ public class StatisticsMiddle {
      *   二级分类形式:若是输入为"SEARCH_TYPE_SECOND_CLASS",返回所有二级分类信息；
      *              ：若是输入为“SEARCH_TYPE_SECOND_CLASS_IN_FIRST_CLASS”,返回一级分类firstClass下二级分类信息。
      *    账户形式     “SEARCH_TYPE_ACCOUNT”；p
+     *    成员形式： SEARCH_TYPE_MEM
      *    billt
      * */
 
@@ -419,6 +420,71 @@ public class StatisticsMiddle {
                         itd=itd+bs2.getNum().doubleValue();
                     }
                     String tism = bs.get(0).getAccountname();
+                    PieEntry pe = new PieEntry((float) abs(itd),tism);
+                    retu.add(pe);
+                }
+                Collections.sort(retu, new Comparator<PieEntry>() {
+                    @Override
+                    public int compare(PieEntry o1, PieEntry o2) {
+                        if(o1.getValue()<o2.getValue()) return 1;
+                        if(o1.getValue()==o2.getValue()) return 0;
+                        else return -1;
+                    }
+                });
+
+            }break;
+            case Constants.SEARCH_TYPE_MEM:{
+                Map<String,Integer> mp = new HashMap<>();
+                int index =0;
+                Iterator<Bill> reit = afterDeal.iterator();
+
+                while(reit.hasNext()){
+                    Bill bill = (Bill)reit.next();
+                    if(bill.getType().equals(Constants.TRANSFER)) continue;
+                    if(mp.containsKey(bill.getMember())){
+                        int c = mp.get(bill.getMember());
+                        List<Bill> a = res.get(c);
+                        a.add(bill);
+                        res.set(c,a);
+                    }
+                    else{
+                        mp.put(bill.getMember(),new Integer(index));
+                        List<Bill> a = new LinkedList<>();
+                        a.add(bill);
+                        res.add(a);
+                        index++;
+                    }
+                }
+                Collections.sort(res, new Comparator<List<Bill>>() {
+                    @Override
+                    public int compare(List<Bill> o1, List<Bill> o2) {
+                        Iterator<Bill> cit1 = o1.iterator();
+                        Iterator<Bill> cit2 = o2.iterator();
+                        BigDecimal c1=new BigDecimal("0");
+                        BigDecimal c2=new BigDecimal("0");
+                        while(cit1.hasNext()){
+                            Bill bill = (Bill) cit1.next();
+                            BigDecimal billNum = bill.getNum();
+                            c1=c1.add(billNum);
+                        }
+                        while(cit2.hasNext()){
+                            Bill bill = (Bill) cit2.next();
+                            BigDecimal billNum = bill.getNum();
+                            c2=c2.add(billNum);
+                        }
+                        return -c1.compareTo(c2);
+                    }
+                });
+                Iterator<List<Bill>> ite = res.iterator();
+                while(ite.hasNext()){
+                    List<Bill> bs = (List<Bill>)ite.next();
+                    Iterator<Bill> ite2 = bs.iterator();
+                    double itd =0;
+                    while(ite2.hasNext()){
+                        Bill bs2 = (Bill)ite2.next();
+                        itd=itd+bs2.getNum().doubleValue();
+                    }
+                    String tism = bs.get(0).getMember();
                     PieEntry pe = new PieEntry((float) abs(itd),tism);
                     retu.add(pe);
                 }
